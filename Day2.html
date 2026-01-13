@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Day 2 - Data Connection & Transformation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #2193b0;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #6dd5ed;
+        }
+
+        .info-card strong {
+            color: #2193b0;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav button {
+            background: #2193b0;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: #1a7a94;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button.active {
+            background: #6dd5ed;
+            color: #333;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #2193b0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #6dd5ed;
+        }
+
+        h3 {
+            color: #1a7a94;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #2193b0;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 5px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .diagram {
+            background: #f0f0f0;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .workflow-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .workflow-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            text-align: center;
+            border-top: 4px solid #2193b0;
+        }
+
+        .workflow-box h4 {
+            color: #2193b0;
+            margin-bottom: 10px;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #6dd5ed;
+        }
+
+        .practical-task {
+            background: #e7f3ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px dashed #2193b0;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-number {
+            background: #2193b0;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .steps ol,
+        .steps ul {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: #28a745;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .connector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .connector-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #6dd5ed;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .connector-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .connector-card h4 {
+            color: #2193b0;
+            margin-bottom: 8px;
+        }
+
+        .transformation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .transformation-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2193b0;
+        }
+
+        .transformation-card h4 {
+            color: #2193b0;
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #2193b0;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            border: 2px dashed #2193b0;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .next-day-btn {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .next-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+            height: 100%;
+            width: 20%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Power BI Training - Day 2</h1>
+            <p>Data Connection & Basic Transformations</p>
+            <div class="day-info">
+                <div class="info-card">
+                    <strong>Duration:</strong> 3 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Theory:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Practical:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Level:</strong> Beginner
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Course Progress: Day 2 of 10 (20%)</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-section="overview">📋 Overview</button>
+            <button class="nav-btn" data-section="theory">📚 Theory</button>
+            <button class="nav-btn" data-section="connectors">🔌 Data Connectors</button>
+            <button class="nav-btn" data-section="query-editor">⚙️ Query Editor</button>
+            <button class="nav-btn" data-section="transformations">🔄 Transformations</button>
+            <button class="nav-btn" data-section="practical">🔨 Practical Lab</button>
+            <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+            <button class="nav-btn" data-section="resources">📦 Resources</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <div class="content-section active" id="overview">
+            <h2>📋 Day 2 Overview</h2>
+
+            <div class="theory-box">
+                <h3>Learning Objectives</h3>
+                <p>By the end of Day 2, students will be able to:</p>
+                <ul>
+                    <li>Connect Power BI to multiple data sources (Excel, CSV, Web, Database)</li>
+                    <li>Understand different types of data connectors</li>
+                    <li>Navigate and use the Power Query Editor effectively</li>
+                    <li>Perform basic table transformations</li>
+                    <li>Work with text tools (trim, clean, replace, split columns)</li>
+                    <li>Work with numerical transformations (round, absolute, statistics)</li>
+                    <li>Apply best practices for data connection</li>
+                </ul>
+            </div>
+
+            <h3>📅 Session Structure</h3>
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>Part 1: Data Connectors (30 min)</h4>
+                    <ul>
+                        <li>Types of connectors</li>
+                        <li>File vs Database connectors</li>
+                        <li>Import vs DirectQuery</li>
+                        <li>Connecting to Excel & CSV</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>Part 2: Query Editor (30 min)</h4>
+                    <ul>
+                        <li>Understanding the interface</li>
+                        <li>Applied Steps</li>
+                        <li>Basic operations</li>
+                        <li>Preview vs Full Data</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>Part 3: Transformations (30 min)</h4>
+                    <ul>
+                        <li>Text transformations</li>
+                        <li>Number transformations</li>
+                        <li>Column operations</li>
+                        <li>Best practices</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>Part 4: Hands-On Lab (90 min)</h4>
+                    <ul>
+                        <li>Connect to multiple sources</li>
+                        <li>Clean and transform data</li>
+                        <li>Apply text & number tools</li>
+                        <li>Save transformed data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Prerequisites:</strong> Completed Day 1, Power BI Desktop installed, basic understanding of
+                the interface
+            </div>
+
+            <div class="tip">
+                <strong>💡 Pro Tip:</strong> The Power Query Editor is one of the most powerful features in Power BI.
+                Mastering it will save you hours of manual data cleaning!
+            </div>
+        </div>
+
+        <!-- Theory Section -->
+        <div class="content-section" id="theory">
+            <h2>📚 Theory: Data Connection Fundamentals</h2>
+
+            <h3>Why Data Transformation Matters</h3>
+            <div class="theory-box">
+                <p><strong>Real-world data is messy!</strong> You'll often encounter:</p>
+                <ul>
+                    <li>Inconsistent formatting (UPPERCASE, lowercase, Mixed Case)</li>
+                    <li>Extra spaces and special characters</li>
+                    <li>Missing values</li>
+                    <li>Wrong data types (numbers stored as text)</li>
+                    <li>Unnecessary columns</li>
+                    <li>Headers in wrong rows</li>
+                    <li>Multiple data sources that need combining</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Power Query Editor</strong> helps you clean and transform this data
+                    before it enters your data model.</p>
+            </div>
+
+            <h3>The ETL Process</h3>
+            <div class="diagram">
+                <div class="workflow-diagram">
+                    <div class="workflow-box" style="border-top: 4px solid #28a745;">
+                        <h4>EXTRACT</h4>
+                        <p>Connect to data sources</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Get data from files, databases, web, etc.</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="workflow-box" style="border-top: 4px solid #ffc107;">
+                        <h4>TRANSFORM</h4>
+                        <p>Clean and shape data</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Remove errors, change types, filter, etc.</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="workflow-box" style="border-top: 4px solid #17a2b8;">
+                        <h4>LOAD</h4>
+                        <p>Load into Power BI model</p>
+                        <p style="font-size: 0.85em; margin-top: 10px;">Ready for analysis and visualization</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>📝 Key Concept:</strong> Power Query uses the <strong>M language</strong> behind the scenes, but
+                you don't need to write code - the interface generates it for you!
+            </div>
+
+            <h3>Import vs DirectQuery vs Live Connection</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Import Mode</th>
+                        <th>DirectQuery</th>
+                        <th>Live Connection</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Data Storage</strong></td>
+                        <td>Copied to Power BI</td>
+                        <td>Remains at source</td>
+                        <td>Remains at source</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Fast (in-memory)</td>
+                        <td>Depends on source</td>
+                        <td>Depends on source</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Size</strong></td>
+                        <td>Limited by memory</td>
+                        <td>No limit</td>
+                        <td>No limit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Refresh Needed</strong></td>
+                        <td>Yes</td>
+                        <td>No (real-time)</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transformations</strong></td>
+                        <td>Full Power Query</td>
+                        <td>Limited</td>
+                        <td>Very limited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Most scenarios</td>
+                        <td>Large databases</td>
+                        <td>SSAS/Azure AS</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="important">
+                <strong>🎯 Recommendation:</strong> Use <strong>Import Mode</strong> for this course and most real-world
+                scenarios. It offers the best performance and full Power Query capabilities.
+            </div>
+
+            <h3>Data Quality Principles</h3>
+            <div class="theory-box">
+                <p><strong>Remember the 5 C's of Data Quality:</strong></p>
+                <ol>
+                    <li><strong>Complete:</strong> No missing critical values</li>
+                    <li><strong>Consistent:</strong> Same format throughout</li>
+                    <li><strong>Clean:</strong> No errors or duplicates</li>
+                    <li><strong>Correct:</strong> Accurate data types</li>
+                    <li><strong>Current:</strong> Up-to-date information</li>
+                </ol>
+                <p style="margin-top: 15px;">Power Query helps you achieve all of these!</p>
+            </div>
+        </div>
+
+        <!-- Data Connectors Section -->
+        <div class="content-section" id="connectors">
+            <h2>🔌 Types of Data Connectors</h2>
+
+            <h3>Power BI Connector Categories</h3>
+            <div class="theory-box">
+                <p>Power BI offers <strong>100+ connectors</strong> organized into categories:</p>
+            </div>
+
+            <div class="connector-grid">
+                <div class="connector-card">
+                    <h4>📄 File</h4>
+                    <p>Excel, CSV, XML, JSON, PDF, Text, Folder</p>
+                </div>
+                <div class="connector-card">
+                    <h4>🗄️ Database</h4>
+                    <p>SQL Server, MySQL, PostgreSQL, Oracle, Access</p>
+                </div>
+                <div class="connector-card">
+                    <h4>☁️ Azure</h4>
+                    <p>Azure SQL, Blob Storage, Synapse, Data Lake</p>
+                </div>
+                <div class="connector-card">
+                    <h4>🌐 Online Services</h4>
+                    <p>SharePoint, Dynamics 365, Salesforce, Google Analytics</p>
+                </div>
+                <div class="connector-card">
+                    <h4>🔗 Web</h4>
+                    <p>Web pages, Web API, OData feeds</p>
+                </div>
+                <div class="connector-card">
+                    <h4>📊 Other</h4>
+                    <p>R Script, Python, ODBC, OLE DB, Blank Query</p>
+                </div>
+            </div>
+
+            <h3>Most Common Connectors (We'll Use Today)</h3>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Excel Connector</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>When to use:</strong> Excel workbooks (.xlsx, .xls)</p>
+                    <p><strong>Path:</strong> Home → Get Data → Excel Workbook</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        <li>Select specific sheets or named ranges</li>
+                        <li>Automatically detects headers</li>
+                        <li>Preview data before loading</li>
+                        <li>Can import multiple sheets at once</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Text/CSV Connector</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>When to use:</strong> Comma-separated or delimited text files</p>
+                    <p><strong>Path:</strong> Home → Get Data → Text/CSV</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        <li>Automatic delimiter detection</li>
+                        <li>Encoding options (UTF-8, ASCII, etc.)</li>
+                        <li>Column header detection</li>
+                        <li>Best for large datasets</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Web Connector</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>When to use:</strong> Data from web pages or APIs</p>
+                    <p><strong>Path:</strong> Home → Get Data → Web</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        <li>Extract tables from HTML pages</li>
+                        <li>Connect to web APIs</li>
+                        <li>Authentication options</li>
+                        <li>Automatic refresh capabilities</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">4</div>
+                    <h3 style="margin: 0;">SQL Server Connector</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>When to use:</strong> Corporate databases</p>
+                    <p><strong>Path:</strong> Home → Get Data → SQL Server</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        <li>Choose Import or DirectQuery</li>
+                        <li>Write custom SQL queries</li>
+                        <li>Select specific tables/views</li>
+                        <li>Enterprise authentication</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Connecting to Data: Step-by-Step Process</h3>
+            <div class="diagram">
+                <div style="text-align: left; background: white; padding: 20px; border-radius: 10px;">
+                    <h4 style="color: #2193b0; text-align: center; margin-bottom: 20px;">Standard Connection Workflow
+                    </h4>
+
+                    <div
+                        style="background: #f0f9ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2193b0; border-radius: 5px;">
+                        <strong>Step 1:</strong> Click <code>Home → Get Data</code>
+                    </div>
+
+                    <div
+                        style="background: #f0f9ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2193b0; border-radius: 5px;">
+                        <strong>Step 2:</strong> Choose connector type (Excel, CSV, Web, etc.)
+                    </div>
+
+                    <div
+                        style="background: #f0f9ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2193b0; border-radius: 5px;">
+                        <strong>Step 3:</strong> Browse to file or enter connection details
+                    </div>
+
+                    <div
+                        style="background: #f0f9ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2193b0; border-radius: 5px;">
+                        <strong>Step 4:</strong> Navigator window appears - select tables/sheets
+                    </div>
+
+                    <div
+                        style="background: #f0f9ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2193b0; border-radius: 5px;">
+                        <strong>Step 5:</strong> Choose <strong>Transform Data</strong> (opens Query Editor) or
+                        <strong>Load</strong> (loads directly)
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Best Practice:</strong> Always choose <strong>"Transform Data"</strong> instead of "Load" -
+                this lets you review and clean data before importing!
+            </div>
+        </div>
+
+        <!-- Query Editor Section -->
+        <div class="content-section" id="query-editor">
+            <h2>⚙️ The Power Query Editor</h2>
+
+            <h3>Understanding the Query Editor Interface</h3>
+            <div class="screenshot-placeholder">
+                <h3 style="color: #2193b0;">Power Query Editor Layout</h3>
+                <p>Main workspace for data transformation</p>
+            </div>
+
+            <h3>Key Components</h3>
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>1. Ribbon</h4>
+                    <ul>
+                        <li><strong>Home:</strong> Basic operations</li>
+                        <li><strong>Transform:</strong> Column operations</li>
+                        <li><strong>Add Column:</strong> New columns</li>
+                        <li><strong>View:</strong> Display options</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>2. Queries Pane (Left)</h4>
+                    <ul>
+                        <li>List of all queries</li>
+                        <li>Organize into groups</li>
+                        <li>Enable/disable queries</li>
+                        <li>Right-click for options</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>3. Data Preview (Center)</h4>
+                    <ul>
+                        <li>Shows first 1000 rows</li>
+                        <li>Column headers with types</li>
+                        <li>Interactive preview</li>
+                        <li>Right-click columns for actions</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>4. Query Settings (Right)</h4>
+                    <ul>
+                        <li>Query name & properties</li>
+                        <li><strong>Applied Steps</strong> list</li>
+                        <li>Shows transformation history</li>
+                        <li>Can delete/reorder steps</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>5. Formula Bar</h4>
+                    <ul>
+                        <li>Shows M code for selected step</li>
+                        <li>Edit formulas directly</li>
+                        <li>Advanced users can write M</li>
+                        <li>Toggle on/off from View tab</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>6. Status Bar (Bottom)</h4>
+                    <ul>
+                        <li>Row count</li>
+                        <li>Column count</li>
+                        <li>Data profiling info</li>
+                        <li>Error indicators</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Applied Steps: The Power of Query Editor</h3>
+            <div class="theory-box">
+                <h4>What are Applied Steps?</h4>
+                <p><strong>Applied Steps</strong> is a history of all transformations applied to your data, in order.
+                </p>
+                <p style="margin-top: 10px;"><strong>Key Features:</strong></p>
+                <ul>
+                    <li>📝 Each transformation creates a new step</li>
+                    <li>🔄 Steps are applied in sequence</li>
+                    <li>👁️ Click any step to preview data at that point</li>
+                    <li>❌ Delete steps to undo transformations</li>
+                    <li>↕️ Reorder steps (with caution!)</li>
+                    <li>✏️ Rename steps for clarity</li>
+                    <li>⚙️ Edit step settings by clicking the gear icon</li>
+                </ul>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Important:</strong> The order of Applied Steps matters! Changing order can break your query
+                or produce different results.
+            </div>
+
+            <h3>Common Applied Steps</h3>
+            <div class="practical-task">
+                <div class="steps">
+                    <p><strong>Default Steps You'll See:</strong></p>
+                    <ol>
+                        <li><strong>Source:</strong> Connection to data source</li>
+                        <li><strong>Navigation:</strong> Selected table/sheet</li>
+                        <li><strong>Promoted Headers:</strong> First row as column names</li>
+                        <li><strong>Changed Type:</strong> Auto-detected data types</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>Then you add your own transformations...</strong></p>
+                </div>
+            </div>
+
+            <h3>Data Profiling Tools</h3>
+            <div class="theory-box">
+                <p><strong>Enable in View tab:</strong></p>
+                <ul>
+                    <li><strong>Column Quality:</strong> Shows % valid, error, empty</li>
+                    <li><strong>Column Distribution:</strong> Shows distinct/unique counts</li>
+                    <li><strong>Column Profile:</strong> Shows value distribution histogram</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>💡 Pro Tip:</strong> Always enable these! They help identify data
+                    quality issues immediately.</p>
+            </div>
+
+            <div class="tip">
+                <strong>🎯 Best Practice:</strong> Change profiling from "Top 1000 rows" to "Entire dataset" in the
+                bottom status bar for accurate statistics.
+            </div>
+        </div>
+
+        <!-- Transformations Section -->
+        <div class="content-section" id="transformations">
+            <h2>🔄 Basic Table Transformations</h2>
+
+            <h3>1. Working with Text Tools</h3>
+
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>Trim</h4>
+                    <p><strong>Purpose:</strong> Remove leading/trailing spaces</p>
+                    <p><strong>Path:</strong> Transform → Format → Trim</p>
+                    <p><strong>Example:</strong></p>
+                    <code>"  John  " → "John"</code>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Clean</h4>
+                    <p><strong>Purpose:</strong> Remove non-printable characters</p>
+                    <p><strong>Path:</strong> Transform → Format → Clean</p>
+                    <p><strong>Use:</strong> Fix text from external systems</p>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Uppercase / Lowercase</h4>
+                    <p><strong>Purpose:</strong> Change case</p>
+                    <p><strong>Path:</strong> Transform → Format → UPPERCASE</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>UPPERCASE</li>
+                        <li>lowercase</li>
+                        <li>Capitalize Each Word</li>
+                    </ul>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Replace Values</h4>
+                    <p><strong>Purpose:</strong> Find and replace text</p>
+                    <p><strong>Path:</strong> Transform → Replace Values</p>
+                    <p><strong>Example:</strong></p>
+                    <code>Replace "USA" with "United States"</code>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Split Column</h4>
+                    <p><strong>Purpose:</strong> Divide one column into multiple</p>
+                    <p><strong>Path:</strong> Transform → Split Column</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>By Delimiter</li>
+                        <li>By Number of Characters</li>
+                        <li>By Positions</li>
+                    </ul>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Extract</h4>
+                    <p><strong>Purpose:</strong> Pull out specific parts</p>
+                    <p><strong>Path:</strong> Transform → Extract</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>First Characters</li>
+                        <li>Last Characters</li>
+                        <li>Range</li>
+                        <li>Text Before/After Delimiter</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Text Transformation Examples</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📝</div>
+                    <h3 style="margin: 0;">Real-World Scenario: Cleaning Names</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Problem:</strong> You have a name column with inconsistent formatting:</p>
+                    <code>
+                        "  JOHN SMITH  " <br>
+                        "jane DOE" <br>
+                        "Bob   Wilson"
+                    </code>
+
+                    <p style="margin-top: 15px;"><strong>Solution Steps:</strong></p>
+                    <ol>
+                        <li>Select the column</li>
+                        <li>Transform → Format → <strong>Trim</strong> (removes extra spaces)</li>
+                        <li>Transform → Format → <strong>Capitalize Each Word</strong></li>
+                    </ol>
+
+                    <p style="margin-top: 15px;"><strong>Result:</strong></p>
+                    <code>
+                        "John Smith" <br>
+                        "Jane Doe" <br>
+                        "Bob Wilson"
+                    </code>
+                </div>
+            </div>
+
+            <h3>2. Working with Numerical Values</h3>
+
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>Round</h4>
+                    <p><strong>Purpose:</strong> Round numbers</p>
+                    <p><strong>Path:</strong> Transform → Rounding → Round</p>
+                    <p><strong>Example:</strong></p>
+                    <code>3.14159 → 3.14</code>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Absolute Value</h4>
+                    <p><strong>Purpose:</strong> Remove negative sign</p>
+                    <p><strong>Path:</strong> Transform → Absolute Value</p>
+                    <p><strong>Example:</strong></p>
+                    <code>-50 → 50</code>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Statistics</h4>
+                    <p><strong>Purpose:</strong> Calculate stats</p>
+                    <p><strong>Path:</strong> Transform → Statistics</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>Sum</li>
+                        <li>Average</li>
+                        <li>Median</li>
+                        <li>Standard Deviation</li>
+                    </ul>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Standard Math</h4>
+                    <p><strong>Purpose:</strong> Basic operations</p>
+                    <p><strong>Path:</strong> Transform → Standard</p>
+                    <p><strong>Operations:</strong></p>
+                    <ul>
+                        <li>Add</li>
+                        <li>Multiply</li>
+                        <li>Subtract</li>
+                        <li>Divide</li>
+                        <li>Percent Of</li>
+                        <li>Modulo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>3. Basic Column Operations</h3>
+
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>Remove Columns</h4>
+                    <p><strong>Right-click column → Remove</strong></p>
+                    <p>Or: Home → Remove Columns</p>
+                    <p style="margin-top: 10px;"><strong>Tip:</strong> Use "Remove Other Columns" to keep only selected
+                        ones</p>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Rename Columns</h4>
+                    <p><strong>Double-click header</strong></p>
+                    <p>Or: Right-click → Rename</p>
+                    <p style="margin-top: 10px;"><strong>Best Practice:</strong> Use clear, descriptive names</p>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Change Data Type</h4>
+                    <p><strong>Click type icon in header</strong></p>
+                    <p>Or: Transform → Data Type</p>
+                    <p style="margin-top: 10px;"><strong>Types:</strong> Text, Number, Date, Boolean, etc.</p>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Duplicate Column</h4>
+                    <p><strong>Right-click → Duplicate</strong></p>
+                    <p>Or: Add Column → Duplicate Column</p>
+                    <p style="margin-top: 10px;"><strong>Use:</strong> Keep original while transforming</p>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Move Columns</h4>
+                    <p><strong>Drag column header</strong></p>
+                    <p>Or: Right-click → Move</p>
+                    <p style="margin-top: 10px;"><strong>Options:</strong> To Beginning, To End, Left, Right</p>
+                </div>
+
+                <div class="transformation-card">
+                    <h4>Filter Rows</h4>
+                    <p><strong>Click filter icon in header</strong></p>
+                    <p>Select values to keep/remove</p>
+                    <p style="margin-top: 10px;"><strong>Types:</strong> Text, Number, Date filters</p>
+                </div>
+            </div>
+
+            <h3>4. Handling Errors and Missing Data</h3>
+
+            <div class="theory-box">
+                <h4>Common Data Issues:</h4>
+                <ul>
+                    <li><strong>Null:</strong> No value exists</li>
+                    <li><strong>Error:</strong> Transformation failed</li>
+                    <li><strong>Blank:</strong> Empty string ""</li>
+                </ul>
+
+                <h4 style="margin-top: 15px;">Solutions:</h4>
+                <ul>
+                    <li><strong>Remove Errors:</strong> Home → Remove Rows → Remove Errors</li>
+                    <li><strong>Replace Errors:</strong> Transform → Replace Errors</li>
+                    <li><strong>Fill Down:</strong> Transform → Fill → Down (copy value from above)</li>
+                    <li><strong>Fill Up:</strong> Transform → Fill → Up (copy value from below)</li>
+                    <li><strong>Replace Null:</strong> Transform → Replace Values (leave "Value to Find" empty)</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Warning:</strong> Removing errors/nulls deletes entire rows! Consider replacing with default
+                values instead.
+            </div>
+
+            <h3>Transformation Best Practices</h3>
+            <div class="tip">
+                <strong>✅ DO's:</strong>
+                <ul>
+                    <li>✓ Use descriptive names for queries and columns</li>
+                    <li>✓ Document complex transformations</li>
+                    <li>✓ Test transformations on sample data first</li>
+                    <li>✓ Keep original columns when uncertain</li>
+                    <li>✓ Use data profiling tools to check quality</li>
+                    <li>✓ Apply transformations in logical order</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>❌ DON'Ts:</strong>
+                <ul>
+                    <li>✗ Don't delete steps without understanding impact</li>
+                    <li>✗ Don't over-complicate transformations</li>
+                    <li>✗ Don't ignore errors or warnings</li>
+                    <li>✗ Don't rely on column positions (use names)</li>
+                    <li>✗ Don't transform in the data model (do it in Query Editor)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Practical Lab Section -->
+        <div class="content-section" id="practical">
+            <h2>🔨 Practical Lab: Data Connection & Transformation</h2>
+
+            <div class="important">
+                <strong>⏱️ Lab Duration:</strong> 90 minutes<br>
+                <strong>🎯 Objective:</strong> Connect to data, clean it, and transform it for analysis
+            </div>
+
+            <h3>Exercise 1: Connecting to Excel Data (20 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Import Excel File</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Download the <strong>SalesData_Messy.xlsx</strong> from Resources section</li>
+                        <li>Open Power BI Desktop</li>
+                        <li>Click <strong>Home → Get Data → Excel Workbook</strong></li>
+                        <li>Navigate to and select the downloaded file</li>
+                        <li>In Navigator window:
+                            <ul>
+                                <li>Check the checkbox next to "Sales" sheet</li>
+                                <li>Preview the data</li>
+                                <li>Notice it's messy!</li>
+                            </ul>
+                        </li>
+                        <li>Click <strong>Transform Data</strong> (NOT Load!)</li>
+                        <li>Power Query Editor opens</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 2: Explore Query Editor Interface (10 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Familiarize Yourself</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Identify the main components:
+                            <ul>
+                                <li>Ribbon at top</li>
+                                <li>Queries pane on left (shows "Sales" query)</li>
+                                <li>Data preview in center</li>
+                                <li>Query Settings on right (shows Applied Steps)</li>
+                            </ul>
+                        </li>
+                        <li>Enable data profiling:
+                            <ul>
+                                <li>Go to <strong>View</strong> tab</li>
+                                <li>Check: <strong>Column Quality</strong></li>
+                                <li>Check: <strong>Column Distribution</strong></li>
+                                <li>Check: <strong>Column Profile</strong></li>
+                            </ul>
+                        </li>
+                        <li>In status bar (bottom), change from "based on top 1000 rows" to <strong>"based on entire
+                                data set"</strong></li>
+                        <li>Observe the Applied Steps on the right</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 3: Clean Product Names (15 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Text Transformations</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Scenario:</strong> Product names have extra spaces and inconsistent capitalization</p>
+                    <ol>
+                        <li>Select the <strong>Product</strong> column (click header)</li>
+                        <li>Go to <strong>Transform → Format → Trim</strong>
+                            <ul>
+                                <li>Notice a new step appears in Applied Steps</li>
+                            </ul>
+                        </li>
+                        <li>With column still selected, <strong>Transform → Format → Capitalize Each Word</strong></li>
+                        <li>Review your data - product names should look clean now!</li>
+                        <li>In Applied Steps, rename:
+                            <ul>
+                                <li>"Trimmed Text" → "Trim Product"</li>
+                                <li>"Capitalized Each Word" → "Capitalize Product"</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 4: Fix Region Column (15 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">4</div>
+                    <h3 style="margin: 0;">Replace Values</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Scenario:</strong> Region column has abbreviations that need to be expanded</p>
+                    <ol>
+                        <li>Select the <strong>Region</strong> column</li>
+                        <li>Go to <strong>Transform → Replace Values</strong></li>
+                        <li>Replace:
+                            <ul>
+                                <li>Value to Find: <code>N</code></li>
+                                <li>Replace With: <code>North</code></li>
+                                <li>Click OK</li>
+                            </ul>
+                        </li>
+                        <li>Repeat for:
+                            <ul>
+                                <li><code>S</code> → <code>South</code></li>
+                                <li><code>E</code> → <code>East</code></li>
+                                <li><code>W</code> → <code>West</code></li>
+                            </ul>
+                        </li>
+                        <li>Verify all regions are now full names</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 5: Work with Numbers (15 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">5</div>
+                    <h3 style="margin: 0;">Numerical Transformations</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Task A: Round Sales Values</strong></p>
+                    <ol>
+                        <li>Select the <strong>Sales</strong> column</li>
+                        <li>Check the data type icon - should be decimal/number</li>
+                        <li>If it's text, change it: Click type icon → <strong>Decimal Number</strong></li>
+                        <li>Go to <strong>Transform → Rounding → Round</strong></li>
+                        <li>Enter <code>2</code> for 2 decimal places</li>
+                        <li>Click OK</li>
+                    </ol>
+
+                    <p style="margin-top: 15px;"><strong>Task B: Create a Calculated Column</strong></p>
+                    <ol>
+                        <li>Go to <strong>Add Column</strong> tab</li>
+                        <li>Click <strong>Custom Column</strong></li>
+                        <li>New column name: <code>Total Value</code></li>
+                        <li>Formula: <code>= [Sales] * [Quantity]</code></li>
+                        <li>Click OK</li>
+                        <li>You now have a new column calculating total value!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 6: Handle Missing Data (10 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">6</div>
+                    <h3 style="margin: 0;">Deal with Nulls</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Look at the <strong>Column Quality</strong> indicators
+                            <ul>
+                                <li>Notice if any column shows "Empty" percentage</li>
+                            </ul>
+                        </li>
+                        <li>Select a column with null values (if any)</li>
+                        <li>Right-click column header → <strong>Replace Values</strong></li>
+                        <li>Leave "Value to Find" empty (this finds nulls)</li>
+                        <li>Replace With: <code>Unknown</code> or <code>0</code> (depending on column)</li>
+                        <li>Click OK</li>
+                        <li>Alternative: <strong>Home → Remove Rows → Remove Blank Rows</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 7: Filter and Remove Columns (10 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">7</div>
+                    <h3 style="margin: 0;">Final Cleanup</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Task A: Filter Data</strong></p>
+                    <ol>
+                        <li>Click filter icon on <strong>Quantity</strong> column</li>
+                        <li>Choose <strong>Number Filters → Greater Than</strong></li>
+                        <li>Enter <code>0</code></li>
+                        <li>Click OK (removes rows with 0 or negative quantity)</li>
+                    </ol>
+
+                    <p style="margin-top: 15px;"><strong>Task B: Remove Unnecessary Columns</strong></p>
+                    <ol>
+                        <li>Hold <code>Ctrl</code> and click to select multiple columns you don't need</li>
+                        <li>Right-click → <strong>Remove Columns</strong></li>
+                        <li>Or use <strong>Home → Remove Columns → Remove Other Columns</strong> to keep only selected
+                            ones</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 8: Load Transformed Data (5 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">8</div>
+                    <h3 style="margin: 0;">Apply Changes</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Review all your Applied Steps on the right</li>
+                        <li>Click through steps to see data at each stage</li>
+                        <li>Rename the query:
+                            <ul>
+                                <li>In Query Settings, change "Sales" to <code>Sales_Clean</code></li>
+                            </ul>
+                        </li>
+                        <li>Click <strong>Home → Close & Apply</strong></li>
+                        <li>Wait for data to load into Power BI Desktop</li>
+                        <li>You're back in Report View!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>🎉 Lab Complete!</strong> You have successfully:
+                <ul style="margin-top: 10px;">
+                    <li>✅ Connected to an Excel data source</li>
+                    <li>✅ Navigated the Power Query Editor</li>
+                    <li>✅ Applied text transformations (trim, capitalize, replace)</li>
+                    <li>✅ Performed numerical operations (round, calculate)</li>
+                    <li>✅ Handled missing data</li>
+                    <li>✅ Filtered and removed columns</li>
+                    <li>✅ Loaded clean data into Power BI</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="content-section" id="tasks">
+            <h2>✅ Practice Tasks & Homework</h2>
+
+            <h3>Task 1: Multi-Source Data Connection</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📊</div>
+                    <h3 style="margin: 0;">Challenge: Connect to 3 Different Sources</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Requirements:</strong></p>
+                    <ol>
+                        <li>Create a new Power BI file</li>
+                        <li>Connect to:
+                            <ul>
+                                <li>An <strong>Excel file</strong> (use provided sample)</li>
+                                <li>A <strong>CSV file</strong> (use provided sample)</li>
+                                <li>A <strong>Web source</strong> (try Wikipedia table)</li>
+                            </ul>
+                        </li>
+                        <li>For each source:
+                            <ul>
+                                <li>Load into Query Editor</li>
+                                <li>Perform at least 3 transformations</li>
+                                <li>Rename the query appropriately</li>
+                            </ul>
+                        </li>
+                        <li>Save as "Day2_MultiSource"</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>⏱️ Time Limit:</strong> 45 minutes</p>
+                </div>
+            </div>
+
+            <h3>Task 2: Data Cleaning Challenge</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🧹</div>
+                    <h3 style="margin: 0;">Clean the Messy Dataset</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Download:</strong> CustomerData_Messy.csv from Resources</p>
+                    <p><strong>Problems to fix:</strong></p>
+                    <ul>
+                        <li>Names in ALL CAPS</li>
+                        <li>Extra spaces in addresses</li>
+                        <li>Phone numbers with inconsistent formatting</li>
+                        <li>Email addresses with typos (gmial.com → gmail.com)</li>
+                        <li>Missing values in some fields</li>
+                        <li>Duplicate rows</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Your Tasks:</strong></p>
+                    <ol>
+                        <li>Fix all text formatting issues</li>
+                        <li>Standardize phone numbers</li>
+                        <li>Correct email typos using replace</li>
+                        <li>Handle missing data appropriately</li>
+                        <li>Remove duplicates</li>
+                        <li>Document each transformation with clear step names</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Task 3: Transformation Quiz</h3>
+            <div class="theory-box">
+                <p><strong>Answer these questions:</strong></p>
+                <ol>
+                    <li>What's the difference between "Remove Columns" and "Remove Other Columns"?</li>
+                    <li>Name 3 ways to handle null values in Power Query</li>
+                    <li>What transformation would you use to split "FirstName LastName" into two columns?</li>
+                    <li>How do you change a text column to a number column?</li>
+                    <li>What's the purpose of the Applied Steps pane?</li>
+                    <li>Can you delete a step from the middle of Applied Steps? What happens?</li>
+                    <li>What's the difference between Trim and Clean?</li>
+                    <li>How do you create a custom column with a calculation?</li>
+                </ol>
+            </div>
+
+            <h3>Task 4: Real-World Scenario</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🎯</div>
+                    <h3 style="margin: 0;">Homework: Analyze Your Own Data</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Assignment:</strong></p>
+                    <ol>
+                        <li>Find a dataset from your work or download from:
+                            <ul>
+                                <li>Kaggle.com (search for free datasets)</li>
+                                <li>data.gov</li>
+                                <li>Your own Excel/CSV files</li>
+                            </ul>
+                        </li>
+                        <li>Import it into Power BI</li>
+                        <li>Perform at least 10 transformations to clean it</li>
+                        <li>Create a simple report with 3 visuals</li>
+                        <li>Document:
+                            <ul>
+                                <li>What data source you used</li>
+                                <li>What problems you found</li>
+                                <li>What transformations you applied</li>
+                                <li>What insights you discovered</li>
+                            </ul>
+                        </li>
+                        <li>Present in 5 minutes on Day 3</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>📅 Due:</strong> Beginning of Day 3 class</p>
+                </div>
+            </div>
+
+            <h3>Self-Study Checklist</h3>
+            <div class="theory-box">
+                <p><strong>By the end of Day 2, you should be able to:</strong></p>
+                <ul>
+                    <li>☐ Connect to at least 3 different data sources</li>
+                    <li>☐ Navigate the Query Editor confidently</li>
+                    <li>☐ Explain what Applied Steps are</li>
+                    <li>☐ Perform text transformations (trim, clean, replace, split)</li>
+                    <li>☐ Perform number transformations (round, calculate)</li>
+                    <li>☐ Change column data types</li>
+                    <li>☐ Remove and rename columns</li>
+                    <li>☐ Filter rows based on conditions</li>
+                    <li>☐ Handle null and error values</li>
+                    <li>☐ Use data profiling tools</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="content-section" id="resources">
+            <h2>📦 Resources & Downloads</h2>
+
+            <div class="download-section">
+                <h3>📥 Practice Files for Day 2</h3>
+                <p>Click below to download today's datasets</p>
+                <button class="download-btn" onclick="generateMessyExcel()">📊 Download SalesData_Messy.xlsx</button>
+                <button class="download-btn" onclick="generateMessyCSV()">📄 Download CustomerData_Messy.csv</button>
+                <button class="download-btn" onclick="generateProductCSV()">📦 Download Products.csv</button>
+            </div>
+
+            <h3>🎥 Recommended Videos</h3>
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>Power Query Basics</h4>
+                    <p><strong>Channel:</strong> Guy in a Cube</p>
+                    <p><strong>Topic:</strong> Introduction to Power Query Editor</p>
+                    <p><strong>Duration:</strong> 15 minutes</p>
+                </div>
+                <div class="transformation-card">
+                    <h4>Data Cleaning Tips</h4>
+                    <p><strong>Channel:</strong> Curbal</p>
+                    <p><strong>Topic:</strong> 10 Data Cleaning Techniques</p>
+                    <p><strong>Duration:</strong> 20 minutes</p>
+                </div>
+                <div class="transformation-card">
+                    <h4>M Language Intro</h4>
+                    <p><strong>Channel:</strong> SQLBI</p>
+                    <p><strong>Topic:</strong> Understanding M Code</p>
+                    <p><strong>Duration:</strong> 25 minutes</p>
+                </div>
+            </div>
+
+            <h3>📚 Additional Reading</h3>
+            <div class="theory-box">
+                <ul>
+                    <li><strong>Microsoft Docs:</strong> Power Query M formula language reference</li>
+                    <li><strong>Book:</strong> "M is for Data Monkey" by Ken Puls & Miguel Escobar</li>
+                    <li><strong>Blog:</strong> PowerQuery.how - Practical examples and tutorials</li>
+                    <li><strong>Community:</strong> Power BI Community Forums - Query Editor section</li>
+                </ul>
+            </div>
+
+            <h3>🔧 Quick Reference: Common Transformations</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Location</th>
+                        <th>When to Use</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Remove extra spaces</td>
+                        <td>Transform → Format → Trim</td>
+                        <td>Text with leading/trailing spaces</td>
+                    </tr>
+                    <tr>
+                        <td>Change capitalization</td>
+                        <td>Transform → Format → Uppercase/Lowercase</td>
+                        <td>Inconsistent text case</td>
+                    </tr>
+                    <tr>
+                        <td>Find and replace</td>
+                        <td>Transform → Replace Values</td>
+                        <td>Consistent text corrections</td>
+                    </tr>
+                    <tr>
+                        <td>Split text</td>
+                        <td>Transform → Split Column</td>
+                        <td>Combined data in one column</td>
+                    </tr>
+                    <tr>
+                        <td>Round numbers</td>
+                        <td>Transform → Rounding</td>
+                        <td>Too many decimal places</td>
+                    </tr>
+                    <tr>
+                        <td>Remove nulls</td>
+                        <td>Home → Remove Rows → Remove Blank Rows</td>
+                        <td>Empty rows in data</td>
+                    </tr>
+                    <tr>
+                        <td>Change data type</td>
+                        <td>Click type icon or Transform → Data Type</td>
+                        <td>Wrong data type detected</td>
+                    </tr>
+                    <tr>
+                        <td>Filter data</td>
+                        <td>Click filter icon in column header</td>
+                        <td>Remove unwanted rows</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>⌨️ Power Query Keyboard Shortcuts</h3>
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <h4>General</h4>
+                    <ul>
+                        <li><code>Ctrl + Q</code> - New Query</li>
+                        <li><code>Ctrl + W</code> - Close Query</li>
+                        <li><code>Ctrl + S</code> - Save</li>
+                        <li><code>F5</code> - Refresh Preview</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>Columns</h4>
+                    <ul>
+                        <li><code>Ctrl + Click</code> - Select multiple</li>
+                        <li><code>Shift + Click</code> - Select range</li>
+                        <li><code>Alt + R</code> - Remove columns</li>
+                        <li><code>F2</code> - Rename column</li>
+                    </ul>
+                </div>
+                <div class="transformation-card">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><code>Ctrl + Home</code> - First cell</li>
+                        <li><code>Ctrl + End</code> - Last cell</li>
+                        <li><code>Page Up/Down</code> - Scroll data</li>
+                        <li><code>Tab</code> - Next column</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🎯 Day 3 Preview</h3>
+            <div class="note">
+                <strong>📅 Coming Tomorrow: Advanced Data Shaping</strong>
+                <p style="margin-top: 10px;">Topics we'll cover:</p>
+                <ul>
+                    <li>Working with Date and Time tools</li>
+                    <li>Generating Index and Conditional Columns</li>
+                    <li>Grouping & Aggregating Records</li>
+                    <li>Pivoting & Unpivoting Data</li>
+                    <li>Advanced filtering techniques</li>
+                    <li>Creating custom columns with formulas</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Preparation:</strong> Complete all Day 2 exercises and bring your
+                    homework presentation!</p>
+            </div>
+        </div>
+
+        <footer>
+            <h3>🎉 Congratulations on Completing Day 2!</h3>
+            <p>You now know how to connect and transform data like a pro!</p>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Practice Tip:</strong> The Query Editor is your best friend. Spend time experimenting with
+                different transformations!
+            </p>
+            <div style="margin-top: 30px;">
+                <a href="index.html" class="next-day-btn"
+                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;">← Back to
+                    Day 1</a>
+                <button class="next-day-btn"
+                    onclick="alert('Day 3 materials will be available tomorrow! Complete today\'s homework.')">
+                    Continue to Day 3 →
+                </button>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+                Created by <strong>Muhammed Rifad KP</strong> | Power BI Training Course | Day 2 of 10 | © 2026
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation functionality
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetSection = btn.getAttribute('data-section');
+
+                navBtns.forEach(b => b.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(targetSection).classList.add('active');
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Generate Messy Excel data (simulated as CSV for download)
+        function generateMessyExcel() {
+            const csvContent = `Date,Product,Category,Sales,Quantity,Region
+2024-01-15,  LAPTOP  ,Electronics,1245.678,2,N
+2024-01-16,mouse,Electronics,24.99,10,S
+2024-01-17,  KeyBoard,Electronics,75.50,5,E
+2024-01-18,MONITOR  ,Electronics,299.99,3,W
+2024-01-19,desk,Furniture,449.99,2,N
+2024-01-20,  CHAIR,Furniture,199.99,,S
+2024-01-21,lamp  ,Furniture,49.99,8,E
+2024-01-22,notebook,Stationery,4.99,50,W
+2024-01-23,  PEN  ,Stationery,1.99,100,N
+2024-01-24,Laptop,Electronics,1199.99,1,S
+2024-01-25,Mouse  ,Electronics,25.99,15,E
+2024-01-26,keyboard,Electronics,74.99,6,W
+2024-01-27,  MONITOR,Electronics,309.99,2,N
+2024-01-28,DESK  ,Furniture,459.99,3,S
+2024-01-29,chair,Furniture,189.99,5,E
+2024-01-30,  Lamp,Furniture,54.99,7,W`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SalesData_Messy.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Generate Messy Customer CSV
+        function generateMessyCSV() {
+            const csvContent = `CustomerID,Name,Email,Phone,Address,City
+1001,  JOHN SMITH  ,john@gmial.com,123-456-7890,  123 Main St  ,New York
+1002,jane DOE,jane@gmail.com,(234) 567-8901,456 Oak Ave,Los Angeles
+1003,Bob   Wilson,bob@yahooo.com,345.678.9012,  789 Pine Rd,Chicago
+1004,ALICE JOHNSON,alice@gmail.com,4567891234,321 Elm St  ,Houston
+1005,  Charlie Brown,charlie@gmial.com,567-890-1234,,Phoenix
+1006,DIANA PRINCE  ,diana@gmail.com,(678)901-2345,654 Maple Dr,Philadelphia
+1007,  edward NORTON,ed@yahooo.com,789 012 3456,987 Cedar Ln  ,San Antonio
+1008,Fiona Apple,fiona@gmail.com,890-123-4567,147 Birch Way,San Diego
+1009,GEORGE MARTIN  ,,9012345678,  258 Spruce Ct,Dallas
+1010,hannah MONTANA,hannah@gmial.com,(012) 345-6789,369 Willow Pl  ,San Jose`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'CustomerData_Messy.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Generate Product CSV
+        function generateProductCSV() {
+            const csvContent = `ProductID,ProductName,Category,UnitPrice,UnitsInStock,Discontinued
+1,Laptop Pro,Electronics,1299.99,45,No
+2,Wireless Mouse,Electronics,29.99,150,No
+3,Mechanical Keyboard,Electronics,89.99,75,No
+4,27" Monitor,Electronics,349.99,30,No
+5,Standing Desk,Furniture,599.99,20,No
+6,Ergonomic Chair,Furniture,399.99,35,No
+7,Desk Lamp,Furniture,59.99,80,No
+8,Notebook Set,Stationery,12.99,200,No
+9,Pen Pack,Stationery,8.99,300,No
+10,USB Hub,Electronics,24.99,100,No`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Products.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+
+</html>
