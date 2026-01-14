@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Day 3 - Advanced Data Shaping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #11998e;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #38ef7d;
+        }
+
+        .info-card strong {
+            color: #11998e;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav button {
+            background: #11998e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: #0d7a6f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button.active {
+            background: #38ef7d;
+            color: #333;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #11998e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #38ef7d;
+        }
+
+        h3 {
+            color: #0d7a6f;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #11998e;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 5px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .diagram {
+            background: #f0f0f0;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .practical-task {
+            background: #e7fff5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px dashed #11998e;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-number {
+            background: #11998e;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .steps ol,
+        .steps ul {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: #28a745;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #11998e;
+        }
+
+        .feature-card h4 {
+            color: #11998e;
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #11998e;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .example-box {
+            background: white;
+            border: 2px solid #11998e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-box h4 {
+            color: #11998e;
+            margin-bottom: 10px;
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .before,
+        .after {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .before {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .after {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .next-day-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .next-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            height: 100%;
+            width: 30%;
+            transition: width 0.3s ease;
+        }
+
+        .pivot-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .data-table {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .arrow-transform {
+            font-size: 3em;
+            color: #11998e;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Power BI Training - Day 3</h1>
+            <p>Advanced Data Shaping Techniques</p>
+            <div class="day-info">
+                <div class="info-card">
+                    <strong>Duration:</strong> 3 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Theory:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Practical:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Level:</strong> Intermediate
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Course Progress: Day 3 of 10 (30%)</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-section="overview">📋 Overview</button>
+            <button class="nav-btn" data-section="datetime">📅 Date & Time</button>
+            <button class="nav-btn" data-section="columns">➕ Index & Conditional</button>
+            <button class="nav-btn" data-section="grouping">📊 Grouping</button>
+            <button class="nav-btn" data-section="pivot">🔄 Pivot & Unpivot</button>
+            <button class="nav-btn" data-section="practical">🔨 Practical Lab</button>
+            <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+            <button class="nav-btn" data-section="resources">📦 Resources</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <div class="content-section active" id="overview">
+            <h2>📋 Day 3 Overview</h2>
+
+            <div class="theory-box">
+                <h3>Learning Objectives</h3>
+                <p>By the end of Day 3, students will be able to:</p>
+                <ul>
+                    <li>Extract and manipulate date and time components</li>
+                    <li>Generate index columns for row numbering</li>
+                    <li>Create conditional columns based on logic</li>
+                    <li>Group and aggregate data for summary statistics</li>
+                    <li>Pivot data from long to wide format</li>
+                    <li>Unpivot data from wide to long format</li>
+                    <li>Understand when to use each transformation technique</li>
+                    <li>Apply best practices for data reshaping</li>
+                </ul>
+            </div>
+
+            <h3>📅 Session Structure</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Part 1: Date & Time (30 min)</h4>
+                    <ul>
+                        <li>Extract date components</li>
+                        <li>Calculate date differences</li>
+                        <li>Create date hierarchies</li>
+                        <li>Work with time data</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 2: Generated Columns (30 min)</h4>
+                    <ul>
+                        <li>Index columns</li>
+                        <li>Conditional columns</li>
+                        <li>IF-THEN-ELSE logic</li>
+                        <li>Multiple conditions</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 3: Grouping & Pivot (30 min)</h4>
+                    <ul>
+                        <li>Group By operations</li>
+                        <li>Aggregation functions</li>
+                        <li>Pivot vs Unpivot</li>
+                        <li>Reshaping data</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 4: Hands-On Lab (90 min)</h4>
+                    <ul>
+                        <li>Date transformations</li>
+                        <li>Create conditional logic</li>
+                        <li>Group and summarize</li>
+                        <li>Pivot/Unpivot practice</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Prerequisites:</strong> Completed Day 1 & 2, comfortable with Query Editor, basic
+                transformations mastered
+            </div>
+
+            <div class="tip">
+                <strong>💡 Today's Focus:</strong> These advanced techniques are essential for reshaping messy data into
+                analysis-ready formats. Master these and you'll handle 90% of data preparation scenarios!
+            </div>
+        </div>
+
+        <!-- Date & Time Section -->
+        <div class="content-section" id="datetime">
+            <h2>📅 Working with Date and Time Tools</h2>
+
+            <h3>Why Date/Time Transformations Matter</h3>
+            <div class="theory-box">
+                <p>Date and time data is crucial for time-based analysis, but it often comes in formats that aren't
+                    analysis-ready:</p>
+                <ul>
+                    <li>Dates stored as text: "01/15/2024"</li>
+                    <li>Need to extract year, month, quarter</li>
+                    <li>Calculate days between dates</li>
+                    <li>Create fiscal calendars</li>
+                    <li>Analyze trends over time</li>
+                    <li>Filter by date ranges</li>
+                </ul>
+            </div>
+
+            <h3>Common Date/Time Transformations</h3>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📆 Extract Date Parts</h4>
+                    <p><strong>Path:</strong> Add Column → Date → [Component]</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>Year</li>
+                        <li>Month (number or name)</li>
+                        <li>Day</li>
+                        <li>Day of Week</li>
+                        <li>Day of Year</li>
+                        <li>Quarter</li>
+                        <li>Week of Year</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>⏰ Extract Time Parts</h4>
+                    <p><strong>Path:</strong> Add Column → Time → [Component]</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>Hour</li>
+                        <li>Minute</li>
+                        <li>Second</li>
+                        <li>Time Only</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>📊 Date Calculations</h4>
+                    <p><strong>Path:</strong> Add Column → Date → [Operation]</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>Age (difference from today)</li>
+                        <li>Subtract Days</li>
+                        <li>Add Days</li>
+                        <li>Start of Month/Quarter/Year</li>
+                        <li>End of Month/Quarter/Year</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🔄 Date Formatting</h4>
+                    <p><strong>Path:</strong> Transform → Data Type → Date</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li>Date</li>
+                        <li>Date/Time</li>
+                        <li>Date/Time/Timezone</li>
+                        <li>Duration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Practical Example: Sales Date Analysis</h3>
+            <div class="example-box">
+                <h4>Scenario: You have a SaleDate column and need to analyze by year, month, and quarter</h4>
+
+                <div class="before-after">
+                    <div class="before">
+                        <strong>❌ Before:</strong>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                            <tr style="background: #fff;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">SaleDate</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">2024-01-15</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">2024-02-20</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">2024-03-10</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="after">
+                        <strong>✅ After:</strong>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.85em;">
+                            <tr style="background: #fff;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">SaleDate</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Year</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Month</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Quarter</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2024-01-15</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">January</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Q1</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2024-02-20</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">February</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Q1</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2024-03-10</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">March</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Q1</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="steps" style="margin-top: 20px;">
+                    <strong>Steps to achieve this:</strong>
+                    <ol>
+                        <li>Select <strong>SaleDate</strong> column</li>
+                        <li>Add Column → Date → <strong>Year</strong></li>
+                        <li>Add Column → Date → <strong>Month → Name of Month</strong></li>
+                        <li>Add Column → Date → <strong>Quarter → Quarter of Year</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Working with Fiscal Calendars</h3>
+            <div class="theory-box">
+                <p><strong>Problem:</strong> Your company's fiscal year starts in July, not January</p>
+                <p><strong>Solution:</strong> Create custom fiscal year columns</p>
+
+                <div class="steps" style="margin-top: 15px;">
+                    <p><strong>Example using Custom Column:</strong></p>
+                    <ol>
+                        <li>Add Column → Custom Column</li>
+                        <li>Name: <code>FiscalYear</code></li>
+                        <li>Formula:
+                            <code>= if Date.Month([SaleDate]) >= 7 then Date.Year([SaleDate]) + 1 else Date.Year([SaleDate])</code>
+                        </li>
+                        <li>This shifts the year boundary to July</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Pro Tip:</strong> Always keep the original date column! Extract components into new columns
+                so you can still filter by exact dates.
+            </div>
+
+            <h3>Date/Time Best Practices</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>✅ DO's</h4>
+                    <ul>
+                        <li>Ensure consistent date formats</li>
+                        <li>Store dates as Date type, not Text</li>
+                        <li>Extract all needed components upfront</li>
+                        <li>Create date hierarchies for drill-down</li>
+                        <li>Use ISO format (YYYY-MM-DD) when possible</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>❌ DON'Ts</h4>
+                    <ul>
+                        <li>Don't mix date formats in same column</li>
+                        <li>Don't store dates as text</li>
+                        <li>Don't forget timezone considerations</li>
+                        <li>Don't overcomplicate fiscal calculations</li>
+                        <li>Don't ignore null dates</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Index & Conditional Columns Section -->
+        <div class="content-section" id="columns">
+            <h2>➕ Generating Index and Conditional Columns</h2>
+
+            <h3>1. Index Columns</h3>
+            <div class="theory-box">
+                <p><strong>What is an Index Column?</strong></p>
+                <p>An index column assigns a unique number to each row, starting from 0 or 1. It's useful for:</p>
+                <ul>
+                    <li>Creating unique row identifiers</li>
+                    <li>Tracking row position</li>
+                    <li>Ranking and ordering</li>
+                    <li>Merge operations requiring keys</li>
+                    <li>Creating custom sort orders</li>
+                </ul>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📝</div>
+                    <h3 style="margin: 0;">Creating Index Columns</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Path:</strong> Add Column → Index Column</p>
+                    <p><strong>Options:</strong></p>
+                    <ul>
+                        <li><strong>From 0:</strong> Starts numbering at 0</li>
+                        <li><strong>From 1:</strong> Starts numbering at 1</li>
+                        <li><strong>Custom:</strong> Choose starting number and increment</li>
+                    </ul>
+
+                    <div class="example-box" style="margin-top: 15px;">
+                        <strong>Example:</strong>
+                        <p>Add Column → Index Column → <strong>From 1</strong></p>
+                        <p style="margin-top: 10px;">Result: Each row gets a unique number starting from 1</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>2. Conditional Columns</h3>
+            <div class="theory-box">
+                <p><strong>What are Conditional Columns?</strong></p>
+                <p>Conditional columns create new columns based on IF-THEN-ELSE logic. Perfect for:</p>
+                <ul>
+                    <li>Categorizing data (High/Medium/Low)</li>
+                    <li>Creating status flags (Active/Inactive)</li>
+                    <li>Applying business rules</li>
+                    <li>Segmenting customers or products</li>
+                    <li>Creating derived categories</li>
+                </ul>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🎯</div>
+                    <h3 style="margin: 0;">Creating Conditional Columns</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Path:</strong> Add Column → Conditional Column</p>
+
+                    <div class="diagram" style="margin-top: 15px;">
+                        <h4 style="color: #11998e;">Conditional Column Dialog</h4>
+                        <div
+                            style="text-align: left; background: white; padding: 20px; border-radius: 10px; margin-top: 10px;">
+                            <p><strong>New column name:</strong> [Your choice]</p>
+                            <p style="margin-top: 10px;"><strong>Logic:</strong></p>
+                            <ul>
+                                <li>If [Column] [Operator] [Value] Then [Output]</li>
+                                <li>Else If [Column] [Operator] [Value] Then [Output]</li>
+                                <li>Else [Default Output]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Example 1: Sales Performance Categories</h3>
+            <div class="example-box">
+                <h4>Scenario: Categorize sales as High, Medium, or Low</h4>
+
+                <div class="steps">
+                    <ol>
+                        <li>Add Column → <strong>Conditional Column</strong></li>
+                        <li>New column name: <code>Performance</code></li>
+                        <li>Set conditions:
+                            <ul>
+                                <li>If <code>Sales</code> <strong>is greater than or equal to</strong> <code>1000</code>
+                                    Then <code>High</code></li>
+                                <li>Else If <code>Sales</code> <strong>is greater than or equal to</strong>
+                                    <code>500</code> Then <code>Medium</code></li>
+                                <li>Else <code>Low</code></li>
+                            </ul>
+                        </li>
+                        <li>Click OK</li>
+                    </ol>
+                </div>
+
+                <div class="before-after" style="margin-top: 20px;">
+                    <div class="before">
+                        <strong>Before:</strong>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                            <tr style="background: #fff;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">Sales</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">1500</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">750</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">300</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="after">
+                        <strong>After:</strong>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+                            <tr style="background: #fff;">
+                                <th style="padding: 8px; border: 1px solid #ddd;">Sales</th>
+                                <th style="padding: 8px; border: 1px solid #ddd;">Performance</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">1500</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">High</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">750</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Medium</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">300</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Low</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>📝 Pro Tip:</strong> Use Conditional Columns for <strong>buckets</strong> or
+                <strong>categories</strong>. For complex logic involving calculations, you might need a Custom Column
+                (M-Code).
+            </div>
+        </div>
+
+        <!-- Grouping Section -->
+        <div class="content-section" id="grouping">
+            <h2>📊 Grouping and Aggregating Data</h2>
+
+            <div class="theory-box">
+                <p><strong>What is Grouping?</strong></p>
+                <p>The "Group By" feature allows you to collapse multiple rows into a single summary row based on a
+                    shared value. It's similar to Pivot Tables in Excel or GROUP BY in SQL.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔹 Basic Grouping</h4>
+                    <p>Groups data by a single column and performs one aggregation (e.g., Total Sales by Region).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔸 Advanced Grouping</h4>
+                    <p>Groups data by multiple columns and performs multiple aggregations at once (e.g., Total Sales AND
+                        Row Count by Region and Category).</p>
+                </div>
+            </div>
+
+            <h3>Common Aggregation Functions</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sum</strong></td>
+                        <td>Adds up all numbers in the column</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Average</strong></td>
+                        <td>Calculates the mathematical mean</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Median</strong></td>
+                        <td>Finds the middle value</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Min / Max</strong></td>
+                        <td>Finds the lowest or highest value</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Count Rows</strong></td>
+                        <td>Counts the total number of lines</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Count Distinct Rows</strong></td>
+                        <td>Counts only unique values</td>
+                    </tr>
+                    <tr>
+                        <td><strong>All Rows</strong></td>
+                        <td>Keep the original data as nested tables (Power Query magic!)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🛠️</div>
+                    <h3 style="margin: 0;">How to Group Data</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Go to <strong>Transform</strong> or <strong>Home</strong> tab</li>
+                        <li>Click <strong>Group By</strong></li>
+                        <li>In the dialog, select the column to group by (e.g., <code>Country</code>)</li>
+                        <li>Name your new column (e.g., <code>Total_Orders</code>)</li>
+                        <li>Select the Operation (e.g., <code>Count Rows</code>)</li>
+                        <li>Click OK</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Warning:</strong> Grouping removes the original detailed rows! Only use "Group By" in Power
+                Query if you truly don't need the transactional details in your report. Usually, it's better to keep the
+                details and let Power BI visuals do the grouping.
+            </div>
+        </div>
+
+        <!-- Pivot & Unpivot Section -->
+        <div class="content-section" id="pivot">
+            <h2>🔄 Pivot and Unpivot Techniques</h2>
+
+            <div class="theory-box">
+                <p>These are the most "mind-bending" but useful transformations in Power BI. They change the entire
+                    structure of your table.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔁 Unpivot (Wide to Tall)</h4>
+                    <p>Takes multiple columns (like "Jan Sales", "Feb Sales", "Mar Sales") and turns them into
+                        <strong>two</strong> columns: "Attribute" (the month name) and "Value" (the amount).</p>
+                    <p><strong>Use Case:</strong> Fixing data where dates are used as headers.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔀 Pivot (Tall to Wide)</h4>
+                    <p>The opposite of Unpivot. Takes values from a single column and turns them into multiple column
+                        headers.</p>
+                    <p><strong>Use Case:</strong> Preparing data for specific types of matrix reporting.</p>
+                </div>
+            </div>
+
+            <h3>The Magic of Unpivot</h3>
+            <div class="example-box">
+                <div class="pivot-demo">
+                    <div class="data-table">
+                        <p><strong>Wide Format (Bad)</strong></p>
+                        <table class="comparison-table" style="font-size: 0.8em;">
+                            <tr>
+                                <th>Product</th>
+                                <th>2022</th>
+                                <th>2023</th>
+                            </tr>
+                            <tr>
+                                <td>Apple</td>
+                                <td>$100</td>
+                                <td>$150</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="arrow-transform">→</div>
+                    <div class="data-table">
+                        <p><strong>Tall Format (Good)</strong></p>
+                        <table class="comparison-table" style="font-size: 0.8em;">
+                            <tr>
+                                <th>Product</th>
+                                <th>Year</th>
+                                <th>Sales</th>
+                            </tr>
+                            <tr>
+                                <td>Apple</td>
+                                <td>2022</td>
+                                <td>$100</td>
+                            </tr>
+                            <tr>
+                                <td>Apple</td>
+                                <td>2023</td>
+                                <td>$150</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="tip">
+                    <strong>💡 Why Unpivot?</strong> Power BI (and all BI tools) work best with "Long/Tall" data. It
+                    makes filtering, slicers, and time-intelligence much easier.
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">⚡</div>
+                    <h3 style="margin: 0;">Unpivot Steps</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Select the column(s) you <strong>don't</strong> want to unpivot (e.g.,
+                            <code>Product Name</code>)</li>
+                        <li>Right-click the header</li>
+                        <li>Select <strong>Unpivot Other Columns</strong> (This is safer than "Unpivot Columns" if you
+                            add more months later!)</li>
+                        <li>Rename "Attribute" to <code>Year/Month</code> and "Value" to <code>Amount</code></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Lab Section -->
+        <div class="content-section" id="practical">
+            <h2>🔨 Practical Lab: The "Clean-Up" Challenge</h2>
+
+            <div class="theory-box">
+                <p>In this lab, we will use a messy sales dataset that requires all today's techniques to become useful.
+                </p>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Step 1: Get the Data</h3>
+                </div>
+                <div class="steps">
+                    <p>Connect to the <code>Sample_Sales_Day3.csv</code> file (available in Resources).</p>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Step 2: Date Shaping</h3>
+                </div>
+                <div class="steps">
+                    <ul>
+                        <li>Find the <code>OrderDate</code> column.</li>
+                        <li>Extract <strong>Year</strong> into a new column.</li>
+                        <li>Extract <strong>Month Name</strong> into a new column.</li>
+                        <li>Calculate <strong>Days to Ship</strong> using <code>OrderDate</code> and
+                            <code>ShipDate</code> (Subtract Dates).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Step 3: Conditional Logic</h3>
+                </div>
+                <div class="steps">
+                    <ul>
+                        <li>Create a <strong>Priority</strong> column:
+                            <ul>
+                                <li>If <code>ShipMode</code> is "Same Day" → <strong>Urgent</strong></li>
+                                <li>If <code>ShipMode</code> is "First Class" → <strong>High</strong></li>
+                                <li>Otherwise → <strong>Standard</strong></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">4</div>
+                    <h3 style="margin: 0;">Step 4: The Unpivot Masterclass</h3>
+                </div>
+                <div class="steps">
+                    <ul>
+                        <li>Notice the columns <code>Q1_Sales</code>, <code>Q2_Sales</code>, <code>Q3_Sales</code>,
+                            <code>Q4_Sales</code>.</li>
+                        <li>Select <code>ProductID</code> and <code>ProductName</code>.</li>
+                        <li>Right-click → <strong>Unpivot Other Columns</strong>.</li>
+                        <li>Rename the resulting columns to <code>Quarter</code> and <code>SalesAmount</code>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="content-section" id="tasks">
+            <h2>✅ Day 3 Completion Checklist</h2>
+
+            <div class="checklist">
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Successfully extracted year and month from a date column</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Created an Index column starting from 1</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Built a Conditional Column with at least 3 conditions</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Used "Group By" to summarize sales by category</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Unpivoted quarterly sales columns into a tall format</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Renamed the columns created during Unpivot</span>
+                </div>
+            </div>
+
+            <div class="practical-task" style="background: #fff8e1; border-color: #ffb300;">
+                <h3 style="color: #ffb300;">🏠 Homework Assignment</h3>
+                <p>Take the <code>Stock_Data.xlsx</code>. It contains stock prices for 5 companies where each company is
+                    a column. Unpivot it so you have 3 columns: <code>Date</code>, <code>Company</code>, and
+                    <code>StockPrice</code>. Then, create a conditional column that flags if a price is above $150 as
+                    "Premium".</p>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="content-section" id="resources">
+            <h2>📦 Course Resources</h2>
+
+            <div class="download-section">
+                <h3>Required Datasets</h3>
+                <p>Download these files to complete today's practical lab and homework.</p>
+                <button class="download-btn" onclick="downloadDay3Data()">📥 Download Day 3 CSV</button>
+                <button class="download-btn" onclick="downloadStockData()">📥 Download Stock Data</button>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📖 Documentation</h4>
+                    <ul>
+                        <li><a href="https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-query-overview"
+                                target="_blank">Query Overview</a></li>
+                        <li><a href="https://learn.microsoft.com/en-us/power-query/unpivot-column"
+                                target="_blank">Unpivot Guide</a></li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🎥 Video Tutorials</h4>
+                    <ul>
+                        <li><a href="#">Pivot vs Unpivot Explained</a></li>
+                        <li><a href="#">Advanced Date Logic</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <button class="nav-btn" data-section="prev" onclick="window.location.href='Day2.html'"
+                style="background: #666; width: auto;">⬅️ Back to Day 2</button>
+            <p style="margin: 15px 0; color: #666;">© 2024 Power BI Training Series. All rights reserved.</p>
+            <button class="next-day-btn" onclick="goToDay4()">Continue to Day 4 ➡️</button>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation Logic
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+        const progressFill = document.querySelector('.progress-fill');
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sectionId = btn.getAttribute('data-section');
+
+                if (sectionId && sectionId !== 'prev') {
+                    // Update buttons
+                    navButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Update sections
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.getElementById(sectionId).classList.add('active');
+
+                    // Scroll to top of content
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    // Update progress (visual only for session)
+                    const sectionIndex = Array.from(navButtons).indexOf(btn);
+                    const progress = ((sectionIndex + 1) / navButtons.length) * 100;
+                    // progressFill.style.width = progress + '%';
+                }
+            });
+        });
+
+        // Checklist Logic
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('.checkbox');
+            checkbox.classList.toggle('checked');
+            if (checkbox.classList.contains('checked')) {
+                checkbox.innerHTML = '✓';
+                element.style.opacity = '0.7';
+            } else {
+                checkbox.innerHTML = '';
+                element.style.opacity = '1';
+            }
+        }
+
+        // File Download Simulations
+        function downloadDay3Data() {
+            const csvContent = "OrderID,OrderDate,ShipDate,ShipMode,ProductID,ProductName,Q1_Sales,Q2_Sales,Q3_Sales,Q4_Sales\n" +
+                "1,2023-01-10,2023-01-15,First Class,P001,Laptop,500,600,450,800\n" +
+                "2,2023-02-05,2023-02-12,Standard,P002,Mouse,50,60,55,70\n" +
+                "3,2023-03-12,2023-03-12,Same Day,P003,Monitor,200,220,210,250";
+
+            downloadFile(csvContent, "Sample_Sales_Day3.csv", "text/csv");
+        }
+
+        function downloadStockData() {
+            const csvContent = "Date,Apple,Google,Microsoft,Amazon\n" +
+                "2023-01-01,150,2800,290,3300\n" +
+                "2023-01-02,152,2810,295,3310\n" +
+                "2023-01-03,148,2790,288,3290";
+
+            downloadFile(csvContent, "Stock_Data.csv", "text/csv");
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+
+        function goToDay4() {
+            alert("Day 4: Data Modeling & Relationships is coming soon!");
+        }
+    </script>
+</body>
+
+</html>
