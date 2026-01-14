@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Day 5 - Data Modeling & Relationships</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #4facfe;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #00f2fe;
+        }
+
+        .info-card strong {
+            color: #4facfe;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav button {
+            background: #4facfe;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: #3a8cd9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button.active {
+            background: #00f2fe;
+            color: #333;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #00f2fe;
+        }
+
+        h3 {
+            color: #3a8cd9;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #4facfe;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 5px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .diagram {
+            background: #f0f0f0;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .practical-task {
+            background: #e7f6ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px dashed #4facfe;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-number {
+            background: #4facfe;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .steps ol,
+        .steps ul {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: #28a745;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .feature-card h4 {
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #4facfe;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .model-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #4facfe;
+        }
+
+        .table-visual {
+            background: #e7f6ff;
+            border: 2px solid #4facfe;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .table-visual h4 {
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .relationship-line {
+            border-top: 3px solid #4facfe;
+            margin: 20px auto;
+            width: 80%;
+            position: relative;
+        }
+
+        .relationship-line::before {
+            content: "1";
+            position: absolute;
+            left: 0;
+            top: -12px;
+            background: white;
+            padding: 0 5px;
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        .relationship-line::after {
+            content: "*";
+            position: absolute;
+            right: 0;
+            top: -12px;
+            background: white;
+            padding: 0 5px;
+            color: #4facfe;
+            font-weight: bold;
+        }
+
+        .star-schema {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .fact-table {
+            background: #ffc107;
+            border: 3px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .dimension-tables {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .dimension-table {
+            background: #4facfe;
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .next-day-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .next-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            height: 100%;
+            width: 50%;
+            transition: width 0.3s ease;
+        }
+
+        .cardinality-box {
+            background: white;
+            border: 2px solid #4facfe;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .cardinality-example {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .filter-flow {
+            background: linear-gradient(90deg, #d4edda 0%, #fff3cd 50%, #f8d7da 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Power BI Training - Day 5</h1>
+            <p>Data Modeling & Table Relationships</p>
+            <div class="day-info">
+                <div class="info-card">
+                    <strong>Duration:</strong> 3 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Theory:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Practical:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Level:</strong> Intermediate
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Course Progress: Day 5 of 10 (50% - Halfway!)
+            </p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-section="overview">📋 Overview</button>
+            <button class="nav-btn" data-section="datamodel">🗂️ Data Model</button>
+            <button class="nav-btn" data-section="normalization">📐 Normalization</button>
+            <button class="nav-btn" data-section="relationships">🔗 Relationships</button>
+            <button class="nav-btn" data-section="cardinality">🔢 Cardinality</button>
+            <button class="nav-btn" data-section="filterflow">🌊 Filter Flow</button>
+            <button class="nav-btn" data-section="practical">🔨 Practical Lab</button>
+            <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+            <button class="nav-btn" data-section="resources">📦 Resources</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <div class="content-section active" id="overview">
+            <h2>📋 Day 5 Overview</h2>
+
+            <div class="theory-box">
+                <h3>Learning Objectives</h3>
+                <p>By the end of Day 5, students will be able to:</p>
+                <ul>
+                    <li>Understand what a data model is and why it's important</li>
+                    <li>Explain principles of database normalization</li>
+                    <li>Distinguish between Data Tables (Fact) and Lookup Tables (Dimension)</li>
+                    <li>Create and manage table relationships in Model View</li>
+                    <li>Understand relationship cardinality (1:1, 1:*, *:*)</li>
+                    <li>Manage active vs inactive relationships</li>
+                    <li>Connect multiple data tables in a star schema</li>
+                    <li>Understand filter flow and cross-filtering</li>
+                    <li>Hide fields from Report View</li>
+                    <li>Apply data modeling best practices</li>
+                </ul>
+            </div>
+
+            <h3>📅 Session Structure</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Part 1: Data Model Basics (30 min)</h4>
+                    <ul>
+                        <li>What is a data model?</li>
+                        <li>Star vs Snowflake schema</li>
+                        <li>Fact vs Dimension tables</li>
+                        <li>Normalization principles</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 2: Relationships (40 min)</h4>
+                    <ul>
+                        <li>Creating relationships</li>
+                        <li>Managing relationships</li>
+                        <li>Understanding cardinality</li>
+                        <li>Active vs inactive</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 3: Filter Flow (20 min)</h4>
+                    <ul>
+                        <li>How filters propagate</li>
+                        <li>Bi-directional filtering</li>
+                        <li>Cross-filtering behavior</li>
+                        <li>Best practices</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 4: Hands-On Lab (90 min)</h4>
+                    <ul>
+                        <li>Build a star schema</li>
+                        <li>Create relationships</li>
+                        <li>Test filter flow</li>
+                        <li>Optimize the model</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Today is Critical!</strong> Data modeling is the foundation of effective Power BI reports. A
+                good model makes everything easier; a bad model makes everything harder!
+            </div>
+
+            <div class="tip">
+                <strong>💡 Key Insight:</strong> Power BI is a relational database at its core. Understanding
+                relationships is essential for creating accurate, performant reports.
+            </div>
+        </div>
+
+        <!-- Data Model Section -->
+        <div class="content-section" id="datamodel">
+            <h2>🗂️ What is a Data Model?</h2>
+
+            <h3>Definition</h3>
+            <div class="theory-box">
+                <p><strong>Data Model:</strong> The structure that defines how tables are related to each other and how
+                    data flows between them.</p>
+
+                <p style="margin-top: 15px;"><strong>Think of it as:</strong></p>
+                <ul>
+                    <li>The "blueprint" of your data</li>
+                    <li>A map showing how tables connect</li>
+                    <li>The foundation for all calculations and visualizations</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Why it matters:</strong></p>
+                <ul>
+                    <li>✅ Enables accurate calculations across tables</li>
+                    <li>✅ Improves report performance</li>
+                    <li>✅ Reduces data duplication</li>
+                    <li>✅ Makes maintenance easier</li>
+                    <li>✅ Enables complex analysis</li>
+                </ul>
+            </div>
+
+            <h3>Accessing Model View</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🗺️</div>
+                    <h3 style="margin: 0;">How to View Your Data Model</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>In Power BI Desktop, look at the <strong>left sidebar</strong></li>
+                        <li>Click the <strong>Model View</strong> icon (third icon - looks like connected boxes)</li>
+                        <li>You'll see:
+                            <ul>
+                                <li>All your tables as boxes</li>
+                                <li>Columns listed inside each table</li>
+                                <li>Relationships shown as lines connecting tables</li>
+                                <li>Key icons next to key columns</li>
+                            </ul>
+                        </li>
+                        <li>You can drag tables to rearrange them</li>
+                        <li>Zoom in/out with mouse wheel or zoom slider</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Star Schema vs Snowflake Schema</h3>
+
+            <div class="star-schema">
+                <h4 style="color: #4facfe; margin-bottom: 20px;">⭐ Star Schema (Recommended)</h4>
+
+                <div class="dimension-tables">
+                    <div class="dimension-table">
+                        <strong>📅 Date</strong>
+                        <p style="font-size: 0.85em; margin-top: 5px;">DateKey, Year, Month, Quarter</p>
+                    </div>
+                    <div class="dimension-table">
+                        <strong>📦 Product</strong>
+                        <p style="font-size: 0.85em; margin-top: 5px;">ProductKey, Name, Category</p>
+                    </div>
+                    <div class="dimension-table">
+                        <strong>👥 Customer</strong>
+                        <p style="font-size: 0.85em; margin-top: 5px;">CustomerKey, Name, Region</p>
+                    </div>
+                </div>
+
+                <div style="width: 100%; text-align: center; font-size: 2em; color: #4facfe;">↓↓↓</div>
+
+                <div class="fact-table">
+                    <strong style="font-size: 1.2em;">📊 SALES (Fact Table)</strong>
+                    <p style="margin-top: 10px; font-size: 0.9em;">SalesID, DateKey, ProductKey, CustomerKey, Quantity,
+                        Amount</p>
+                </div>
+
+                <p style="margin-top: 20px; color: #666; max-width: 600px; text-align: center;">
+                    <strong>Star Schema:</strong> Fact table at center, dimension tables around it. Simple, fast, easy
+                    to understand.
+                </p>
+            </div>
+
+            <div class="note">
+                <strong>📝 Snowflake Schema:</strong> Dimension tables are further normalized (e.g., Product → Category
+                → Subcategory). More complex, rarely needed in Power BI. <strong>Stick with Star Schema!</strong>
+            </div>
+
+            <h3>Fact Tables vs Dimension Tables</h3>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Fact Tables (Data Tables)</th>
+                        <th>Dimension Tables (Lookup Tables)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Purpose</strong></td>
+                        <td>Store transactions/events</td>
+                        <td>Store descriptive attributes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Content</strong></td>
+                        <td>Measurable facts (quantities, amounts)</td>
+                        <td>Descriptive text (names, categories)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Size</strong></td>
+                        <td>Many rows (thousands to millions)</td>
+                        <td>Fewer rows (dozens to thousands)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Keys</strong></td>
+                        <td>Foreign keys to dimension tables</td>
+                        <td>Primary key (unique identifier)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Changes</strong></td>
+                        <td>Grows over time (new transactions)</td>
+                        <td>Relatively stable</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Examples</strong></td>
+                        <td>Sales, Orders, Transactions, Events</td>
+                        <td>Products, Customers, Employees, Dates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Typical Columns</strong></td>
+                        <td>ID, DateKey, ProductKey, Quantity, Amount</td>
+                        <td>ID, Name, Category, Description</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="example-box" style="margin-top: 20px;">
+                <h4>Real-World Example: Retail Sales</h4>
+
+                <div class="feature-grid" style="margin-top: 15px;">
+                    <div class="feature-card" style="border-left: 4px solid #ffc107;">
+                        <h4>📊 FACT: Sales</h4>
+                        <ul style="font-size: 0.9em;">
+                            <li>SalesID (unique)</li>
+                            <li>DateKey (FK)</li>
+                            <li>ProductKey (FK)</li>
+                            <li>CustomerKey (FK)</li>
+                            <li>StoreKey (FK)</li>
+                            <li>Quantity (measure)</li>
+                            <li>Revenue (measure)</li>
+                            <li>Cost (measure)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📅 DIM: Date</h4>
+                        <ul style="font-size: 0.9em;">
+                            <li>DateKey (PK)</li>
+                            <li>Date</li>
+                            <li>Year</li>
+                            <li>Month</li>
+                            <li>Quarter</li>
+                            <li>DayOfWeek</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📦 DIM: Product</h4>
+                        <ul style="font-size: 0.9em;">
+                            <li>ProductKey (PK)</li>
+                            <li>ProductName</li>
+                            <li>Category</li>
+                            <li>Brand</li>
+                            <li>UnitPrice</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>👥 DIM: Customer</h4>
+                        <ul style="font-size: 0.9em;">
+                            <li>CustomerKey (PK)</li>
+                            <li>CustomerName</li>
+                            <li>Email</li>
+                            <li>City</li>
+                            <li>Country</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Quick Test:</strong> Can you SUM it? If yes, it belongs in a FACT table. If no (it's
+                descriptive), it belongs in a DIMENSION table.
+            </div>
+        </div>
+
+        <!-- Normalization Section -->
+        <div class="content-section" id="normalization">
+            <h2>📐 Principles of Database Normalization</h2>
+
+            <h3>What is Normalization?</h3>
+            <div class="theory-box">
+                <p><strong>Normalization:</strong> The process of organizing data to reduce redundancy and improve data
+                    integrity.</p>
+
+                <p style="margin-top: 15px;"><strong>Goals:</strong></p>
+                <ul>
+                    <li>Eliminate duplicate data</li>
+                    <li>Ensure data dependencies make sense</li>
+                    <li>Make updates easier and safer</li>
+                    <li>Reduce storage space</li>
+                    <li>Improve data quality</li>
+                </ul>
+            </div>
+
+            <h3>Normalized vs Denormalized Data</h3>
+
+            <div class="example-box">
+                <h4>❌ Denormalized (Bad - Contains Duplicates)</h4>
+                <table class="comparison-table" style="font-size: 0.85em;">
+                    <thead>
+                        <tr>
+                            <th>OrderID</th>
+                            <th>CustomerName</th>
+                            <th>CustomerEmail</th>
+                            <th>CustomerCity</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1001</td>
+                            <td>John Smith</td>
+                            <td>john@email.com</td>
+                            <td>New York</td>
+                            <td>Laptop</td>
+                            <td>$1200</td>
+                        </tr>
+                        <tr>
+                            <td>1002</td>
+                            <td>John Smith</td>
+                            <td>john@email.com</td>
+                            <td>New York</td>
+                            <td>Mouse</td>
+                            <td>$25</td>
+                        </tr>
+                        <tr>
+                            <td>1003</td>
+                            <td>John Smith</td>
+                            <td>john@email.com</td>
+                            <td>New York</td>
+                            <td>Keyboard</td>
+                            <td>$75</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px; color: #dc3545;"><strong>Problems:</strong> John's details repeated 3 times!
+                    If his email changes, need to update 3 rows.</p>
+            </div>
+
+            <div class="example-box" style="margin-top: 20px;">
+                <h4>✅ Normalized (Good - Separated Tables)</h4>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>Orders Table:</strong>
+                        <table class="comparison-table" style="font-size: 0.85em; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>CustomerID</th>
+                                    <th>Product</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1001</td>
+                                    <td>C01</td>
+                                    <td>Laptop</td>
+                                    <td>$1200</td>
+                                </tr>
+                                <tr>
+                                    <td>1002</td>
+                                    <td>C01</td>
+                                    <td>Mouse</td>
+                                    <td>$25</td>
+                                </tr>
+                                <tr>
+                                    <td>1003</td>
+                                    <td>C01</td>
+                                    <td>Keyboard</td>
+                                    <td>$75</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <strong>Customers Table:</strong>
+                        <table class="comparison-table" style="font-size: 0.85em; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>CustomerID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>C01</td>
+                                    <td>John Smith</td>
+                                    <td>john@email.com</td>
+                                    <td>New York</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <p style="margin-top: 10px; color: #28a745;"><strong>Benefits:</strong> John's details stored once!
+                    Update in one place affects all orders.</p>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Power BI Best Practice:</strong> Normalize your dimension tables, but keep fact tables
+                slightly denormalized for performance. This is called "dimensional modeling."
+            </div>
+
+            <h3>The Three Normal Forms (Simplified)</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>1NF - First Normal Form</h4>
+                    <p><strong>Rule:</strong> Each cell contains a single value (no lists)</p>
+                    <p style="margin-top: 10px;"><strong>Example:</strong></p>
+                    <p>❌ Products: "Laptop, Mouse, Keyboard"</p>
+                    <p>✅ Separate rows for each product</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>2NF - Second Normal Form</h4>
+                    <p><strong>Rule:</strong> Must be in 1NF + all non-key columns depend on the primary key</p>
+                    <p style="margin-top: 10px;"><strong>Example:</strong></p>
+                    <p>❌ Storing customer city in Orders table</p>
+                    <p>✅ Store customer city in Customers table</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>3NF - Third Normal Form</h4>
+                    <p><strong>Rule:</strong> Must be in 2NF + no transitive dependencies</p>
+                    <p style="margin-top: 10px;"><strong>Example:</strong></p>
+                    <p>❌ Storing both CategoryID and CategoryName in Product</p>
+                    <p>✅ Create separate Category table</p>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>📝 For Power BI:</strong> Aim for 3NF in dimension tables, but don't stress too much. Practical
+                usability beats perfect normalization!
+            </div>
+        </div>
+
+        <!-- Relationships Section -->
+        <div class="content-section" id="relationships">
+            <h2>🔗 Creating & Managing Table Relationships</h2>
+
+            <h3>What Are Relationships?</h3>
+            <div class="theory-box">
+                <p><strong>Relationships:</strong> Connections between tables based on matching columns (keys).</p>
+
+                <p style="margin-top: 15px;"><strong>Why use relationships instead of merging?</strong></p>
+                <ul>
+                    <li>✅ No data duplication</li>
+                    <li>✅ Smaller file size</li>
+                    <li>✅ Faster performance</li>
+                    <li>✅ Easier maintenance</li>
+                    <li>✅ Dynamic filtering</li>
+                    <li>✅ Can use same dimension multiple times</li>
+                </ul>
+            </div>
+
+            <h3>How to Create Relationships</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Method 1: Drag and Drop (Easiest)</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Go to <strong>Model View</strong></li>
+                        <li>Find the key column in your fact table (e.g., ProductKey)</li>
+                        <li>Click and drag from that column to the matching column in dimension table (e.g., ProductKey
+                            in Products table)</li>
+                        <li>Release - relationship is created!</li>
+                        <li>A line appears connecting the tables</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Method 2: Manage Relationships Dialog</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Go to <strong>Home</strong> tab → <strong>Manage Relationships</strong></li>
+                        <li>Click <strong>New</strong></li>
+                        <li>Select first table and column</li>
+                        <li>Select second table and column</li>
+                        <li>Choose cardinality (Power BI auto-detects)</li>
+                        <li>Set cross filter direction</li>
+                        <li>Click OK</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Editing Relationships</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">✏️</div>
+                    <h3 style="margin: 0;">How to Edit a Relationship</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>In Model View:</strong></p>
+                    <ul>
+                        <li>Double-click the relationship line</li>
+                        <li>Or right-click the line → Properties</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>In Manage Relationships:</strong></p>
+                    <ul>
+                        <li>Select the relationship</li>
+                        <li>Click Edit</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>You can change:</strong></p>
+                    <ul>
+                        <li>Cardinality</li>
+                        <li>Cross filter direction</li>
+                        <li>Make relationship active/inactive</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Deleting Relationships</h3>
+            <div class="steps">
+                <ul>
+                    <li><strong>Model View:</strong> Select relationship line → Press Delete key</li>
+                    <li><strong>Manage Relationships:</strong> Select relationship → Click Delete</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Warning:</strong> Deleting a relationship can break DAX measures and visuals that depend on
+                it. Always check before deleting!
+            </div>
+
+            <h3>Active vs Inactive Relationships</h3>
+            <div class="theory-box">
+                <p><strong>Active Relationship:</strong> Shown as solid line, filters flow automatically</p>
+                <p><strong>Inactive Relationship:</strong> Shown as dotted line, only works with USERELATIONSHIP()
+                    function in DAX</p>
+
+                <p style="margin-top: 15px;"><strong>When to use inactive relationships:</strong></p>
+                <ul>
+                    <li>Multiple date relationships (OrderDate, ShipDate, DueDate)</li>
+                    <li>Role-playing dimensions</li>
+                    <li>Alternative calculation paths</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Rule:</strong> Only ONE active relationship allowed between two
+                    tables</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example: Orders with Multiple Dates</h4>
+                <p>Sales table has: OrderDate, ShipDate, PaymentDate</p>
+                <p>Date table has: DateKey</p>
+
+                <p style="margin-top: 15px;"><strong>Solution:</strong></p>
+                <ul>
+                    <li>Active: Sales[OrderDate] → Date[DateKey]</li>
+                    <li>Inactive: Sales[ShipDate] → Date[DateKey]</li>
+                    <li>Inactive: Sales[PaymentDate] → Date[DateKey]</li>
+                </ul>
+
+                <p style="margin-top: 10px;">Use DAX USERELATIONSHIP() to activate others when needed</p>
+            </div>
+        </div>
+
+        <!-- Cardinality Section -->
+        <div class="content-section" id="cardinality">
+            <h2>🔢 Understanding Relationship Cardinality</h2>
+
+            <h3>What is Cardinality?</h3>
+            <div class="theory-box">
+                <p><strong>Cardinality:</strong> Describes how many rows in one table can relate to rows in another
+                    table.</p>
+
+                <p style="margin-top: 15px;"><strong>Three Types:</strong></p>
+                <ul>
+                    <li><strong>One-to-Many (1:*)</strong> - Most common</li>
+                    <li><strong>Many-to-One (*:1)</strong> - Same as above, reversed</li>
+                    <li><strong>One-to-One (1:1)</strong> - Rare, usually indicates design issue</li>
+                    <li><strong>Many-to-Many (*:*)</strong> - Advanced, requires bridge table</li>
+                </ul>
+            </div>
+
+            <h3>1. One-to-Many (1:*) - Most Common</h3>
+            <div class="cardinality-box">
+                <div class="cardinality-example">
+                    <div class="table-visual">
+                        <h4>Products (One Side)</h4>
+                        <p style="font-size: 0.85em;">ProductKey (Unique)</p>
+                        <p style="font-size: 0.85em; margin-top: 5px;">Each product appears once</p>
+                    </div>
+                    <div style="font-size: 2em; color: #4facfe;">1 ⟶ *</div>
+                    <div class="table-visual">
+                        <h4>Sales (Many Side)</h4>
+                        <p style="font-size: 0.85em;">ProductKey (Repeats)</p>
+                        <p style="font-size: 0.85em; margin-top: 5px;">Many sales per product</p>
+                    </div>
+                </div>
+
+                <div class="steps">
+                    <p><strong>Characteristics:</strong></p>
+                    <ul>
+                        <li>One side: Primary key (unique values)</li>
+                        <li>Many side: Foreign key (can repeat)</li>
+                        <li>Filter flows from One to Many</li>
+                        <li>Most dimension → fact relationships</li>
+                    </ul>
+                </div>
+
+                <div class="example-box" style="margin-top: 15px;">
+                    <strong>Examples:</strong>
+                    <ul>
+                        <li>One Customer → Many Orders</li>
+                        <li>One Product → Many Sales</li>
+                        <li>One Date → Many Transactions</li>
+                        <li>One Store → Many Employees</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>2. One-to-One (1:1) - Rare</h3>
+            <div class="cardinality-box">
+                <div class="cardinality-example">
+                    <div class="table-visual">
+                        <h4>Employees</h4>
+                        <p style="font-size: 0.85em;">EmployeeID (Unique)</p>
+                    </div>
+                    <div style="font-size: 2em; color: #ffc107;">1 ⟷ 1</div>
+                    <div class="table-visual">
+                        <h4>Employee Details</h4>
+                        <p style="font-size: 0.85em;">EmployeeID (Unique)</p>
+                    </div>
+                </div>
+
+                <div class="warning" style="margin-top: 15px;">
+                    <strong>⚠️ Usually a sign of poor design!</strong> If you have 1:1, consider:
+                    <ul>
+                        <li>Merging the tables in Power Query</li>
+                        <li>Do they really need to be separate?</li>
+                        <li>Is one table much larger (different grain)?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>3. Many-to-Many (*:*) - Advanced</h3>
+            <div class="cardinality-box">
+                <div class="cardinality-example">
+                    <div class="table-visual">
+                        <h4>Students</h4>
+                        <p style="font-size: 0.85em;">Many students</p>
+                    </div>
+                    <div style="font-size: 2em; color: #dc3545;">* ⟷ *</div>
+                    <div class="table-visual">
+                        <h4>Courses</h4>
+                        <p style="font-size: 0.85em;">Many courses</p>
+                    </div>
+                </div>
+
+                <div class="theory-box" style="margin-top: 15px;">
+                    <p><strong>Problem:</strong> Students enroll in many courses, courses have many students</p>
+
+                    <p style="margin-top: 15px;"><strong>Solution: Bridge Table (Junction Table)</strong></p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <p>Students ⟵ 1:* ⟶ <strong>Enrollments</strong> ⟵ *:1 ⟶ Courses</p>
+                    </div>
+
+                    <p><strong>Enrollments contains:</strong> StudentID, CourseID, Grade, Date</p>
+                </div>
+
+                <div class="note">
+                    <strong>📝 Power BI supports direct many-to-many relationships (since 2018), but bridge tables are
+                        often clearer and more performant.</strong>
+                </div>
+            </div>
+
+            <h3>How Power BI Detects Cardinality</h3>
+            <div class="theory-box">
+                <p>Power BI automatically detects cardinality by examining data:</p>
+                <ul>
+                    <li>Checks for unique values vs duplicates</li>
+                    <li>Usually gets it right</li>
+                    <li>You can override if needed</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Symbols on relationship lines:</strong></p>
+                <ul>
+                    <li><strong>1</strong> - One side (unique)</li>
+                    <li><strong>*</strong> - Many side (can repeat)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Filter Flow Section -->
+        <div class="content-section" id="filterflow">
+            <h2>🌊 Understanding Filter Flow</h2>
+
+            <h3>What is Filter Flow?</h3>
+            <div class="theory-box">
+                <p><strong>Filter Flow:</strong> How filters propagate from one table to related tables through
+                    relationships.</p>
+
+                <p style="margin-top: 15px;"><strong>Why it matters:</strong></p>
+                <ul>
+                    <li>Determines which data appears in visuals</li>
+                    <li>Affects DAX calculations</li>
+                    <li>Controls interactive filtering behavior</li>
+                </ul>
+            </div>
+
+            <h3>Cross Filter Direction</h3>
+
+            <div class="filter-flow">
+                <h4 style="color: #4facfe; margin-bottom: 15px;">Two Types of Cross Filter Direction:</h4>
+
+                <div class="feature-grid">
+                    <div class="feature-card" style="border-left: 4px solid #28a745;">
+                        <h4>1. Single Direction (Default)</h4>
+                        <p><strong>Flow:</strong> From ONE side → MANY side</p>
+                        <p style="margin-top: 10px;"><strong>Example:</strong></p>
+                        <p>Products → Sales</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Filtering a product filters its sales</p>
+                        <p style="font-size: 0.9em;">But filtering sales does NOT filter products</p>
+                        <p style="margin-top: 10px;"><strong>✅ Use 95% of the time</strong></p>
+                    </div>
+
+                    <div class="feature-card" style="border-left: 4px solid #ffc107;">
+                        <h4>2. Both Directions (Bi-directional)</h4>
+                        <p><strong>Flow:</strong> ONE ⟷ MANY (both ways)</p>
+                        <p style="margin-top: 10px;"><strong>Example:</strong></p>
+                        <p>Products ⟷ Sales</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Filtering products filters sales</p>
+                        <p style="font-size: 0.9em;">AND filtering sales filters products</p>
+                        <p style="margin-top: 10px;"><strong>⚠️ Use sparingly - can cause issues</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>When to Use Bi-directional Filtering</h3>
+            <div class="warning">
+                <strong>⚠️ Caution Required!</strong>
+                <p style="margin-top: 10px;">Bi-directional filtering can cause:</p>
+                <ul>
+                    <li>Ambiguous filter paths</li>
+                    <li>Unexpected results</li>
+                    <li>Performance issues</li>
+                    <li>Circular dependencies</li>
+                </ul>
+            </div>
+
+            <div class="tip">
+                <strong>✅ Safe use cases for bi-directional:</strong>
+                <ul>
+                    <li>Many-to-many relationships (with caution)</li>
+                    <li>Security row-level filtering</li>
+                    <li>Specific slicing scenarios</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>General Rule: Avoid unless you have a specific need!</strong></p>
+            </div>
+
+            <h3>Filter Flow Example</h3>
+            <div class="example-box">
+                <h4>Scenario: Standard Star Schema</h4>
+
+                <div
+                    style="text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <p style="font-size: 1.1em;"><strong>Date</strong> (1) → (*) <strong>Sales</strong> ← (*:1)
+                        <strong>Product</strong>
+                    </p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Single direction on both relationships
+                    </p>
+                </div>
+
+                <div class="steps">
+                    <p><strong>Filter Behavior:</strong></p>
+                    <ol>
+                        <li><strong>Select a Date:</strong> Filters flow to Sales → Shows only sales on that date ✅</li>
+                        <li><strong>Select a Product:</strong> Filters flow to Sales → Shows only sales of that product
+                            ✅</li>
+                        <li><strong>Select Date AND Product:</strong> Both filters combine → Shows sales matching both ✅
+                        </li>
+                        <li><strong>Select a Sale:</strong> Does NOT filter Date or Product tables (single direction) ❌
+                        </li>
+                    </ol>
+                </div>
+
+                <p
+                    style="margin-top: 15px; padding: 15px; background: #d4edda; border-left: 4px solid #28a745; border-radius: 5px;">
+                    <strong>This is correct behavior!</strong> Dimensions filter facts, but facts don't filter
+                    dimensions back.
+                </p>
+            </div>
+
+            <h3>Testing Filter Flow</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🧪</div>
+                    <h3 style="margin: 0;">How to Test Your Relationships</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Create a simple report with tables from different related tables</li>
+                        <li>Add slicers for dimension tables (Date, Product, Customer)</li>
+                        <li>Add a table visual showing fact data (Sales)</li>
+                        <li>Test clicking values in slicers</li>
+                        <li>Verify:
+                            <ul>
+                                <li>Do slicers filter the fact table? (Should: YES)</li>
+                                <li>Does fact table filter slicers? (Should: NO, unless bi-directional)</li>
+                                <li>Do multiple filters combine correctly?</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Hiding Fields from Report View</h3>
+            <div class="theory-box">
+                <p><strong>Why hide fields?</strong></p>
+                <ul>
+                    <li>Keep Fields pane clean and organized</li>
+                    <li>Hide technical columns (keys, IDs)</li>
+                    <li>Prevent users from using wrong fields</li>
+                    <li>Improve user experience</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>How to hide:</strong></p>
+                <ol>
+                    <li>In Model View or Data View</li>
+                    <li>Right-click column → <strong>Hide in report view</strong></li>
+                    <li>Or select column → Properties pane → Set "Is hidden" to Yes</li>
+                </ol>
+
+                <p style="margin-top: 15px;"><strong>💡 Best Practice:</strong> Hide all foreign keys (ProductKey,
+                    CustomerKey, etc.) - users should use descriptive names instead!</p>
+            </div>
+        </div>
+
+        <!-- Practical Lab Section -->
+        <div class="content-section" id="practical">
+            <h2>🔨 Practical Lab: Building a Data Model</h2>
+
+            <div class="important">
+                <strong>⏱️ Lab Duration:</strong> 90 minutes<br>
+                <strong>🎯 Objective:</strong> Build a complete star schema with proper relationships
+            </div>
+
+            <h3>Lab Scenario: Retail Sales Analysis</h3>
+            <div class="theory-box">
+                <p><strong>You have 4 tables:</strong></p>
+                <ul>
+                    <li><strong>Sales</strong> (Fact) - SalesID, DateKey, ProductKey, CustomerKey, Quantity, Revenue
+                    </li>
+                    <li><strong>Date</strong> (Dimension) - DateKey, Date, Year, Month, Quarter</li>
+                    <li><strong>Products</strong> (Dimension) - ProductKey, ProductName, Category, Price</li>
+                    <li><strong>Customers</strong> (Dimension) - CustomerKey, CustomerName, City, Country</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Goal:</strong> Create a star schema and test it</p>
+            </div>
+
+            <h3>Exercise 1: Load the Data (15 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Import All Tables</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Download the sample files from Resources section</li>
+                        <li>Open Power BI Desktop</li>
+                        <li>Get Data → Excel/CSV</li>
+                        <li>Import all 4 tables:
+                            <ul>
+                                <li>Sales.csv</li>
+                                <li>Date.csv</li>
+                                <li>Products.csv</li>
+                                <li>Customers.csv</li>
+                            </ul>
+                        </li>
+                        <li>For each table:
+                            <ul>
+                                <li>Transform Data → Check data types</li>
+                                <li>Ensure key columns are correct type</li>
+                                <li>Close & Apply</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 2: Create Relationships (20 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Build the Star Schema</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Switch to <strong>Model View</strong></li>
+                        <li>Arrange tables:
+                            <ul>
+                                <li>Put <strong>Sales</strong> in the center</li>
+                                <li>Place dimension tables around it</li>
+                            </ul>
+                        </li>
+                        <li>Create relationships (drag and drop):
+                            <ul>
+                                <li>Date[DateKey] → Sales[DateKey]</li>
+                                <li>Products[ProductKey] → Sales[ProductKey]</li>
+                                <li>Customers[CustomerKey] → Sales[CustomerKey]</li>
+                            </ul>
+                        </li>
+                        <li>Verify each relationship:
+                            <ul>
+                                <li>Double-click relationship line</li>
+                                <li>Check cardinality (should be 1:*)</li>
+                                <li>Check cross filter direction (should be Single)</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 3: Configure Properties (15 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Optimize the Model</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li><strong>Hide Key Columns:</strong>
+                            <ul>
+                                <li>In Sales table: Hide DateKey, ProductKey, CustomerKey</li>
+                                <li>In dimension tables: Hide the key columns</li>
+                                <li>Right-click → Hide in report view</li>
+                            </ul>
+                        </li>
+                        <li><strong>Mark Date Table:</strong>
+                            <ul>
+                                <li>Select Date table</li>
+                                <li>Table tools → Mark as date table</li>
+                                <li>Choose Date column</li>
+                            </ul>
+                        </li>
+                        <li><strong>Set Data Categories:</strong>
+                            <ul>
+                                <li>Customers[City] → City</li>
+                                <li>Customers[Country] → Country</li>
+                            </ul>
+                        </li>
+                        <li><strong>Format Measures:</strong>
+                            <ul>
+                                <li>Sales[Revenue] → Currency</li>
+                                <li>Sales[Quantity] → Whole Number</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 4: Test Relationships (20 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">4</div>
+                    <h3 style="margin: 0;">Verify Filter Flow</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Go to <strong>Report View</strong></li>
+                        <li>Create test visuals:
+                            <ul>
+                                <li>Slicer with Date[Year]</li>
+                                <li>Slicer with Products[Category]</li>
+                                <li>Table with Sales data</li>
+                                <li>Card showing SUM of Revenue</li>
+                            </ul>
+                        </li>
+                        <li>Test filtering:
+                            <ul>
+                                <li>Select a year → Does sales table filter? ✓</li>
+                                <li>Select a category → Does sales table filter? ✓</li>
+                                <li>Select both → Do filters combine? ✓</li>
+                            </ul>
+                        </li>
+                        <li>Create a matrix:
+                            <ul>
+                                <li>Rows: Products[Category]</li>
+                                <li>Columns: Date[Year]</li>
+                                <li>Values: SUM(Sales[Revenue])</li>
+                                <li>Verify numbers make sense</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 5: Add Hierarchies (20 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">5</div>
+                    <h3 style="margin: 0;">Create Drill-Down Hierarchies</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li><strong>Date Hierarchy:</strong>
+                            <ul>
+                                <li>In Model or Data View</li>
+                                <li>Right-click Date[Year] → Create hierarchy</li>
+                                <li>Rename to "Date Hierarchy"</li>
+                                <li>Drag Month into hierarchy</li>
+                                <li>Drag Day (if exists)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Geography Hierarchy:</strong>
+                            <ul>
+                                <li>Right-click Customers[Country] → Create hierarchy</li>
+                                <li>Name it "Geography"</li>
+                                <li>Add City to hierarchy</li>
+                            </ul>
+                        </li>
+                        <li><strong>Test hierarchies:</strong>
+                            <ul>
+                                <li>Create a bar chart</li>
+                                <li>Use Date Hierarchy on axis</li>
+                                <li>Use drill-down buttons to navigate</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="important" style="margin-top: 30px;">
+                <strong>🎉 Lab Complete!</strong> You have successfully:
+                <ul style="margin-top: 10px;">
+                    <li>✅ Loaded multiple related tables</li>
+                    <li>✅ Created a star schema data model</li>
+                    <li>✅ relationships</li>
+                    <li>✅ Hidden technical fields</li>
+                    <li>✅ Tested filter flow</li>
+                    <li>✅ Created hierarchies for drill-down</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Tasks Section -->
+        <div class="content-section" id="tasks">
+            <h2>✅ Practice Tasks & Homework</h2>
+
+            <h3>Task 1: Model Analysis</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🔍</div>
+                    <h3 style="margin: 0;">Analyze an Existing Model</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Assignment:</strong></p>
+                    <ol>
+                        <li>Open a Power BI sample report (from Microsoft)</li>
+                        <li>Go to Model View</li>
+                        <li>Identify:
+                            <ul>
+                                <li>Which tables are fact tables?</li>
+                                <li>Which are dimension tables?</li>
+                                <li>What relationships exist?</li>
+                                <li>What is the cardinality of each?</li>
+                                <li>Are there any inactive relationships?</li>
+                            </ul>
+                        </li>
+                        <li>Document your findings</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Task 2: Design Challenge</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📐</div>
+                    <h3 style="margin: 0;">Design a Data Model from Scratch</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Scenario: University Student System</strong></p>
+                    <p>Design a data model that tracks:</p>
+                    <ul>
+                        <li>Students (ID, Name, Major, EnrollmentDate)</li>
+                        <li>Courses (ID, Name, Department, Credits)</li>
+                        <li>Enrollments (StudentID, CourseID, Semester, Grade)</li>
+                        <li>Instructors (ID, Name, Department)</li>
+                        <li>Course Assignments (CourseID, InstructorID, Semester)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Your task:</strong></p>
+                    <ol>
+                        <li>Draw the data model on paper</li>
+                        <li>Identify fact and dimension tables</li>
+                        <li>Define all relationships</li>
+                        <li>Specify cardinality for each</li>
+                        <li>Present on Day 6</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Task 3: Quiz</h3>
+            <div class="theory-box">
+                <p><strong>Answer these questions:</strong></p>
+                <ol>
+                    <li>What's the difference between a fact table and a dimension table?</li>
+                    <li>Why is star schema preferred over denormalized flat tables?</li>
+                    <li>What does 1:* cardinality mean?</li>
+                    <li>In what direction do filters flow by default?</li>
+                    <li>When should you use bi-directional filtering?</li>
+                    <li>Can you have multiple active relationships between two tables?</li>
+                    <li>Why should you hide foreign key columns?</li>
+                    <li>What's the purpose of marking a table as a date table?</li>
+                </ol>
+            </div>
+
+            <h3>Task 4: Best Practices Checklist</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>✅ Data Model Checklist</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>☐ Star schema implemented</li>
+                        <li>☐ All relationships are 1:*</li>
+                        <li>☐ Single direction filtering (mostly)</li>
+                        <li>☐ Foreign keys hidden</li>
+                        <li>☐ Date table marked</li>
+                        <li>☐ Hierarchies created</li>
+                        <li>☐ Data types correct</li>
+                        <li>☐ No circular dependencies</li>
+                        <li>☐ Filter flow tested</li>
+                        <li>☐ Minimal data duplication</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>❌ Common Mistakes to Avoid</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>✗ Flat, denormalized tables</li>
+                        <li>✗ Many-to-many without bridge</li>
+                        <li>✗ Bi-directional everywhere</li>
+                        <li>✗ Circular relationships</li>
+                        <li>✗ Multiple active relationships</li>
+                        <li>✗ No date table</li>
+                        <li>✗ Incorrect cardinality</li>
+                        <li>✗ Exposing technical keys</li>
+                        <li>✗ Not testing filter flow</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="content-section" id="resources">
+            <h2>📦 Resources & Downloads</h2>
+
+            <div class="download-section">
+                <h3>📥 Practice Files for Day 5</h3>
+                <p>Download the sample datasets for today's lab</p>
+                <button class="download-btn" onclick="generateSalesData()">📊 Download Sales.csv</button>
+                <button class="download-btn" onclick="generateDateData()">📅 Download Date.csv</button>
+                <button class="download-btn" onclick="generateProductData()">📦 Download Products.csv</button>
+                <button class="download-btn" onclick="generateCustomerData()">👥 Download Customers.csv</button>
+            </div>
+
+            <h3>📚 Recommended Reading</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📖 Books</h4>
+                    <ul>
+                        <li>"The Definitive Guide to DAX" - Russo & Ferrari (Chapter on data modeling)</li>
+                        <li>"Star Schema: The Complete Reference" - Christopher Adamson</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🎥 Videos</h4>
+                    <ul>
+                        <li>SQLBI - Star Schema Design</li>
+                        <li>Guy in a Cube - Relationships Best Practices</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔗 Articles</h4>
+                    <ul>
+                        <li>Microsoft Docs - Model relationships</li>
+                        <li>SQLBI.com - Data modeling articles</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🎯 Day 6 Preview</h3>
+            <div class="note">
+                <strong>📅 Coming Tomorrow: Introduction to DAX</strong>
+                <p style="margin-top: 10px;">Topics we'll cover:</p>
+                <ul>
+                    <li>What is DAX and why we need it</li>
+                    <li>Calculated Columns vs Measures</li>
+                    <li>DAX syntax and operators</li>
+                    <li>Basic DAX functions (SUM, AVERAGE, COUNT)</li>
+                    <li>Implicit vs Explicit measures</li>
+                    <li>Step-by-step measure calculations</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Preparation:</strong> Make sure your Day 5 data model is working
+                    perfectly!</p>
+            </div>
+        </div>
+
+        <footer>
+            <h3>🎉 Congratulations! You're Halfway Through!</h3>
+            <p>You've mastered data modeling — the foundation of all great Power BI reports!</p>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Practice Tip:</strong> Remember the Star Schema: Dimensions on the outside, Fact table in the
+                center. It makes DAX much easier!
+            </p>
+            <div style="margin-top: 30px;">
+                <a href="Day4.html" class="next-day-btn"
+                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;">← Back to
+                    Day 4</a>
+                <a href="./Day6.html" style="text-decoration: none;">
+                    <button class="next-day-btn">
+                        Continue to Day 6 →
+                    </button>
+                </a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+                Created by <strong>Muhammed Rifad KP</strong> | Power BI Training Course | Day 5 of 10 | © 2026
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation functionality
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetSection = btn.getAttribute('data-section');
+
+                navBtns.forEach(b => b.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(targetSection).classList.add('active');
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Generate sample data files
+        function generateSalesData() {
+            const csv = `SalesID,DateKey,ProductKey,CustomerKey,Quantity,Revenue
+        1,20240101,P001,C001,2,2400
+2,20240102,P002,C002,10,250
+3,20240103,P003,C003,5,375
+4,20240104,P001,C001,1,1200
+5,20240105,P002,C004,15,375
+6,20240106,P003,C002,3,225
+7,20240107,P001,C003,1,1200
+8,20240108,P002,C001,20,500
+9,20240109,P003,C004,7,525
+10,20240110,P001,C002,2,2400`;
+            downloadCSV(csv, 'Sales.csv');
+        }
+        function generateDateData() {
+            const csv = `DateKey,Date,Year,Month,Quarter,MonthName
+        20240101,2024-01-01,2024,1,Q1,January
+20240102,2024-01-02,2024,1,Q1,January
+20240103,2024-01-03,2024,1,Q1,January
+20240104,2024-01-04,2024,1,Q1,January
+20240105,2024-01-05,2024,1,Q1,January
+20240106,2024-01-06,2024,1,Q1,January
+20240107,2024-01-07,2024,1,Q1,January
+20240108,2024-01-08,2024,1,Q1,January
+20240109,2024-01-09,2024,1,Q1,January
+20240110,2024-01-10,2024,1,Q1,January`;
+            downloadCSV(csv, 'Date.csv');
+        }
+        function generateProductData() {
+            const csv = `ProductKey,ProductName,Category,UnitPrice
+        P001,Laptop Pro,Electronics,1200
+P002,Wireless Mouse,Electronics,25
+P003,Desk Chair,Furniture,75`;
+            downloadCSV(csv, 'Products.csv');
+        }
+        function generateCustomerData() {
+            const csv = `CustomerKey,CustomerName,City,Country
+        C001,John Smith,New York,USA
+C002,Jane Doe,Los Angeles,USA
+C003,Bob Wilson,Chicago,USA
+C004,Alice Johnson,Houston,USA`;
+            downloadCSV(csv, 'Customers.csv');
+        }
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>

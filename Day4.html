@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Day 4 - Query Operations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #f5576c;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #f093fb;
+        }
+
+        .info-card strong {
+            color: #f5576c;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav button {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: #d63653;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button.active {
+            background: #f093fb;
+            color: #333;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f093fb;
+        }
+
+        h3 {
+            color: #d63653;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 5px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .diagram {
+            background: #f0f0f0;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .practical-task {
+            background: #fff0f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px dashed #f5576c;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-number {
+            background: #f5576c;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .steps ol,
+        .steps ul {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: #28a745;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .feature-card h4 {
+            color: #f5576c;
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .merge-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .table-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+
+        .table-box h4 {
+            color: #f5576c;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #f093fb;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .next-day-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .next-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            height: 100%;
+            width: 40%;
+            transition: width 0.3s ease;
+        }
+
+        .join-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .join-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #f093fb;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .join-card h4 {
+            color: #f5576c;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .example-box {
+            background: white;
+            border: 2px solid #f5576c;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .venn-diagram {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Power BI Training - Day 4</h1>
+            <p>Query Operations & Data Source Management</p>
+            <div class="day-info">
+                <div class="info-card">
+                    <strong>Duration:</strong> 3 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Theory:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Practical:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Level:</strong> Intermediate
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Course Progress: Day 4 of 10 (40%)</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-section="overview">📋 Overview</button>
+            <button class="nav-btn" data-section="merging">🔗 Merging Queries</button>
+            <button class="nav-btn" data-section="appending">➕ Appending Queries</button>
+            <button class="nav-btn" data-section="datasources">⚙️ Data Sources</button>
+            <button class="nav-btn" data-section="hierarchies">📊 Hierarchies</button>
+            <button class="nav-btn" data-section="practical">🔨 Practical Lab</button>
+            <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+            <button class="nav-btn" data-section="resources">📦 Resources</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <div class="content-section active" id="overview">
+            <h2>📋 Day 4 Overview</h2>
+
+            <div class="theory-box">
+                <h3>Learning Objectives</h3>
+                <p>By the end of Day 4, students will be able to:</p>
+                <ul>
+                    <li>Understand the difference between merging and appending queries</li>
+                    <li>Perform different types of merge operations (Inner, Left, Right, Full, etc.)</li>
+                    <li>Append multiple queries together vertically</li>
+                    <li>Configure and manage data source settings</li>
+                    <li>Work with additional data types and categories</li>
+                    <li>Create and define hierarchies for drill-down analysis</li>
+                    <li>Apply best practices for data connections</li>
+                    <li>Troubleshoot common query issues</li>
+                </ul>
+            </div>
+
+            <h3>📅 Session Structure</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Part 1: Merging Queries (40 min)</h4>
+                    <ul>
+                        <li>Understanding joins</li>
+                        <li>Types of merges</li>
+                        <li>Join keys and matching</li>
+                        <li>Expanding merged columns</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 2: Appending Queries (20 min)</h4>
+                    <ul>
+                        <li>Append two tables</li>
+                        <li>Append multiple tables</li>
+                        <li>When to append vs merge</li>
+                        <li>Column alignment</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 3: Data Sources (20 min)</h4>
+                    <ul>
+                        <li>Data source settings</li>
+                        <li>Edit permissions</li>
+                        <li>Refresh configuration</li>
+                        <li>Parameter queries</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 4: Hands-On Lab (90 min)</h4>
+                    <ul>
+                        <li>Merge customer & order data</li>
+                        <li>Append multiple sales files</li>
+                        <li>Create hierarchies</li>
+                        <li>Manage connections</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Prerequisites:</strong> Completed Days 1-3, comfortable with Query Editor transformations
+            </div>
+
+            <div class="tip">
+                <strong>💡 Key Concept:</strong> Merging = Adding columns (horizontal), Appending = Adding rows
+                (vertical). Understanding this distinction is crucial!
+            </div>
+        </div>
+
+        <!-- Merging Queries Section -->
+        <div class="content-section" id="merging">
+            <h2>🔗 Merging Queries in Power BI</h2>
+
+            <h3>What is Merging?</h3>
+            <div class="theory-box">
+                <p><strong>Merging</strong> combines two tables horizontally by matching values in specified columns
+                    (keys).</p>
+                <p style="margin-top: 10px;"><strong>Think of it like:</strong></p>
+                <ul>
+                    <li>SQL JOINs</li>
+                    <li>Excel VLOOKUP/XLOOKUP</li>
+                    <li>Combining related tables</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Common Scenarios:</strong></p>
+                <ul>
+                    <li>Adding customer details to orders (OrderID → CustomerID)</li>
+                    <li>Adding product information to sales (ProductID → ProductName, Category)</li>
+                    <li>Enriching employee data with department info</li>
+                    <li>Matching transactions with account details</li>
+                </ul>
+            </div>
+
+            <h3>Merge vs Relationship (Important Difference!)</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Merge Queries</th>
+                        <th>Table Relationships</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>When Done</strong></td>
+                        <td>In Power Query Editor</td>
+                        <td>In Data Model (Model View)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Result</strong></td>
+                        <td>Creates one combined table</td>
+                        <td>Keeps tables separate, links them</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>Duplicates data</td>
+                        <td>No duplication</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Slower, larger file size</td>
+                        <td>Faster, optimized</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flexibility</strong></td>
+                        <td>Fixed at refresh</td>
+                        <td>Dynamic in reports</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>One-time enrichment, flat files</td>
+                        <td>Reusable tables, star schema</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="important">
+                <strong>🎯 Best Practice:</strong> Generally, use <strong>Relationships</strong> (we'll cover this on
+                Day 5). Use <strong>Merges</strong> only when you must flatten data or work with unsupported sources.
+            </div>
+
+            <h3>Types of Merge (Join Types)</h3>
+
+            <div class="join-types">
+                <div class="join-card">
+                    <h4>🔵 Left Outer</h4>
+                    <p><strong>Returns:</strong> All rows from LEFT table</p>
+                    <p><strong>Plus:</strong> Matching rows from RIGHT table</p>
+                    <p><strong>Non-matches:</strong> Get null values</p>
+                    <div class="venn-diagram">
+                        <p style="font-size: 2em;">⬤○</p>
+                        <p style="font-size: 0.85em; color: #666;">All left + matches</p>
+                    </div>
+                    <p><strong>Use when:</strong> Keep all main records, add optional details</p>
+                </div>
+
+                <div class="join-card">
+                    <h4>🔵 Right Outer</h4>
+                    <p><strong>Returns:</strong> All rows from RIGHT table</p>
+                    <p><strong>Plus:</strong> Matching rows from LEFT table</p>
+                    <p><strong>Non-matches:</strong> Get null values</p>
+                    <div class="venn-diagram">
+                        <p style="font-size: 2em;">○⬤</p>
+                        <p style="font-size: 0.85em; color: #666;">All right + matches</p>
+                    </div>
+                    <p><strong>Use when:</strong> Opposite of left outer</p>
+                </div>
+
+                <div class="join-card">
+                    <h4>🔵 Full Outer</h4>
+                    <p><strong>Returns:</strong> All rows from BOTH tables</p>
+                    <p><strong>Plus:</strong> Matching values where they exist</p>
+                    <p><strong>Non-matches:</strong> Get null values</p>
+                    <div class="venn-diagram">
+                        <p style="font-size: 2em;">⬤⬤</p>
+                        <p style="font-size: 0.85em; color: #666;">Everything from both</p>
+                    </div>
+                    <p><strong>Use when:</strong> Don't want to lose any data</p>
+                </div>
+
+                <div class="join-card">
+                    <h4>🔵 Inner</h4>
+                    <p><strong>Returns:</strong> Only matching rows</p>
+                    <p><strong>Excludes:</strong> Non-matching rows from both</p>
+                    <p><strong>Result:</strong> Smallest dataset</p>
+                    <div class="venn-diagram">
+                        <p style="font-size: 2em;">◉</p>
+                        <p style="font-size: 0.85em; color: #666;">Only matches</p>
+                    </div>
+                    <p><strong>Use when:</strong> Only want confirmed matches</p>
+                </div>
+
+                <div class="join-card">
+                    <h4>🔵 Left Anti</h4>
+                    <p><strong>Returns:</strong> Rows from LEFT with NO match in RIGHT</p>
+                    <p><strong>Purpose:</strong> Find what's missing</p>
+                    <div class="venn-diagram">
+                        <p style="font-size: 2em;">🌙○</p>
+                        <p style="font-size: 0.85em; color: #666;">Left only (no match)</p>
+                    </div>
+                    <p><strong>Use when:</strong> Find orphaned records</p>
+                </div>
+
+                <div class="join-card">
+                    <h4>🔵 Right Anti</h4>
+                    <p><strong>Returns:</strong> Rows from RIGHT with NO match in LEFT</p>
+                    <p><strong>Purpose:</strong> Find what's missing</p>
+                    <div class="venn-diagram">
+                        <p style="font-size: 2em;">○🌙</p>
+                        <p style="font-size: 0.85em; color: #666;">Right only (no match)</p>
+                    </div>
+                    <p><strong>Use when:</strong> Find unused lookup values</p>
+                </div>
+            </div>
+
+            <h3>How to Merge Queries</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Step-by-Step Merge Process</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>In Power Query Editor, select the <strong>main query</strong> (left table)</li>
+                        <li>Go to <strong>Home</strong> tab → Click <strong>Merge Queries</strong>
+                            <ul>
+                                <li><strong>Merge Queries:</strong> Adds to current query</li>
+                                <li><strong>Merge Queries as New:</strong> Creates new query</li>
+                            </ul>
+                        </li>
+                        <li>In Merge dialog:
+                            <ul>
+                                <li>Select the <strong>second table</strong> from dropdown</li>
+                                <li>Click the <strong>matching column</strong> in first table</li>
+                                <li>Click the <strong>matching column</strong> in second table</li>
+                                <li>Choose <strong>Join Kind</strong> (Left Outer most common)</li>
+                                <li>Click OK</li>
+                            </ul>
+                        </li>
+                        <li>A new column appears (e.g., "NewColumn") with "Table" values</li>
+                        <li>Click the <strong>expand icon</strong> (⇄) in the column header</li>
+                        <li>Select which columns to bring in from second table</li>
+                        <li>Uncheck "Use original column name as prefix" (optional)</li>
+                        <li>Click OK</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Example: Merging Orders with Customers</h3>
+            <div class="example-box">
+                <h4>Scenario: Add customer name and email to order data</h4>
+
+                <div class="merge-diagram">
+                    <div class="table-box">
+                        <h4>Orders Table</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: #f5576c; color: white;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">OrderID</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">CustomerID</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Amount</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">1001</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">C01</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">$500</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">1002</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">C02</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">$300</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">1003</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">C01</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">$150</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="arrow">+</div>
+
+                    <div class="table-box">
+                        <h4>Customers Table</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: #f5576c; color: white;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">CustomerID</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Name</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Email</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">C01</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">John Doe</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">j@mail.com</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">C02</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Jane Smith</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">jane@mail.com</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #ddd;">C03</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Mike Ross</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">mike@mail.com</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="table-box">
+                        <h4>Merged Result</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+                            <tr style="background: #28a745; color: white;">
+                                <th style="padding: 4px; border: 1px solid #ddd;">OrderID</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">CustomerID</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Amount</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Name</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Email</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 4px; border: 1px solid #ddd;">1001</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">C01</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$500</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">John Doe</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">j@mail.com</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 4px; border: 1px solid #ddd;">1002</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">C02</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$300</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Jane Smith</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">jane@mail.com</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 4px; border: 1px solid #ddd;">1003</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">C01</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$150</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">John Doe</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">j@mail.com</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="steps" style="margin-top: 20px;">
+                    <p><strong>Steps:</strong></p>
+                    <ol>
+                        <li>Select <strong>Orders</strong> query</li>
+                        <li>Home → Merge Queries</li>
+                        <li>Choose <strong>Customers</strong> as second table</li>
+                        <li>Click <strong>CustomerID</strong> in both tables</li>
+                        <li>Select <strong>Join Kind: Left Outer</strong> (all from first, matching from second)</li>
+                        <li>Check the <strong>Privacy Levels</strong> if prompted (set to 'Public' or 'Organizational'
+                            for the lab)</li>
+                        <li>Click <strong>OK</strong></li>
+                        <li>Click the <strong>Expand</strong> icon (⇄) in the new column "Customer"</li>
+                        <li>Select only "Name" and "Email" and click OK</li>
+                    </ol>
+                </div>
+
+                <div
+                    style="text-align: center; margin-top: 15px; padding: 15px; background: #fff5f7; border-radius: 8px; border: 1px solid #fecdd3;">
+                    <p style="margin-bottom: 10px; color: #f5576c; font-weight: bold;">📥 Practice with the real "Big
+                        Data" samples:</p>
+                    <button class="download-btn" onclick="downloadBigOrders()"
+                        style="background: #007bff; color: white; margin: 5px;">📥 Download Orders Table</button>
+                    <button class="download-btn" onclick="downloadBigCustomers()"
+                        style="background: #007bff; color: white; margin: 5px;">📥 Download Customers Table</button>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>📝 Pro Tip:</strong> If the names in both tables don't match exactly (e.g., "Apple" vs "Apple
+                Inc"), you can use <strong>Fuzzy Matching</strong> in the Merge dialog to find similar text values.
+            </div>
+        </div>
+
+        <!-- Appending Queries Section -->
+        <div class="content-section" id="appending">
+            <h2>➕ Appending Queries</h2>
+
+            <div class="theory-box">
+                <p><strong>Appending</strong> is the process of stacking tables vertically. It adds
+                    <strong>rows</strong> to your dataset instead of columns.
+                </p>
+                <p style="margin-top: 10px;"><strong>Think of it like:</strong> Adding new pages to the end of a book.
+                    The width (columns) stays the same, but the height (rows) grows.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📂 Two Tables</h4>
+                    <p>Quickly stack one table onto another. Perfect for simple combinations (e.g., combining today's
+                        data with yesterday's).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📂 Three or More</h4>
+                    <p>Useful when you have many regional files (East, West, North, South) or 12 monthly files to
+                        combine at once.</p>
+                </div>
+            </div>
+
+            <h3>Visual Example: Monthly Sales Stacking</h3>
+            <div class="example-box">
+                <div class="merge-diagram">
+                    <div class="table-box">
+                        <h4 style="color: #11998e;">Jan Sales</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: #11998e; color: white;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">Date</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Sales</th>
+                            </tr>
+                            <tr>
+                                <td>01-Jan</td>
+                                <td>$200</td>
+                            </tr>
+                            <tr>
+                                <td>15-Jan</td>
+                                <td>$150</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="arrow" style="transform: rotate(90deg);">→</div>
+
+                    <div class="table-box">
+                        <h4 style="color: #38ef7d;">Feb Sales</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: #38ef7d; color: white;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">Date</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Sales</th>
+                            </tr>
+                            <tr>
+                                <td>05-Feb</td>
+                                <td>$300</td>
+                            </tr>
+                            <tr>
+                                <td>20-Feb</td>
+                                <td>$250</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="arrow" style="transform: rotate(0deg);">→</div>
+
+                    <div class="table-box">
+                        <h4 style="color: #f5576c;">Appended Result</h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+                            <tr style="background: #f5576c; color: white;">
+                                <th style="padding: 4px; border: 1px solid #ddd;">Date</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Sales</th>
+                            </tr>
+                            <tr style="background: #e6fffa;">
+                                <td style="padding: 4px; border: 1px solid #ddd;">01-Jan</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$200</td>
+                            </tr>
+                            <tr style="background: #e6fffa;">
+                                <td style="padding: 4px; border: 1px solid #ddd;">15-Jan</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$150</td>
+                            </tr>
+                            <tr style="background: #f0fff4;">
+                                <td style="padding: 4px; border: 1px solid #ddd;">05-Feb</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$300</td>
+                            </tr>
+                            <tr style="background: #f0fff4;">
+                                <td style="padding: 4px; border: 1px solid #ddd;">20-Feb</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">$250</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>📏 The "Golden Rule" of Appending:</strong> Column names must be <strong>identical</strong>
+                (case-sensitive!). If one table has "Sales" and the other has "sales", Power BI will create two separate
+                columns with null values.
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🛠️</div>
+                    <h3 style="margin: 0;">How to Append Queries</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>In Power Query Editor, go to the <strong>Home</strong> tab.</li>
+                        <li>Click the <strong>Append Queries</strong> dropdown:
+                            <ul>
+                                <li><strong>Append Queries:</strong> Adds rows directly into your current selected
+                                    table.</li>
+                                <li><strong>Append Queries as New:</strong> Creates a brand new table for the combined
+                                    data (Recommended!).</li>
+                            </ul>
+                        </li>
+                        <li>In the dialog, choose if you are combining <strong>Two tables</strong> or <strong>Three or
+                                more tables</strong>.</li>
+                        <li>Move your desired tables from the "Available tables" to the "Tables to append" list.</li>
+                        <li>Click <strong>OK</strong>.</li>
+                        <li>Verify that the column headers match. If you see many "null" values, go back and check your
+                            column naming!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Sources Section -->
+        <div class="content-section" id="datasources">
+            <h2>⚙️ Data Source Management</h2>
+
+            <div class="theory-box">
+                <p>When you move your file to another computer or change a folder name, your Power BI report will
+                    "break" because the path changed. Data Source Management is how we fix it.</p>
+            </div>
+
+            <h3>Key Operations</h3>
+            <div class="feature-grid">
+                <div class="feature-card" style="border-left-color: #ffc107;">
+                    <h4>📍 Change File Path</h4>
+                    <p>Go to <strong>File</strong> → <strong>Options and settings</strong> → <strong>Data source
+                            settings</strong>. Select the source and click <strong>Change Source</strong>.</p>
+                </div>
+                <div class="feature-card" style="border-left-color: #28a745;">
+                    <h4>🔐 Edit Permissions</h4>
+                    <p>If you need to update a password or login for a database or web source, use <strong>Edit
+                            Permissions</strong> in the Data source settings.</p>
+                </div>
+                <div class="feature-card" style="border-left-color: #17a2b8;">
+                    <h4>🌐 Privacy Levels</h4>
+                    <p>Controls how data from one source can be combined with another (None, Private, Organizational,
+                        Public).</p>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Pro Tip:</strong> Using <strong>Parameters</strong> for file paths makes your report
+                "Dynamic". Instead of hardcoding "C:\Users\Name\Desktop", you can create a parameter called
+                <code>FilePath</code>.
+            </div>
+        </div>
+
+        <!-- Hierarchies Section -->
+        <div class="content-section" id="hierarchies">
+            <h2>📊 Creating Hierarchies for Drill-Down</h2>
+
+            <div class="theory-box">
+                <p>A <strong>Hierarchy</strong> is a series of related data fields organized in levels. This allows
+                    report users to <strong>"Drill Down"</strong> from a high-level summary to specific details in the
+                    same visual.</p>
+                <p style="margin-top: 10px;"><strong>Think of it like:</strong> A folder structure on your computer. You
+                    open a folder (Year) to see the files (Months) inside.</p>
+            </div>
+
+            <div class="example-box">
+                <h3>🔍 The Power of Drill-Down</h3>
+                <p>When you add a hierarchy to a chart, Power BI enables these icons:</p>
+                <div
+                    style="display: flex; justify-content: center; gap: 20px; font-size: 1.5em; margin: 15px 0; color: #f5576c;">
+                    <span title="Drill Up">⬆️</span>
+                    <span title="Click to turn on Drill Down">⬇️</span>
+                    <span title="Go to next level">⏬</span>
+                    <span title="Expand all down one level">🔱</span>
+                </div>
+
+                <div class="merge-diagram">
+                    <div class="table-box" style="border: 2px solid #fecdd3;">
+                        <p><strong>Level 1: Year</strong></p>
+                        <div
+                            style="background: #f5576c; height: 100px; width: 60px; margin: 0 auto; border-radius: 5px;">
+                        </div>
+                        <p>2023</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="table-box" style="border: 2px solid #fecdd3;">
+                        <p><strong>Level 2: Quarter</strong></p>
+                        <div style="display: flex; gap: 5px; justify-content: center;">
+                            <div style="background: #f093fb; height: 60px; width: 25px; border-radius: 3px;"></div>
+                            <div style="background: #f093fb; height: 80px; width: 25px; border-radius: 3px;"></div>
+                        </div>
+                        <p>Q1, Q2...</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Common Hierarchy Structures</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Hierarchy</th>
+                        <th>Top Level</th>
+                        <th>Mid Level</th>
+                        <th>Bottom Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>📅 Date</strong></td>
+                        <td>Year</td>
+                        <td>Quarter / Month</td>
+                        <td>Day</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🗺️ Geography</strong></td>
+                        <td>Continent / Region</td>
+                        <td>Country / State</td>
+                        <td>City / ZIP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>📦 Product</strong></td>
+                        <td>Category</td>
+                        <td>Sub-Category</td>
+                        <td>Product Name</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🖱️</div>
+                    <h3 style="margin: 0;">How to Create a Hierarchy (Desktop View)</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>In the <strong>Data</strong> pane (right side), right-click the top-level field (e.g.,
+                            <code>Region</code>).
+                        </li>
+                        <li>Select <strong>Create hierarchy</strong>. A new item with a hierarchy icon (📉) appears.
+                        </li>
+                        <li>To add more levels: Right-click another field (e.g., <code>Country</code>) → <strong>Add to
+                                hierarchy</strong> → select your hierarchy name.</li>
+                        <li>Alternatively, simply <strong>drag and drop</strong> fields directly into the hierarchy
+                            group.</li>
+                        <li><strong>Rename:</strong> Right-click the hierarchy name to give it a clear title like
+                            <code>Geography_Drill</code>.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Note:</strong> Power BI creates an automatic <strong>Date Hierarchy</strong> for any field
+                marked as a Date type. However, creating a custom hierarchy is better when you want to control exactly
+                which levels the user sees!
+            </div>
+        </div>
+
+        <!-- Practical Lab Section -->
+        <div class="content-section" id="practical">
+            <h2>🔨 Practical Lab: The Data Architect</h2>
+
+            <div class="theory-box">
+                <p>In this lab, you will act as a Data Architect preparing a company-wide report by combining multiple
+                    sources.</p>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Task 1: Append Regional Sales</h3>
+                </div>
+                <div class="steps">
+                    <ul>
+                        <li>Import <code>Sales_East.csv</code> and <code>Sales_West.csv</code>.</li>
+                        <li>Append them into a single <code>All_Sales</code> table.</li>
+                        <li>Add a Custom Column named "Region" before appending to identify the source.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Task 2: Merge for Details</h3>
+                </div>
+                <div class="steps">
+                    <ul>
+                        <li>Load <code>Product_Catalog.xlsx</code>.</li>
+                        <li>Merge it with your <code>All_Sales</code> table using <code>ProductID</code>.</li>
+                        <li>Expand the "Category" and "Price" columns.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Task 3: Build Geography Hierarchy</h3>
+                </div>
+                <div class="steps">
+                    <ul>
+                        <li>Close & Apply the Query Editor.</li>
+                        <li>Create a "Geography" hierarchy: <code>Region > Country > State</code>.</li>
+                        <li>Create a Bar Chart using the Hierarchy to test drill-down.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="content-section" id="tasks">
+            <h2>✅ Day 4 Training Tasks</h2>
+
+            <div class="checklist">
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Successfully merged two tables and expanded columns</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Applied a Join (Left Outer) to enrich order data</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Appended at least 3 tables or files together</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Created a custom Date or Geography hierarchy</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Cleaned up "null" values after an append operation</span>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="checkbox"></div>
+                    <span>Renamed at least one table in the Query Editor</span>
+                </div>
+            </div>
+
+            <div class="practical-task" style="background: #e3f2fd; border-color: #2196f3;">
+                <h3 style="color: #2196f3;">🚀 Challenge Task</h3>
+                <p>Try the <strong>Fuzzy Merge</strong>. Import two files where names don't match exactly (e.g.,
+                    "Microsoft Co." and "Microsoft"). Set the Similarity Threshold to 0.8 and see if Power BI can match
+                    them!</p>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="content-section" id="resources">
+            <h2>📦 Course Resources</h2>
+
+            <div class="download-section">
+                <h3>Lab Data</h3>
+                <p>Use these files for today's practical sessions.</p>
+                <button class="download-btn" onclick="downloadRegionalSales()">📥 Download Regional Sales
+                    (East/West)</button>
+                <button class="download-btn" onclick="downloadCatalog()">📥 Download Product Catalog</button>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔗 Useful Links</h4>
+                    <ul>
+                        <li><a href="https://learn.microsoft.com/en-us/power-query/merge-queries-overview"
+                                target="_blank">Introduction to Merging</a></li>
+                        <li><a href="https://learn.microsoft.com/en-us/power-query/append-queries"
+                                target="_blank">Introduction to Appending</a></li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🎬 Videos</h4>
+                    <ul>
+                        <li><a href="#">Join Types Explained Visually</a></li>
+                        <li><a href="#">Dynamic Data Source Paths</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>🎉 Congratulations on Completing Day 4!</h3>
+            <p>You are now a master of Data Merging, Appending, and Hierarchies!</p>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Practice Tip:</strong> Always verify your row counts after a Merge or Append to ensure no data
+                was lost or unexpectedly duplicated.
+            </p>
+            <div style="margin-top: 30px;">
+                <a href="Day3.html" class="next-day-btn"
+                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;">← Back to
+                    Day 3</a>
+                <a href="./Day5.html" style="text-decoration: none;">
+                    <button class="next-day-btn">
+                        Continue to Day 5 →
+                    </button>
+                </a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+                Created by <strong>Muhammed Rifad KP</strong> | Power BI Training Course | Day 4 of 10 | © 2026
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation Logic
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+        const progressFill = document.querySelector('.progress-fill');
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sectionId = btn.getAttribute('data-section');
+
+                if (sectionId && sectionId !== 'prev') {
+                    // Update buttons
+                    navButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Update sections
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.getElementById(sectionId).classList.add('active');
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    // Update progress
+                    const currentIndex = Array.from(navButtons).indexOf(btn);
+                    const progress = ((currentIndex + 1) / navButtons.length) * 100;
+                    progressFill.style.width = progress + '%';
+                }
+            });
+        });
+
+        // Checklist Logic
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('.checkbox');
+            checkbox.classList.toggle('checked');
+            if (checkbox.classList.contains('checked')) {
+                checkbox.innerHTML = '✓';
+                checkbox.style.background = '#f5576c';
+                checkbox.style.borderColor = '#f5576c';
+                checkbox.style.color = 'white';
+                element.style.opacity = '0.7';
+            } else {
+                checkbox.innerHTML = '';
+                checkbox.style.background = 'white';
+                checkbox.style.borderColor = '#ddd';
+                element.style.opacity = '1';
+            }
+        }
+
+        // File generation and download
+        function downloadRegionalSales() {
+            const east = "Date,ProductID,Qty,Amount\n2023-01-01,P001,10,1000\n2023-01-02,P002,5,500";
+            const west = "Date,ProductID,Qty,Amount\n2023-01-01,P003,8,800\n2023-01-02,P001,12,1200";
+
+            // For demo, we just download East file
+            downloadFile(east, "Sales_East.csv", "text/csv");
+            setTimeout(() => downloadFile(west, "Sales_West.csv", "text/csv"), 500);
+        }
+
+        function downloadCatalog() {
+            const catalog = "ProductID,ProductName,Category,Price\nP001,Laptop,Electronics,100\nP002,Mouse,Accessories,20\nP003,Monitor,Electronics,150";
+            downloadFile(catalog, "Product_Catalog.csv", "text/csv");
+        }
+
+        function downloadBigOrders() {
+            const content = "OrderID,CustomerID,OrderDate,Amount\n" +
+                "1001,C01,01-01-23,500\n" +
+                "1002,C02,05-01-23,300\n" +
+                "1004,C03,15-01-23,750\n" +
+                "1005,C04,20-01-23,200\n" +
+                "1007,C05,01-02-23,1000\n" +
+                "1009,C06,10-02-23,600\n" +
+                "1011,C07,20-02-23,900\n" +
+                "1013,C08,01-03-23,800\n" +
+                "1015,C09,10-03-23,400\n" +
+                "1017,C10,20-03-23,300";
+            downloadFile(content, "Orders_Dataset.csv", "text/csv");
+        }
+
+        function downloadBigCustomers() {
+            const content = "CustomerID,Name,Email,City\n" +
+                "C01,John Doe,john@test.com,New York\n" +
+                "C02,Jane Smith,jane@test.com,London\n" +
+                "C03,Mike Ross,mike@test.com,Chicago\n" +
+                "C04,Harvey Specter,harvey@test.com,New York\n" +
+                "C05,Donna Paulsen,donna@test.com,London\n" +
+                "C06,Rachel Zane,rachel@test.com,Chicago\n" +
+                "C07,Louis Litt,louis@test.com,Boston\n" +
+                "C08,Jessica Pearson,jessica@test.com,Toronto\n" +
+                "C09,Robert Zane,robert@test.com,Chicago\n" +
+                "C10,Katrina Bennett,katrina@test.com,London";
+            downloadFile(content, "Big_Customers_Dataset.csv", "text/csv");
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+
+        function goToDay5() {
+            alert("Day 5: Introduction to DAX & Data Modeling is next!");
+        }
+
+        // Initialize progress bar
+        progressFill.style.width = '12.5%';
+    </script>
+
+    <style>
+        /* Extra styles needed for checklist */
+        .checklist {
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item:hover {
+            background: #f1f3f5;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            background: white;
+        }
+    </style>
+</body>
+
+</html>

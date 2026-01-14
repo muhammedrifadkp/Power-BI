@@ -794,7 +794,8 @@
                                 <li>If <code>Sales</code> <strong>is greater than or equal to</strong> <code>1000</code>
                                     Then <code>High</code></li>
                                 <li>Else If <code>Sales</code> <strong>is greater than or equal to</strong>
-                                    <code>500</code> Then <code>Medium</code></li>
+                                    <code>500</code> Then <code>Medium</code>
+                                </li>
                                 <li>Else <code>Low</code></li>
                             </ul>
                         </li>
@@ -913,6 +914,106 @@
                 </tbody>
             </table>
 
+            <div class="example-box">
+                <h3>🔍 Visual Operation Examples</h3>
+                <p>Imagine we have this <strong>Sales Table</strong>:</p>
+                <table class="comparison-table" style="width: auto; margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fruit</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Veggie</td>
+                            <td>50</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>Σ Sum</h4>
+                        <p>Fruit: <strong>400</strong><br><small>(100 + 200 + 100)</small></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>μ Average</h4>
+                        <p>Fruit: <strong>133.3</strong><br><small>(400 ÷ 3)</small></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4># Count Rows</h4>
+                        <p>Fruit: <strong>3</strong><br><small>(Total lines for Fruit)</small></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4># Count Distinct</h4>
+                        <p>Fruit: <strong>2</strong><br><small>(Unique values: 100, 200)</small></p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>MIN / MAX</h4>
+                        <p>Min: 100 | Max: 200</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🗂️ All Rows</h4>
+                        <p>Fruit: [Table]<br><small>Hides details inside a cell</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-box" style="background: #f0f7ff; border-left-color: #007bff;">
+                <h3>⚡ Advanced: Multiple Aggregations</h3>
+                <p>In the "Group By" dialog, you can click the <strong>"Advanced"</strong> button to calculate many
+                    things at once. This is extremely powerful for summary tables.</p>
+
+                <div class="example-box" style="background: white;">
+                    <p><strong>Scenario: Performance Snapshot by Category</strong></p>
+                    <p>If you set it up like this using Multiple Aggregations:</p>
+                    <ul>
+                        <li><strong>Group by:</strong> <code>Category</code></li>
+                        <li><strong>Agg 1:</strong> <code>Total_Sales</code> (Sum of Amount)</li>
+                        <li><strong>Agg 2:</strong> <code>Avg_Ticket</code> (Average of Amount)</li>
+                        <li><strong>Agg 3:</strong> <code>Transaction_Count</code> (Count Rows)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>The Resulting Table:</strong></p>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr style="background: #007bff; color: white;">
+                                <th>Category</th>
+                                <th>Total_Sales (Sum)</th>
+                                <th>Avg_Ticket (Avg)</th>
+                                <th>Transaction_Count (Count)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Electronics</td>
+                                <td>$50,000</td>
+                                <td>$500</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>Clothing</td>
+                                <td>$20,000</td>
+                                <td>$40</td>
+                                <td>500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">🛠️</div>
@@ -950,7 +1051,8 @@
                 <div class="feature-card">
                     <h4>🔁 Unpivot (Wide to Tall)</h4>
                     <p>Takes multiple columns (like "Jan Sales", "Feb Sales", "Mar Sales") and turns them into
-                        <strong>two</strong> columns: "Attribute" (the month name) and "Value" (the amount).</p>
+                        <strong>two</strong> columns: "Attribute" (the month name) and "Value" (the amount).
+                    </p>
                     <p><strong>Use Case:</strong> Fixing data where dates are used as headers.</p>
                 </div>
                 <div class="feature-card">
@@ -1007,6 +1109,72 @@
                 </div>
             </div>
 
+            <h3>The Magic of Pivot</h3>
+            <div class="example-box">
+                <div class="pivot-demo">
+                    <div class="data-table">
+                        <p><strong>Long Format (Source)</strong></p>
+                        <table class="comparison-table" style="font-size: 0.8em;">
+                            <tr>
+                                <th>Category</th>
+                                <th>Metric</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>A</td>
+                                <td>Sales</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>A</td>
+                                <td>Profit</td>
+                                <td>20</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="arrow-transform">→</div>
+                    <div class="data-table">
+                        <p><strong>Pivoted (Wide)</strong></p>
+                        <table class="comparison-table" style="font-size: 0.8em;">
+                            <tr>
+                                <th>Category</th>
+                                <th>Sales</th>
+                                <th>Profit</th>
+                            </tr>
+                            <tr>
+                                <td>A</td>
+                                <td>100</td>
+                                <td>20</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="note">
+                    <strong>📝 Why Pivot?</strong> Use this when you need to turn values (like "Sales" and "Profit" in a
+                    Metric column) into their own separate columns for calculation or specific report layouts.
+                </div>
+            </div>
+
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">⚙️</div>
+                    <h3 style="margin: 0;">Pivot Steps</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Select the column containing the <strong>Values</strong> you want to turn into headers
+                            (e.g., <code>Metric</code>)</li>
+                        <li>Go to <strong>Transform</strong> tab → <strong>Pivot Column</strong></li>
+                        <li>In the dialog, select the <strong>Values Column</strong> (this is the column with the
+                            numbers, e.g., <code>Amount</code>)</li>
+                        <li>Expand <strong>Advanced options</strong> and choose an aggregation (usually
+                            <strong>Sum</strong> or <strong>Don't Aggregate</strong> if it's already unique)
+                        </li>
+                        <li>Click OK</li>
+                    </ol>
+                </div>
+            </div>
+
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">⚡</div>
@@ -1015,7 +1183,8 @@
                 <div class="steps">
                     <ol>
                         <li>Select the column(s) you <strong>don't</strong> want to unpivot (e.g.,
-                            <code>Product Name</code>)</li>
+                            <code>Product Name</code>)
+                        </li>
                         <li>Right-click the header</li>
                         <li>Select <strong>Unpivot Other Columns</strong> (This is safer than "Unpivot Columns" if you
                             add more months later!)</li>
@@ -1055,7 +1224,8 @@
                         <li>Extract <strong>Year</strong> into a new column.</li>
                         <li>Extract <strong>Month Name</strong> into a new column.</li>
                         <li>Calculate <strong>Days to Ship</strong> using <code>OrderDate</code> and
-                            <code>ShipDate</code> (Subtract Dates).</li>
+                            <code>ShipDate</code> (Subtract Dates).
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -1086,7 +1256,8 @@
                 <div class="steps">
                     <ul>
                         <li>Notice the columns <code>Q1_Sales</code>, <code>Q2_Sales</code>, <code>Q3_Sales</code>,
-                            <code>Q4_Sales</code>.</li>
+                            <code>Q4_Sales</code>.
+                        </li>
                         <li>Select <code>ProductID</code> and <code>ProductName</code>.</li>
                         <li>Right-click → <strong>Unpivot Other Columns</strong>.</li>
                         <li>Rename the resulting columns to <code>Quarter</code> and <code>SalesAmount</code>.</li>
@@ -1131,7 +1302,8 @@
                 <p>Take the <code>Stock_Data.xlsx</code>. It contains stock prices for 5 companies where each company is
                     a column. Unpivot it so you have 3 columns: <code>Date</code>, <code>Company</code>, and
                     <code>StockPrice</code>. Then, create a conditional column that flags if a price is above $150 as
-                    "Premium".</p>
+                    "Premium".
+                </p>
             </div>
         </div>
 
@@ -1167,10 +1339,25 @@
         </div>
 
         <footer>
-            <button class="nav-btn" data-section="prev" onclick="window.location.href='Day2.html'"
-                style="background: #666; width: auto;">⬅️ Back to Day 2</button>
-            <p style="margin: 15px 0; color: #666;">© 2024 Power BI Training Series. All rights reserved.</p>
-            <button class="next-day-btn" onclick="goToDay4()">Continue to Day 4 ➡️</button>
+            <h3>🎉 Congratulations on Completing Day 3!</h3>
+            <p>You've mastered advanced data shaping and cleaning!</p>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Practice Tip:</strong> Try unpivoting different datasets to understand how it changes data
+                structure. It's a game changer!
+            </p>
+            <div style="margin-top: 30px;">
+                <a href="Day2.html" class="next-day-btn"
+                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;">← Back to
+                    Day 2</a>
+                <a href="./Day4.html" style="text-decoration: none;">
+                    <button class="next-day-btn">
+                        Continue to Day 4 →
+                    </button>
+                </a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+                Created by <strong>Muhammed Rifad KP</strong> | Power BI Training Course | Day 3 of 10 | © 2026
+            </p>
         </footer>
     </div>
 
@@ -1245,7 +1432,7 @@
         }
 
         function goToDay4() {
-            alert("Day 4: Data Modeling & Relationships is coming soon!");
+            window.location.href = 'Day4.html';
         }
     </script>
 </body>
