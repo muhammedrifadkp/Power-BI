@@ -904,6 +904,84 @@
                 </div>
                 <p style="margin-top: 10px; color: #28a745;"><strong>Benefits:</strong> John's details stored once!
                     Update in one place affects all orders.</p>
+
+                <div class="practical-task" style="margin-top: 30px;">
+                    <div class="task-header">
+                        <div class="task-number">🔄</div>
+                        <h3 style="margin: 0;">Step-by-Step: From Denormalized to Normalized</h3>
+                    </div>
+                    <div class="steps">
+                        <h4 style="color: #4facfe; margin-bottom: 10px;">PART 1: CREATE DimCustomer</h4>
+                        <ol>
+                            <li><strong>Duplicate table:</strong> Right-click original table →
+                                <strong>Duplicate</strong> → Rename to <code>DimCustomer</code>
+                            </li>
+                            <li><strong>Keep columns:</strong> Select <code>CustomerName</code>,
+                                <code>CustomerEmail</code>, <code>CustomerCity</code> (Delete others)
+                            </li>
+                            <li><strong>Remove duplicates:</strong> Select <code>CustomerEmail</code> → Home →
+                                <strong>Remove Duplicates</strong>
+                            </li>
+                            <li><strong>Add CustomerID:</strong> Add Column → <strong>Index Column</strong> → From 1.
+                                Rename to <code>CustomerID</code></li>
+                            <li><strong>Format CustomerID:</strong> Transform → Format → <strong>Add Prefix</strong> →
+                                "C" (Optional: Pad length to 2 for C01)</li>
+                            <li><strong>Rename columns:</strong> <code>CustomerName</code> → <strong>Name</strong>,
+                                <code>CustomerEmail</code> → <strong>Email</strong>, <code>CustomerCity</code> →
+                                <strong>City</strong>
+                            </li>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;"><em>Structure: CustomerID | Name
+                                    | Email | City</em></p>
+                        </ol>
+
+                        <h4 style="color: #4facfe; margin: 20px 0 10px 0;">PART 2: CREATE FactOrders</h4>
+                        <ol start="7">
+                            <li><strong>Duplicate ORIGINAL table:</strong> Right-click original →
+                                <strong>Duplicate</strong> → Rename to <code>FactOrders</code>
+                            </li>
+                            <li><strong>Keep columns:</strong> Select <code>OrderID</code>, <code>CustomerName</code>,
+                                <code>Product</code>, <code>Amount</code> (Delete others)
+                            </li>
+                            <li><strong>Merge CustomerID:</strong> Select FactOrders → Home → <strong>Merge
+                                    Queries</strong>. Second table: <code>DimCustomer</code>. Match:
+                                <code>FactOrders[CustomerName]</code> with <code>DimCustomer[Name]</code>. Join: Left
+                                Outer.
+                            </li>
+                            <li><strong>Expand:</strong> Click expand icon in DimCustomer column → Select ONLY
+                                <code>CustomerID</code>
+                            </li>
+                            <li><strong>Delete column:</strong> Remove the original <code>CustomerName</code> column.
+                            </li>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 5px;"><em>Structure: OrderID |
+                                    CustomerID | Product | Amount</em></p>
+                        </ol>
+
+                        <!-- <h4 style="color: #4facfe; margin: 20px 0 10px 0;">PART 3: MODEL</h4>
+                        <ol start="12">
+                            <li><strong>Relationship:</strong> Link <code>DimCustomer[CustomerID]</code> →
+                                <code>FactOrders[CustomerID]</code>. Set as <strong>One-to-Many</strong>, <strong>Single
+                                    direction</strong>, and <strong>Active</strong>.
+                            </li>
+                        </ol> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="download-section"
+                style="background: #e7f6ff; border: 2px solid #4facfe; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 30px 0;">
+                <h3 style="color: #4facfe; margin-bottom: 10px;">📥 Practice Normalization</h3>
+                <p>Download the denormalized sample to practice the 12 steps above, or get the final normalized tables.
+                </p>
+                <div style="margin-top: 15px;">
+                    <button class="download-btn" onclick="generateDenormalizedData()"
+                        style="background: #666; color: white;">
+                        📥 Download Denormalized (Start)
+                    </button>
+                    <!-- <button class="download-btn" onclick="generateNormalizedData()"
+                        style="background: #28a745; color: white;">
+                        📥 Download Normalized (Final)
+                    </button> -->
+                </div>
             </div>
 
             <div class="important">
@@ -1020,10 +1098,75 @@
 
                     <p style="margin-top: 15px;"><strong>You can change:</strong></p>
                     <ul>
-                        <li>Cardinality</li>
-                        <li>Cross filter direction</li>
-                        <li>Make relationship active/inactive</li>
+                        <li>Cardinality (1:*, 1:1, etc.)</li>
+                        <li>Cross filter direction (Single or Both)</li>
+                        <li>Make relationship Active or Inactive</li>
                     </ul>
+                </div>
+            </div>
+
+            <div class="practical-task" style="margin-top: 40px; border: 2px solid #3a8cd9; background: #f0f7ff;">
+                <div class="task-header">
+                    <div class="task-number" style="background: #3a8cd9;">🚀</div>
+                    <h3 style="margin: 0; color: #3a8cd9;">DATASET FOR RELATIONSHIP PRACTICE</h3>
+                </div>
+                <div class="steps">
+                    <p>Use these 5 tables to build a complete <strong>Star Schema</strong> in Power BI. Each table
+                        represents a different aspect of the business.</p>
+
+                    <div class="feature-grid" style="margin-top: 20px;">
+                        <div class="feature-card" style="border-left: 4px solid #ff4b2b;">
+                            <h4 style="color: #ff4b2b;">🟥 TABLE 1: Sales (FACT)</h4>
+                            <p style="font-size: 0.85em;">Stores transactions, quantities, and amounts. Connects all
+                                dimensions.</p>
+                        </div>
+                        <div class="feature-card" style="border-left: 4px solid #4facfe;">
+                            <h4 style="color: #4facfe;">🟦 TABLE 2: Customer (DIM)</h4>
+                            <p style="font-size: 0.85em;">Descriptive data for customers (Name, Email, City, etc.).</p>
+                        </div>
+                        <div class="feature-card" style="border-left: 4px solid #00b09b;">
+                            <h4 style="color: #00b09b;">🟩 TABLE 3: Product (DIM)</h4>
+                            <p style="font-size: 0.85em;">Product details (Category, SubCategory, Brand).</p>
+                        </div>
+                        <div class="feature-card" style="border-left: 4px solid #ffd200;">
+                            <h4 style="color: #ffd200;">🟨 TABLE 4: Date (DIM)</h4>
+                            <p style="font-size: 0.85em;">Time-based attributes (Year, Quarter, MonthName).</p>
+                        </div>
+                        <div class="feature-card" style="border-left: 4px solid #9d50bb;">
+                            <h4 style="color: #9d50bb;">🟪 TABLE 5: Store (DIM)</h4>
+                            <p style="font-size: 0.85em;">Store locations and types (Retail vs Online).</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="download-btn" onclick="generateAllRelationshipData()"
+                            style="background: #3a8cd9; color: white; padding: 15px 40px;">
+                            📥 Download All 5 Practice Tables (.zip/CSV)
+                        </button>
+                    </div>
+
+                    <h4 style="margin-top: 40px; color: #333;">🧠 Relationship Mapping (Keys)</h4>
+                    <div class="note" style="background: #f8f9fa; border-left-color: #333;">
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li>🔗 <code>Sales.CustomerID</code> &rarr; <code>Customer.CustomerID</code></li>
+                            <li>🔗 <code>Sales.ProductID</code> &rarr; <code>Product.ProductID</code></li>
+                            <li>🔗 <code>Sales.DateKey</code> &rarr; <code>Date.DateKey</code></li>
+                            <li>🔗 <code>Sales.StoreID</code> &rarr; <code>Store.StoreID</code></li>
+                        </ul>
+                    </div>
+
+                    <h4 style="margin-top: 30px; color: #3a8cd9;">🛠️ Lab Step-by-Step</h4>
+                    <ol>
+                        <li><strong>Load Data:</strong> Import all 5 CSV files into Power BI Desktop.</li>
+                        <li><strong>Go to Model View:</strong> Click the relationship icon on the left sidebar.</li>
+                        <li><strong>Arrange Tables:</strong> Place the <strong>Sales</strong> table in the center and
+                            the 4 dimension tables around it (Star shape).</li>
+                        <li><strong>Create Connections:</strong> Drag the primary key from each dimension table to its
+                            matching foreign key in the Sales table.</li>
+                        <li><strong>Verify:</strong> Ensure the lines show <strong>1</strong> on the dimension side and
+                            <strong>*</strong> on the Sales side.
+                        </li>
+                    </ol>
                 </div>
             </div>
 
@@ -1075,149 +1218,104 @@
 
         <!-- Cardinality Section -->
         <div class="content-section" id="cardinality">
-            <h2>🔢 Understanding Relationship Cardinality</h2>
+            <h2>🔢 Relationship Cardinality: Defining the Connection</h2>
 
-            <h3>What is Cardinality?</h3>
             <div class="theory-box">
-                <p><strong>Cardinality:</strong> Describes how many rows in one table can relate to rows in another
-                    table.</p>
-
-                <p style="margin-top: 15px;"><strong>Three Types:</strong></p>
-                <ul>
-                    <li><strong>One-to-Many (1:*)</strong> - Most common</li>
-                    <li><strong>Many-to-One (*:1)</strong> - Same as above, reversed</li>
-                    <li><strong>One-to-One (1:1)</strong> - Rare, usually indicates design issue</li>
-                    <li><strong>Many-to-Many (*:*)</strong> - Advanced, requires bridge table</li>
-                </ul>
+                <p><strong>Cardinality</strong> describes the "grain" or "density" of the relationship. It tells Power
+                    BI how many rows on one side match with how many rows on the other.</p>
             </div>
 
-            <h3>1. One-to-Many (1:*) - Most Common</h3>
-            <div class="cardinality-box">
+            <div class="practical-task" style="border-left-color: #ffd200; background: #fffdf5;">
+                <div class="task-header">
+                    <div class="task-number" style="background: #ffd200;">🔍</div>
+                    <h3 style="margin: 0; color: #856404;">Lab Walkthrough: Cardinality in our Star Schema</h3>
+                </div>
+
+                <h4 style="margin-top: 20px;">1. One-to-Many (1:*) - The Gold Standard</h4>
+                <p>In our practice dataset, compare the **Customer** table and the **Sales** table:</p>
                 <div class="cardinality-example">
-                    <div class="table-visual">
-                        <h4>Products (One Side)</h4>
-                        <p style="font-size: 0.85em;">ProductKey (Unique)</p>
-                        <p style="font-size: 0.85em; margin-top: 5px;">Each product appears once</p>
+                    <div class="table-visual" style="border-color: #4facfe;">
+                        <h4>DimCustomer</h4>
+                        <p style="font-size: 0.85em;"><strong>CustomerID C01</strong></p>
+                        <p style="font-size: 0.8em; color: #666;">(Appears only 1 time)</p>
                     </div>
                     <div style="font-size: 2em; color: #4facfe;">1 ⟶ *</div>
-                    <div class="table-visual">
-                        <h4>Sales (Many Side)</h4>
-                        <p style="font-size: 0.85em;">ProductKey (Repeats)</p>
-                        <p style="font-size: 0.85em; margin-top: 5px;">Many sales per product</p>
+                    <div class="table-visual" style="border-color: #ff4b2b;">
+                        <h4>FactSales</h4>
+                        <p style="font-size: 0.85em;"><strong>CustomerID C01</strong></p>
+                        <p style="font-size: 0.8em; color: #666;">(Appears in 5 different orders)</p>
                     </div>
                 </div>
+                <ul style="margin-top: 15px;">
+                    <li><strong>Grain:</strong> One Customer can make multiple purchases (Many Sales).</li>
+                    <li><strong>Identifier:</strong> CustomerID is the "glue" connecting them.</li>
+                    <li><strong>Visual:</strong> You will see a <strong>1</strong> next to Customer and a
+                        <strong>*</strong> next to Sales.
+                    </li>
+                </ul>
 
-                <div class="steps">
-                    <p><strong>Characteristics:</strong></p>
-                    <ul>
-                        <li>One side: Primary key (unique values)</li>
-                        <li>Many side: Foreign key (can repeat)</li>
-                        <li>Filter flows from One to Many</li>
-                        <li>Most dimension → fact relationships</li>
-                    </ul>
-                </div>
-
-                <div class="example-box" style="margin-top: 15px;">
-                    <strong>Examples:</strong>
-                    <ul>
-                        <li>One Customer → Many Orders</li>
-                        <li>One Product → Many Sales</li>
-                        <li>One Date → Many Transactions</li>
-                        <li>One Store → Many Employees</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h3>2. One-to-One (1:1) - Rare</h3>
-            <div class="cardinality-box">
+                <h4 style="margin-top: 30px;">2. One-to-One (1:1) - The Specific Case</h4>
+                <p>Imagine a separate table called **StoreDetails**. If every StoreID in the Store table had exactly one
+                    corresponding row in StoreDetails:</p>
                 <div class="cardinality-example">
-                    <div class="table-visual">
-                        <h4>Employees</h4>
-                        <p style="font-size: 0.85em;">EmployeeID (Unique)</p>
+                    <div class="table-visual" style="border-color: #9d50bb;">
+                        <h4>DimStore</h4>
+                        <p style="font-size: 0.85em;"><strong>StoreID S01</strong></p>
                     </div>
                     <div style="font-size: 2em; color: #ffc107;">1 ⟷ 1</div>
-                    <div class="table-visual">
-                        <h4>Employee Details</h4>
-                        <p style="font-size: 0.85em;">EmployeeID (Unique)</p>
+                    <div class="table-visual" style="border-color: #9d50bb;">
+                        <h4>StoreDetails</h4>
+                        <p style="font-size: 0.85em;"><strong>StoreID S01</strong></p>
                     </div>
                 </div>
-
-                <div class="warning" style="margin-top: 15px;">
-                    <strong>⚠️ Usually a sign of poor design!</strong> If you have 1:1, consider:
-                    <ul>
-                        <li>Merging the tables in Power Query</li>
-                        <li>Do they really need to be separate?</li>
-                        <li>Is one table much larger (different grain)?</li>
-                    </ul>
+                <div class="tip" style="margin-top: 10px;">
+                    <strong>💡 Pro Tip:</strong> If you see a 1:1, usually you should merge these two tables into one in
+                    Power Query to keep things simple!
                 </div>
-            </div>
 
-            <h3>3. Many-to-Many (*:*) - Advanced</h3>
-            <div class="cardinality-box">
+                <h4 style="margin-top: 30px;">3. Many-to-Many (*:*) - The Complex Case</h4>
+                <p>Consider a relationship between **Students** and **Courses** (where one student takes many courses
+                    and one course has many students).</p>
                 <div class="cardinality-example">
                     <div class="table-visual">
                         <h4>Students</h4>
-                        <p style="font-size: 0.85em;">Many students</p>
+                        <p style="font-size: 0.8em; color: #666;">Multiple Rows</p>
                     </div>
                     <div style="font-size: 2em; color: #dc3545;">* ⟷ *</div>
                     <div class="table-visual">
                         <h4>Courses</h4>
-                        <p style="font-size: 0.85em;">Many courses</p>
+                        <p style="font-size: 0.8em; color: #666;">Multiple Rows</p>
                     </div>
                 </div>
-
-                <div class="theory-box" style="margin-top: 15px;">
-                    <p><strong>Problem:</strong> Students enroll in many courses, courses have many students</p>
-
-                    <p style="margin-top: 15px;"><strong>Solution: Bridge Table (Junction Table)</strong></p>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <p>Students ⟵ 1:* ⟶ <strong>Enrollments</strong> ⟵ *:1 ⟶ Courses</p>
-                    </div>
-
-                    <p><strong>Enrollments contains:</strong> StudentID, CourseID, Grade, Date</p>
-                </div>
-
-                <div class="note">
-                    <strong>📝 Power BI supports direct many-to-many relationships (since 2018), but bridge tables are
-                        often clearer and more performant.</strong>
+                <div class="warning">
+                    <strong>⚠️ Caution:</strong> Power BI supports this, but it often leads to confusing results. It is
+                    best practice to use a <strong>Bridge Table</strong> (like an "Enrollment" table) to convert this
+                    into two One-to-Many relationships.
                 </div>
             </div>
 
-            <h3>How Power BI Detects Cardinality</h3>
-            <div class="theory-box">
-                <p>Power BI automatically detects cardinality by examining data:</p>
-                <ul>
-                    <li>Checks for unique values vs duplicates</li>
-                    <li>Usually gets it right</li>
-                    <li>You can override if needed</li>
-                </ul>
-
-                <p style="margin-top: 15px;"><strong>Symbols on relationship lines:</strong></p>
-                <ul>
-                    <li><strong>1</strong> - One side (unique)</li>
-                    <li><strong>*</strong> - Many side (can repeat)</li>
-                </ul>
+            <h3 style="margin-top: 40px;">✅ Identification Checklist</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>How to check your Lab tables:</h4>
+                    <ul>
+                        <li>Open the <strong>Data View</strong> (left icon).</li>
+                        <li>Select <strong>DimProduct</strong>. Notice ProductID is unique.</li>
+                        <li>Select <strong>FactSales</strong>. Notice ProductID repeats.</li>
+                        <li><strong>Conclusion:</strong> Relationship must be 1:* from Product to Sales.</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
         <!-- Filter Flow Section -->
         <div class="content-section" id="filterflow">
-            <h2>🌊 Understanding Filter Flow</h2>
+            <h2>🌊 Understanding Filter Flow (Cross-Filtering)</h2>
 
-            <h3>What is Filter Flow?</h3>
             <div class="theory-box">
-                <p><strong>Filter Flow:</strong> How filters propagate from one table to related tables through
-                    relationships.</p>
-
-                <p style="margin-top: 15px;"><strong>Why it matters:</strong></p>
-                <ul>
-                    <li>Determines which data appears in visuals</li>
-                    <li>Affects DAX calculations</li>
-                    <li>Controls interactive filtering behavior</li>
-                </ul>
+                <p><strong>Filter Flow</strong> is the direction in which filtering actions travel from one table to
+                    another through your relationships.</p>
             </div>
-
-            <h3>Cross Filter Direction</h3>
 
             <div class="filter-flow">
                 <h4 style="color: #4facfe; margin-bottom: 15px;">Two Types of Cross Filter Direction:</h4>
@@ -1226,122 +1324,59 @@
                     <div class="feature-card" style="border-left: 4px solid #28a745;">
                         <h4>1. Single Direction (Default)</h4>
                         <p><strong>Flow:</strong> From ONE side → MANY side</p>
-                        <p style="margin-top: 10px;"><strong>Example:</strong></p>
-                        <p>Products → Sales</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">Filtering a product filters its sales</p>
-                        <p style="font-size: 0.9em;">But filtering sales does NOT filter products</p>
-                        <p style="margin-top: 10px;"><strong>✅ Use 95% of the time</strong></p>
+                        <p style="margin-top: 10px;"><strong>Practice Lab Example:</strong></p>
+                        <p><code>DimProduct</code> &rarr; <code>FactSales</code></p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Filtering a Category in
+                            <strong>DimProduct</strong> filters the revenue in <strong>FactSales</strong>.
+                        </p>
+                        <p style="font-size: 0.9em; color: #666;">But clicking a sale in FactSales does NOT filter the
+                            list of products.</p>
+                        <p style="margin-top: 10px;"><strong>✅ Requirement: 1:* Relationships</strong></p>
                     </div>
 
                     <div class="feature-card" style="border-left: 4px solid #ffc107;">
                         <h4>2. Both Directions (Bi-directional)</h4>
-                        <p><strong>Flow:</strong> ONE ⟷ MANY (both ways)</p>
-                        <p style="margin-top: 10px;"><strong>Example:</strong></p>
-                        <p>Products ⟷ Sales</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">Filtering products filters sales</p>
-                        <p style="font-size: 0.9em;">AND filtering sales filters products</p>
-                        <p style="margin-top: 10px;"><strong>⚠️ Use sparingly - can cause issues</strong></p>
+                        <p><strong>Flow:</strong> ONE &harr; MANY (Bidirectional)</p>
+                        <p style="margin-top: 10px;"><strong>Practice Lab Example:</strong></p>
+                        <p><code>DimStore</code> &harr; <code>FactSales</code></p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Filtering a Store filters its Sales.</p>
+                        <p style="font-size: 0.9em;"><strong>AND</strong> filtering for high-value sales filters the
+                            list of Stores to only those that made them.</p>
+                        <p style="margin-top: 10px; color: #d63384;"><strong>⚠️ Warning: Use sparingly!</strong></p>
                     </div>
                 </div>
             </div>
 
-            <h3>When to Use Bi-directional Filtering</h3>
-            <div class="warning">
-                <strong>⚠️ Caution Required!</strong>
-                <p style="margin-top: 10px;">Bi-directional filtering can cause:</p>
-                <ul>
-                    <li>Ambiguous filter paths</li>
-                    <li>Unexpected results</li>
-                    <li>Performance issues</li>
-                    <li>Circular dependencies</li>
-                </ul>
-            </div>
-
-            <div class="tip">
-                <strong>✅ Safe use cases for bi-directional:</strong>
-                <ul>
-                    <li>Many-to-many relationships (with caution)</li>
-                    <li>Security row-level filtering</li>
-                    <li>Specific slicing scenarios</li>
-                </ul>
-                <p style="margin-top: 10px;"><strong>General Rule: Avoid unless you have a specific need!</strong></p>
-            </div>
-
-            <h3>Filter Flow Example</h3>
-            <div class="example-box">
-                <h4>Scenario: Standard Star Schema</h4>
-
-                <div
-                    style="text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-                    <p style="font-size: 1.1em;"><strong>Date</strong> (1) → (*) <strong>Sales</strong> ← (*:1)
-                        <strong>Product</strong>
-                    </p>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Single direction on both relationships
-                    </p>
+            <div class="practical-task" style="border-left-color: #00b09b; background: #f0fff4; margin-top: 30px;">
+                <div class="task-header">
+                    <div class="task-number" style="background: #00b09b;">🧪</div>
+                    <h3 style="margin: 0; color: #006b5f;">Testing Filter Flow in our Lab</h3>
                 </div>
-
                 <div class="steps">
-                    <p><strong>Filter Behavior:</strong></p>
+                    <p>Imagine your Star Schema is ready. Here is how filters propagate:</p>
                     <ol>
-                        <li><strong>Select a Date:</strong> Filters flow to Sales → Shows only sales on that date ✅</li>
-                        <li><strong>Select a Product:</strong> Filters flow to Sales → Shows only sales of that product
-                            ✅</li>
-                        <li><strong>Select Date AND Product:</strong> Both filters combine → Shows sales matching both ✅
-                        </li>
-                        <li><strong>Select a Sale:</strong> Does NOT filter Date or Product tables (single direction) ❌
-                        </li>
+                        <li><strong>Select CustomName 'John Smith'</strong> in a slicer.</li>
+                        <li>The filter travels from <code>DimCustomer</code> &rarr; <code>FactSales</code>.</li>
+                        <li>Power BI identifies <strong>CustomerID C01</strong>.</li>
+                        <li>It filters <code>FactSales</code> to show ONLY orders O1001 and O1004.</li>
+                        <li>Your 'Total Sales' card updates instantly. ✅</li>
                     </ol>
                 </div>
+            </div>
 
-                <p
-                    style="margin-top: 15px; padding: 15px; background: #d4edda; border-left: 4px solid #28a745; border-radius: 5px;">
-                    <strong>This is correct behavior!</strong> Dimensions filter facts, but facts don't filter
-                    dimensions back.
+            <div class="important" style="margin-top: 30px;">
+                <strong>💡 The "Water Flow" Analogy:</strong>
+                <p style="margin-top: 10px;">Think of filters like water flowing through pipes (relationships). In a
+                    <strong>Single Direction</strong>, water only flows downhill from the Dimension (One) to the Fact
+                    (Many). It cannot flow back up unless you change the cross-filter direction to
+                    <strong>Both</strong>.
                 </p>
             </div>
 
-            <h3>Testing Filter Flow</h3>
-            <div class="practical-task">
-                <div class="task-header">
-                    <div class="task-number">🧪</div>
-                    <h3 style="margin: 0;">How to Test Your Relationships</h3>
-                </div>
-                <div class="steps">
-                    <ol>
-                        <li>Create a simple report with tables from different related tables</li>
-                        <li>Add slicers for dimension tables (Date, Product, Customer)</li>
-                        <li>Add a table visual showing fact data (Sales)</li>
-                        <li>Test clicking values in slicers</li>
-                        <li>Verify:
-                            <ul>
-                                <li>Do slicers filter the fact table? (Should: YES)</li>
-                                <li>Does fact table filter slicers? (Should: NO, unless bi-directional)</li>
-                                <li>Do multiple filters combine correctly?</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-
-            <h3>Hiding Fields from Report View</h3>
-            <div class="theory-box">
-                <p><strong>Why hide fields?</strong></p>
-                <ul>
-                    <li>Keep Fields pane clean and organized</li>
-                    <li>Hide technical columns (keys, IDs)</li>
-                    <li>Prevent users from using wrong fields</li>
-                    <li>Improve user experience</li>
-                </ul>
-
-                <p style="margin-top: 15px;"><strong>How to hide:</strong></p>
-                <ol>
-                    <li>In Model View or Data View</li>
-                    <li>Right-click column → <strong>Hide in report view</strong></li>
-                    <li>Or select column → Properties pane → Set "Is hidden" to Yes</li>
-                </ol>
-
-                <p style="margin-top: 15px;"><strong>💡 Best Practice:</strong> Hide all foreign keys (ProductKey,
-                    CustomerKey, etc.) - users should use descriptive names instead!</p>
+            <div class="note">
+                <strong>📝 Best Practice:</strong> Always stick to <strong>Single Direction</strong> for your Star
+                Schema. Only use "Both" if you have a specific requirement like filtering slicers based on actual
+                transaction data.
             </div>
         </div>
 
@@ -1351,48 +1386,45 @@
 
             <div class="important">
                 <strong>⏱️ Lab Duration:</strong> 90 minutes<br>
-                <strong>🎯 Objective:</strong> Build a complete star schema with proper relationships
+                <strong>🎯 Objective:</strong> Build a complete star schema with proper relationships using 5 tables.
             </div>
 
-            <h3>Lab Scenario: Retail Sales Analysis</h3>
+            <h3>Lab Scenario: Global Retail Sales Analysis</h3>
             <div class="theory-box">
-                <p><strong>You have 4 tables:</strong></p>
+                <p><strong>You have 5 practice tables:</strong></p>
                 <ul>
-                    <li><strong>Sales</strong> (Fact) - SalesID, DateKey, ProductKey, CustomerKey, Quantity, Revenue
-                    </li>
-                    <li><strong>Date</strong> (Dimension) - DateKey, Date, Year, Month, Quarter</li>
-                    <li><strong>Products</strong> (Dimension) - ProductKey, ProductName, Category, Price</li>
-                    <li><strong>Customers</strong> (Dimension) - CustomerKey, CustomerName, City, Country</li>
+                    <li><strong>FactSales</strong> (Fact) - Transactions, Quantity, Sale Amount</li>
+                    <li><strong>DimCustomer</strong> (Dimension) - Names, Emails, Locations</li>
+                    <li><strong>DimProduct</strong> (Dimension) - Categories and Brands</li>
+                    <li><strong>DimDate</strong> (Dimension) - Calendar attributes</li>
+                    <li><strong>DimStore</strong> (Dimension) - Physical vs Online stores</li>
                 </ul>
-                <p style="margin-top: 10px;"><strong>Goal:</strong> Create a star schema and test it</p>
+                <p style="margin-top: 10px;"><strong>Goal:</strong> Create a star schema where all dimensions filter the
+                    central Sales table.</p>
             </div>
 
             <h3>Exercise 1: Load the Data (15 minutes)</h3>
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">1</div>
-                    <h3 style="margin: 0;">Import All Tables</h3>
+                    <h3 style="margin: 0;">Import All 5 Tables</h3>
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>Download the sample files from Resources section</li>
-                        <li>Open Power BI Desktop</li>
-                        <li>Get Data → Excel/CSV</li>
-                        <li>Import all 4 tables:
+                        <li>Go to the <strong>Resources</strong> section below and click "Download All 5 Practice
+                            Tables".</li>
+                        <li>Open Power BI Desktop.</li>
+                        <li>Get Data &rarr; CSV.</li>
+                        <li>Import all 5 files:
                             <ul>
-                                <li>Sales.csv</li>
-                                <li>Date.csv</li>
-                                <li>Products.csv</li>
-                                <li>Customers.csv</li>
+                                <li><code>Sales_Fact.csv</code></li>
+                                <li><code>Customer_Dim.csv</code></li>
+                                <li><code>Product_Dim.csv</code></li>
+                                <li><code>Date_Dim.csv</code></li>
+                                <li><code>Store_Dim.csv</code></li>
                             </ul>
                         </li>
-                        <li>For each table:
-                            <ul>
-                                <li>Transform Data → Check data types</li>
-                                <li>Ensure key columns are correct type</li>
-                                <li>Close & Apply</li>
-                            </ul>
-                        </li>
+                        <li>Check data types in Power Query and click <strong>Close & Apply</strong>.</li>
                     </ol>
                 </div>
             </div>
@@ -1405,27 +1437,20 @@
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>Switch to <strong>Model View</strong></li>
-                        <li>Arrange tables:
+                        <li>Switch to <strong>Model View</strong>.</li>
+                        <li>Place <code>FactSales</code> in the center.</li>
+                        <li>Arrange the 4 Dimension tables around it in a Star pattern.</li>
+                        <li>Create the 1:* connections:
                             <ul>
-                                <li>Put <strong>Sales</strong> in the center</li>
-                                <li>Place dimension tables around it</li>
+                                <li><code>Customer_Dim[CustomerID]</code> &rarr; <code>Sales_Fact[CustomerID]</code>
+                                </li>
+                                <li><code>Product_Dim[ProductID]</code> &rarr; <code>Sales_Fact[ProductID]</code></li>
+                                <li><code>Date_Dim[DateKey]</code> &rarr; <code>Sales_Fact[DateKey]</code></li>
+                                <li><code>Store_Dim[StoreID]</code> &rarr; <code>Sales_Fact[StoreID]</code></li>
                             </ul>
                         </li>
-                        <li>Create relationships (drag and drop):
-                            <ul>
-                                <li>Date[DateKey] → Sales[DateKey]</li>
-                                <li>Products[ProductKey] → Sales[ProductKey]</li>
-                                <li>Customers[CustomerKey] → Sales[CustomerKey]</li>
-                            </ul>
-                        </li>
-                        <li>Verify each relationship:
-                            <ul>
-                                <li>Double-click relationship line</li>
-                                <li>Check cardinality (should be 1:*)</li>
-                                <li>Check cross filter direction (should be Single)</li>
-                            </ul>
-                        </li>
+                        <li>Verify that all lines show <strong>1</strong> (Dimension side) and <strong>*</strong> (Fact
+                            side).</li>
                     </ol>
                 </div>
             </div>
@@ -1668,6 +1693,9 @@
                 <button class="download-btn" onclick="generateDateData()">📅 Download Date.csv</button>
                 <button class="download-btn" onclick="generateProductData()">📦 Download Products.csv</button>
                 <button class="download-btn" onclick="generateCustomerData()">👥 Download Customers.csv</button>
+                <button class="download-btn" onclick="generateNormalizedData()"
+                    style="background: white; color: #28a745; border: 2px solid #28a745;">📐 Download
+                    Normalized_Data.zip</button>
             </div>
 
             <h3>📚 Recommended Reading</h3>
@@ -1798,6 +1826,121 @@ C003,Bob Wilson,Chicago,USA
 C004,Alice Johnson,Houston,USA`;
             downloadCSV(csv, 'Customers.csv');
         }
+
+        function generateNormalizedData() {
+            const customersCsv = `CustomerID,Name,Email,City\nC01,John Smith,john@email.com,New York\nC02,Jane Doe,jane@email.com,Los Angeles\nC03,Bob Wilson,bob@email.com,Chicago`;
+            const ordersCsv = `OrderID,CustomerID,Product,Amount\n1001,C01,Laptop,1200\n1002,C01,Mouse,25\n1003,C02,Keyboard,75`;
+
+            // Download multiple files
+            downloadCSV(customersCsv, 'Normalized_Customers.csv');
+            setTimeout(() => {
+                downloadCSV(ordersCsv, 'Normalized_Orders.csv');
+            }, 500);
+        }
+
+        function generateDenormalizedData() {
+            const csv = `OrderID,CustomerName,CustomerEmail,CustomerCity,Product,Amount
+1001,John Smith,john@email.com,New York,Laptop,1200
+1002,John Smith,john@email.com,New York,Mouse,25
+1003,John Smith,john@email.com,New York,Keyboard,75
+1004,Emily Brown,emily@email.com,Chicago,Laptop,1150
+1005,Emily Brown,emily@email.com,Chicago,Mouse,30
+1006,Emily Brown,emily@email.com,Chicago,Headphones,150
+1007,Michael Lee,michael@email.com,San Francisco,Tablet,600
+1008,Michael Lee,michael@email.com,San Francisco,Keyboard,80
+1009,Michael Lee,michael@email.com,San Francisco,Mouse,28
+1010,Sophia Wilson,sophia@email.com,Boston,Laptop,1300
+1011,Sophia Wilson,sophia@email.com,Boston,Monitor,320
+1012,Sophia Wilson,sophia@email.com,Boston,Mouse,35
+1013,David Miller,david@email.com,Austin,Laptop,1100
+1014,David Miller,david@email.com,Austin,Keyboard,90
+1015,David Miller,david@email.com,Austin,Monitor,300
+1016,Olivia Johnson,olivia@email.com,Seattle,Tablet,650
+1017,Olivia Johnson,olivia@email.com,Seattle,Headphones,180
+1018,Olivia Johnson,olivia@email.com,Seattle,Mouse,32
+1019,Daniel Clark,daniel@email.com,Denver,Laptop,1250
+1020,Daniel Clark,daniel@email.com,Denver,Keyboard,85
+1021,Daniel Clark,daniel@email.com,Denver,Monitor,310
+1022,Emma Davis,emma@email.com,Miami,Laptop,1180
+1023,Emma Davis,emma@email.com,Miami,Mouse,27
+1024,Emma Davis,emma@email.com,Miami,Headphones,160
+1025,James Anderson,james@email.com,Los Angeles,Tablet,620
+1026,James Anderson,james@email.com,Los Angeles,Keyboard,88
+1027,James Anderson,james@email.com,Los Angeles,Mouse,29
+1028,Isabella Thomas,isabella@email.com,San Diego,Laptop,1220
+1029,Isabella Thomas,isabella@email.com,San Diego,Monitor,330
+1030,Isabella Thomas,isabella@email.com,San Diego,Mouse,34`;
+            downloadCSV(csv, 'Denormalized_Sales_Data.csv');
+        }
+
+        function generateAllRelationshipData() {
+            const sales = `OrderID,DateKey,CustomerID,ProductID,StoreID,Quantity,SalesAmount
+O1001,20230101,C01,P01,S01,2,2400
+O1002,20230102,C02,P02,S02,1,25
+O1003,20230103,C03,P03,S01,1,75
+O1004,20230104,C01,P04,S03,1,1200
+O1005,20230105,C04,P05,S02,3,90
+O1006,20230106,C05,P01,S04,1,1200
+O1007,20230107,C02,P03,S01,2,150
+O1008,20230108,C03,P02,S03,4,100
+O1009,20230109,C06,P04,S02,1,1200
+O1010,20230110,C07,P05,S04,2,60
+O1011,20230111,C08,P01,S01,1,1200
+O1012,20230112,C09,P02,S02,3,75
+O1013,20230113,C10,P03,S03,2,150
+O1014,20230114,C04,P04,S04,1,1200
+O1015,20230115,C05,P05,S01,5,150`;
+
+            const customers = `CustomerID,CustomerName,Email,City,State,Country
+C01,John Smith,john@email.com,New York,NY,USA
+C02,Emily Brown,emily@email.com,Chicago,IL,USA
+C03,Michael Lee,michael@email.com,San Francisco,CA,USA
+C04,Sophia Wilson,sophia@email.com,Boston,MA,USA
+C05,David Miller,david@email.com,Austin,TX,USA
+C06,Olivia Johnson,olivia@email.com,Seattle,WA,USA
+C07,Daniel Clark,daniel@email.com,Denver,CO,USA
+C08,Emma Davis,emma@email.com,Miami,FL,USA
+C09,James Anderson,james@email.com,Los Angeles,CA,USA
+C10,Isabella Thomas,isabella@email.com,San Diego,CA,USA`;
+
+            const products = `ProductID,ProductName,Category,SubCategory,Brand
+P01,Laptop,Electronics,Computer,Dell
+P02,Mouse,Electronics,Accessory,Logitech
+P03,Keyboard,Electronics,Accessory,HP
+P04,Monitor,Electronics,Display,Samsung
+P05,Headphones,Electronics,Audio,Sony`;
+
+            const dates = `DateKey,Date,Year,Quarter,MonthNumber,MonthName
+20230101,2023-01-01,2023,Q1,1,January
+20230102,2023-01-02,2023,Q1,1,January
+20230103,2023-01-03,2023,Q1,1,January
+20230104,2023-01-04,2023,Q1,1,January
+20230105,2023-01-05,2023,Q1,1,January
+20230106,2023-01-06,2023,Q1,1,January
+20230107,2023-01-07,2023,Q1,1,January
+20230108,2023-01-08,2023,Q1,1,January
+20230109,2023-01-09,2023,Q1,1,January
+20230110,2023-01-10,2023,Q1,1,January
+20230111,2023-01-11,2023,Q1,1,January
+20230112,2023-01-12,2023,Q1,1,January
+20230113,2023-01-13,2023,Q1,1,January
+20230114,2023-01-14,2023,Q1,1,January
+20230115,2023-01-15,2023,Q1,1,January`;
+
+            const stores = `StoreID,StoreName,City,State,Country,StoreType
+S01,Store New York,New York,NY,USA,Online
+S02,Store Chicago,Chicago,IL,USA,Retail
+S03,Store Boston,Boston,MA,USA,Retail
+S04,Store Austin,Austin,TX,USA,Online`;
+
+            // Download them sequentially
+            downloadCSV(sales, 'Sales_Fact.csv');
+            setTimeout(() => downloadCSV(customers, 'Customer_Dim.csv'), 200);
+            setTimeout(() => downloadCSV(products, 'Product_Dim.csv'), 400);
+            setTimeout(() => downloadCSV(dates, 'Date_Dim.csv'), 600);
+            setTimeout(() => downloadCSV(stores, 'Store_Dim.csv'), 800);
+        }
+
         function downloadCSV(content, filename) {
             const blob = new Blob([content], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);

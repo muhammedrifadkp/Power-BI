@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Day 6 - Introduction to DAX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #ff6b9d;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #fed6e3;
+        }
+
+        .info-card strong {
+            color: #ff6b9d;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav button {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: #e5578a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button.active {
+            background: #a8edea;
+            color: #333;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #fed6e3;
+        }
+
+        h3 {
+            color: #e5578a;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #ff6b9d;
+            margin-bottom: 10px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #ff6b9d;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 5px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .diagram {
+            background: #f0f0f0;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .practical-task {
+            background: #fff0f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px dashed #ff6b9d;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-number {
+            background: #ff6b9d;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .steps ol,
+        .steps ul {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: #28a745;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b9d;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #ff6b9d;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+            font-size: 0.95em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            background: transparent;
+            color: #f8f8f2;
+            padding: 0;
+        }
+
+        .code-block.error {
+            background: #fff5f5;
+            border: 2px solid #dc3545;
+            color: #333;
+        }
+
+        .code-block.error code {
+            color: #dc3545;
+        }
+
+        .example-box {
+            background: white;
+            border: 2px solid #ff6b9d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .column-box,
+        .measure-box {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .column-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+
+        .measure-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+        }
+
+        .column-box h3 {
+            color: #856404;
+        }
+
+        .measure-box h3 {
+            color: #0c5460;
+        }
+
+        .operators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .operator-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid #ff6b9d;
+        }
+
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .function-card {
+            background: #fff0f6;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b9d;
+            transition: all 0.3s ease;
+        }
+
+        .function-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.2);
+        }
+
+        .decision-tree {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .code-examples {
+            margin: 15px 0;
+        }
+
+        .code-examples .code-block {
+            margin: 10px 0;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .next-day-btn {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .next-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+            height: 100%;
+            width: 60%;
+            transition: width 0.3s ease;
+        }
+
+        /* Checklist Styles */
+        .checklist {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item:hover {
+            background: #fff0f6;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .checklist-item:hover .checkbox {
+            border-color: #ff6b9d;
+        }
+
+        .context-box {
+            margin: 15px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            nav button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .comparison-visual,
+            .decision-tree {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid,
+            .function-grid,
+            .operators-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .day-info {
+                flex-direction: column;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            nav,
+            footer,
+            .next-day-btn,
+            .download-section {
+                display: none;
+            }
+
+            .content-section {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+
+            .practical-task {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Accessibility */
+        button:focus,
+        .download-btn:focus,
+        .next-day-btn:focus {
+            outline: 3px solid #ff6b9d;
+            outline-offset: 2px;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff6b9d;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e5578a;
+        }
+
+        /* Selection Highlight */
+        ::selection {
+            background: #fed6e3;
+            color: #333;
+        }
+
+        ::-moz-selection {
+            background: #fed6e3;
+            color: #333;
+        }
+
+        /* Loading Animation (optional) */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        /* Hover Effects for Interactive Elements */
+        .theory-box:hover,
+        .example-box:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* Table Hover Effects */
+        .comparison-table tbody tr:hover {
+            background: #fff0f6;
+            transition: background 0.3s ease;
+        }
+
+        /* Button Group Styles */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Card Styles for Better Organization */
+        .info-card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.3s ease;
+        }
+
+        /* Improved Code Block Styling */
+        .code-block {
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'DAX';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #ff6b9d;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        /* Enhanced Feature Card Styling */
+        .feature-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Better List Styling */
+        .steps ol li strong,
+        .steps ul li strong {
+            color: #ff6b9d;
+        }
+
+        /* Enhanced Task Number Badge */
+        .task-number {
+            box-shadow: 0 3px 10px rgba(255, 107, 157, 0.3);
+        }
+
+        /* Footer Styling */
+        footer h3 {
+            color: #ff6b9d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Power BI Training - Day 6</h1>
+            <p>Introduction to DAX (Data Analysis Expressions)</p>
+            <div class="day-info">
+                <div class="info-card">
+                    <strong>Duration:</strong> 3 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Theory:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Practical:</strong> 1.5 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Level:</strong> Intermediate
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Course Progress: Day 6 of 10 (60%)</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-section="overview">📋 Overview</button>
+            <button class="nav-btn" data-section="whatisdax">🔤 What is DAX?</button>
+            <button class="nav-btn" data-section="columns-vs-measures">⚖️ Columns vs Measures</button>
+            <button class="nav-btn" data-section="syntax">📝 DAX Syntax</button>
+            <button class="nav-btn" data-section="basic-functions">🔢 Basic Functions</button>
+            <button class="nav-btn" data-section="practical">🔨 Practical Lab</button>
+            <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+            <button class="nav-btn" data-section="resources">📦 Resources</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <div class="content-section active" id="overview">
+            <h2>📋 Day 6 Overview</h2>
+
+            <div class="theory-box">
+                <h3>Learning Objectives</h3>
+                <p>By the end of Day 6, students will be able to:</p>
+                <ul>
+                    <li>Understand what DAX is and why it's essential</li>
+                    <li>Distinguish between calculated columns and measures</li>
+                    <li>Understand when to use each type</li>
+                    <li>Create basic calculated columns</li>
+                    <li>Create and use DAX measures</li>
+                    <li>Understand implicit vs explicit measures</li>
+                    <li>Write basic DAX syntax correctly</li>
+                    <li>Use fundamental DAX operators</li>
+                    <li>Apply basic aggregation functions (SUM, AVERAGE, COUNT, etc.)</li>
+                    <li>Follow DAX best practices</li>
+                </ul>
+            </div>
+
+            <h3>📅 Session Structure</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Part 1: DAX Introduction (25 min)</h4>
+                    <ul>
+                        <li>What is DAX?</li>
+                        <li>DAX vs Excel formulas</li>
+                        <li>Where DAX is used</li>
+                        <li>DAX evaluation context</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 2: Columns vs Measures (35 min)</h4>
+                    <ul>
+                        <li>Calculated columns</li>
+                        <li>Measures</li>
+                        <li>Key differences</li>
+                        <li>When to use each</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 3: Syntax & Functions (30 min)</h4>
+                    <ul>
+                        <li>DAX syntax rules</li>
+                        <li>Operators</li>
+                        <li>Basic functions</li>
+                        <li>Common patterns</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 4: Hands-On Lab (90 min)</h4>
+                    <ul>
+                        <li>Create calculated columns</li>
+                        <li>Build measures</li>
+                        <li>Test in visuals</li>
+                        <li>Practice exercises</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Prerequisites:</strong> Completed Day 5 with working data model, relationships established
+            </div>
+
+            <div class="tip">
+                <strong>💡 Today's Focus:</strong> DAX is the calculation engine of Power BI. It's similar to Excel
+                formulas but much more powerful. Master the basics today, and we'll advance tomorrow!
+            </div>
+        </div>
+
+        <!-- What is DAX Section -->
+        <div class="content-section" id="whatisdax">
+            <h2>🔤 What is DAX?</h2>
+
+            <h3>Definition</h3>
+            <div class="theory-box">
+                <p><strong>DAX (Data Analysis Expressions)</strong> is a formula language used in Power BI, Power Pivot,
+                    and Analysis Services.</p>
+
+                <p style="margin-top: 15px;"><strong>DAX allows you to:</strong></p>
+                <ul>
+                    <li>Create custom calculations and aggregations</li>
+                    <li>Build complex business logic</li>
+                    <li>Perform time intelligence calculations</li>
+                    <li>Create dynamic measures that respond to filters</li>
+                    <li>Analyze data across multiple tables</li>
+                    <li>Implement advanced statistical functions</li>
+                </ul>
+            </div>
+
+            <h3>DAX vs Excel Formulas</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Excel Formulas</th>
+                        <th>DAX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Purpose</strong></td>
+                        <td>Cell-by-cell calculations</td>
+                        <td>Column and table-level operations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>References</strong></td>
+                        <td>Cell references (A1, B2)</td>
+                        <td>Column references [ColumnName]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Syntax</strong></td>
+                        <td>=SUM(A1:A10)</td>
+                        <td>=SUM(TableName[ColumnName])</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Context</strong></td>
+                        <td>Fixed cell position</td>
+                        <td>Dynamic filter context</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relationships</strong></td>
+                        <td>Requires VLOOKUP/INDEX-MATCH</td>
+                        <td>Automatic via relationships</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Recalculates on every change</td>
+                        <td>Optimized for large datasets</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Learning Curve</strong></td>
+                        <td>Easy to start</td>
+                        <td>Steeper but more powerful</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note">
+                <strong>📝 Good News:</strong> If you know Excel formulas, you already have a head start! Many DAX
+                functions have similar names (SUM, AVERAGE, IF, etc.)
+            </div>
+
+            <h3>Where DAX is Used</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>1. Calculated Columns</h4>
+                    <p>Add new columns to tables with custom calculations</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Example: Profit = Revenue - Cost</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>2. Measures</h4>
+                    <p>Create dynamic aggregations that respond to filters</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Example: Total Sales = SUM([Revenue])</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>3. Calculated Tables</h4>
+                    <p>Generate entire new tables from DAX expressions</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Example: Date table, What-if parameters</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>4. Row-Level Security</h4>
+                    <p>Define security rules using DAX filters</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Example: [Region] = USERNAME()</p>
+                </div>
+            </div>
+
+            <h3>Understanding Evaluation Context</h3>
+            <div class="theory-box">
+                <p><strong>Evaluation Context:</strong> The environment in which a DAX expression is evaluated. This is
+                    what makes DAX powerful but also tricky!</p>
+
+                <h4 style="margin-top: 15px; color: #ff6b6b;">Two Types of Context:</h4>
+
+                <div class="context-box"
+                    style="background: #fff3cd; padding: 15px; margin: 15px 0; border-left: 4px solid #ffc107; border-radius: 5px;">
+                    <h4>1. Row Context</h4>
+                    <p><strong>When:</strong> Calculated columns</p>
+                    <p><strong>What:</strong> DAX evaluates formula row by row</p>
+                    <p><strong>Example:</strong> In each row, [Profit] = [Revenue] - [Cost]</p>
+                </div>
+
+                <div class="context-box"
+                    style="background: #d1ecf1; padding: 15px; margin: 15px 0; border-left: 4px solid #17a2b8; border-radius: 5px;">
+                    <h4>2. Filter Context</h4>
+                    <p><strong>When:</strong> Measures</p>
+                    <p><strong>What:</strong> DAX respects current filters from slicers, visuals, row/column headers</p>
+                    <p><strong>Example:</strong> SUM(Sales[Revenue]) changes based on selected product, date, etc.</p>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>🎯 Key Insight:</strong> Understanding context is THE most important concept in DAX. We'll see
+                this in action throughout today's lab!
+            </div>
+        </div>
+
+        <!-- Columns vs Measures Section -->
+        <div class="content-section" id="columns-vs-measures">
+            <h2>⚖️ Calculated Columns vs Measures</h2>
+
+            <h3>The Big Difference</h3>
+            <div class="comparison-visual">
+                <div class="column-box">
+                    <h3>📊 Calculated Columns</h3>
+                    <div class="theory-box">
+                        <p><strong>What:</strong> Add a new column to a table</p>
+                        <p><strong>When Calculated:</strong> At data refresh time</p>
+                        <p><strong>Storage:</strong> Stored in the model (uses memory)</p>
+                        <p><strong>Context:</strong> Row context</p>
+                        <p><strong>Icon:</strong> Calculator icon next to column name</p>
+                    </div>
+                </div>
+
+                <div class="measure-box">
+                    <h3>📐 Measures</h3>
+                    <div class="theory-box">
+                        <p><strong>What:</strong> Dynamic calculation formula</p>
+                        <p><strong>When Calculated:</strong> At query time (when visual renders)</p>
+                        <p><strong>Storage:</strong> Only formula stored (no data)</p>
+                        <p><strong>Context:</strong> Filter context</p>
+                        <p><strong>Icon:</strong> Calculator with fx symbol</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Detailed Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Calculated Column</th>
+                        <th>Measure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Creation</strong></td>
+                        <td>Modeling → New Column</td>
+                        <td>Modeling → New Measure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Syntax Start</strong></td>
+                        <td>Column Name =</td>
+                        <td>Measure Name :=</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Result</strong></td>
+                        <td>Value in every row</td>
+                        <td>Single aggregated value</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Can Reference</strong></td>
+                        <td>Other columns in same row</td>
+                        <td>Other measures, aggregations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Can Use In</strong></td>
+                        <td>Slicers, rows/columns, filters</td>
+                        <td>Values area of visuals</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Slower (stored data)</td>
+                        <td>Faster (calculated on-demand)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Size</strong></td>
+                        <td>Increases model size</td>
+                        <td>No impact on size</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use For</strong></td>
+                        <td>Static values, categorization</td>
+                        <td>Aggregations, KPIs, calculations</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Calculated Column Examples</h3>
+            <div class="example-box">
+                <h4>Example 1: Simple Math</h4>
+                <div class="code-block">
+                    <code>Profit = Sales[Revenue] - Sales[Cost]</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Every row gets a Profit value</p>
+                <p style="font-size: 0.9em; color: #666;">Row 1: $1000 - $600 = $400</p>
+                <p style="font-size: 0.9em; color: #666;">Row 2: $500 - $300 = $200</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 2: Conditional Logic</h4>
+                <div class="code-block">
+                    <code>Sales Category = IF(Sales[Revenue] >= 1000, "High", "Low")</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Each sale is categorized as High or Low</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 3: Text Concatenation</h4>
+                <div class="code-block">
+                    <code>Full Name = Customers[FirstName] & " " & Customers[LastName]</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Combines first and last names</p>
+            </div>
+
+            <h3>Measure Examples</h3>
+            <div class="example-box">
+                <h4>Example 1: Simple Aggregation</h4>
+                <div class="code-block">
+                    <code>Total Revenue := SUM(Sales[Revenue])</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Sums all revenue based on current filters</p>
+                <p style="font-size: 0.9em; color: #666;">Changes dynamically based on slicers!</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 2: Average</h4>
+                <div class="code-block">
+                    <code>Average Sale := AVERAGE(Sales[Revenue])</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Average of visible sales</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 3: Calculated Measure</h4>
+                <div class="code-block">
+                    <code>Profit Margin := DIVIDE([Total Profit], [Total Revenue])</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Calculates margin using other measures</p>
+            </div>
+
+            <h3>When to Use Each</h3>
+            <div class="decision-tree">
+                <div class="feature-card" style="background: #d4edda; border-left: 4px solid #28a745;">
+                    <h4>✅ Use Calculated Column When:</h4>
+                    <ul>
+                        <li>You need to filter or slice by the result</li>
+                        <li>You need row-by-row calculations</li>
+                        <li>Creating categories or segments</li>
+                        <li>Combining text fields</li>
+                        <li>Creating bins or ranges</li>
+                        <li>Result doesn't change with filters</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Examples:</strong> Full Name, Age Group, Profit (Revenue -
+                        Cost)</p>
+                </div>
+
+                <div class="feature-card" style="background: #d1ecf1; border-left: 4px solid #17a2b8;">
+                    <h4>✅ Use Measure When:</h4>
+                    <ul>
+                        <li>You need aggregations (SUM, AVERAGE, COUNT)</li>
+                        <li>Calculation should respond to filters</li>
+                        <li>Creating KPIs and metrics</li>
+                        <li>Building ratios or percentages</li>
+                        <li>Time intelligence calculations</li>
+                        <li>You want optimal performance</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Examples:</strong> Total Sales, Average Price, YTD Revenue,
+                        Profit %</p>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>🎯 Golden Rule:</strong> When in doubt, use a MEASURE! Measures are more flexible, faster, and
+                don't increase file size.
+            </div>
+
+            <h3>Implicit vs Explicit Measures</h3>
+            <div class="theory-box">
+                <h4>Implicit Measures (Auto-created)</h4>
+                <p><strong>What:</strong> Power BI automatically creates when you drag a numeric column to Values</p>
+                <p><strong>Example:</strong> Drag [Revenue] to Values → Creates "Sum of Revenue"</p>
+                <p><strong>Problem:</strong> Limited control, can't reference in other measures, not reusable</p>
+
+                <h4 style="margin-top: 20px;">Explicit Measures (You create)</h4>
+                <p><strong>What:</strong> Measures you deliberately create with specific formulas</p>
+                <p><strong>Example:</strong> Create measure "Total Revenue := SUM(Sales[Revenue])"</p>
+                <p><strong>Benefits:</strong> Full control, can reference in other calculations, reusable, documented
+                </p>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Best Practice:</strong> Always create explicit measures! Don't rely on implicit measures for
+                important calculations.
+            </div>
+        </div>
+
+        <!-- DAX Syntax Section -->
+        <div class="content-section" id="syntax">
+            <h2>📝 Understanding DAX Syntax & Operators</h2>
+
+            <h3>Basic DAX Syntax Rules</h3>
+            <div class="theory-box">
+                <h4>1. Naming Conventions</h4>
+                <ul>
+                    <li><strong>Table names:</strong> 'Sales', Orders (use single quotes if spaces)</li>
+                    <li><strong>Column names:</strong> [Revenue], [Product Name] (square brackets)</li>
+                    <li><strong>Measures:</strong> [Total Sales] (also square brackets in formulas)</li>
+                    <li><strong>Full reference:</strong> Sales[Revenue] (Table[Column])</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">2. Creating Formulas</h4>
+                <ul>
+                    <li><strong>Calculated Column:</strong> <code>New Column Name = formula</code></li>
+                    <li><strong>Measure:</strong> <code>Measure Name := formula</code></li>
+                    <li>Note: := is preferred for measures, but = also works</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">3. Case Sensitivity</h4>
+                <ul>
+                    <li>DAX is NOT case-sensitive</li>
+                    <li>SUM, Sum, sum all work the same</li>
+                    <li>But use consistent casing for readability!</li>
+                </ul>
+            </div>
+
+            <h3>DAX Operators</h3>
+            <div class="operators-grid">
+                <div class="operator-card">
+                    <h4>Arithmetic Operators</h4>
+                    <table class="comparison-table" style="font-size: 0.9em;">
+                        <tr>
+                            <td><code>+</code></td>
+                            <td>Addition</td>
+                            <td><code>[Price] + [Tax]</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>-</code></td>
+                            <td>Subtraction</td>
+                            <td><code>[Revenue] - [Cost]</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>*</code></td>
+                            <td>Multiplication</td>
+                            <td><code>[Quantity] * [Price]</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>/</code></td>
+                            <td>Division</td>
+                            <td><code>[Total] / [Count]</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>^</code></td>
+                            <td>Exponentiation</td>
+                            <td><code>[Value] ^ 2</code></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="operator-card">
+                    <h4>Comparison Operators</h4>
+                    <table class="comparison-table" style="font-size: 0.9em;">
+                        <tr>
+                            <td><code>=</code></td>
+                            <td>Equal to</td>
+                            <td><code>[Status] = "Active"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code><></code></td>
+                            <td>Not equal</td>
+                            <td><code>[Region] <> "South"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>></code></td>
+                            <td>Greater than</td>
+                            <td><code>[Sales] > 1000</code></td>
+                        </tr>
+                        <tr>
+                            <td><code><</code></td>
+                            <td>Less than</td>
+                            <td><code>[Age] < 30</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>>=</code></td>
+                            <td>Greater/equal</td>
+                            <td><code>[Score] >= 90</code></td>
+                        </tr>
+                        <tr>
+                            <td><code><=</code></td>
+                            <td>Less/equal</td>
+                            <td><code>[Price] <= 100</code></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="operator-card">
+                    <h4>Logical Operators</h4>
+                    <table class="comparison-table" style="font-size: 0.9em;">
+                        <tr>
+                            <td><code>&&</code></td>
+                            <td>AND</td>
+                            <td><code>[Sales] > 100 && [Region] = "West"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>||</code></td>
+                            <td>OR</td>
+                            <td><code>[Status] = "A" || [Status] = "B"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>NOT</code></td>
+                            <td>NOT</td>
+                            <td><code>NOT([Status] = "Inactive")</code></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="operator-card">
+                    <h4>Text Operator</h4>
+                    <table class="comparison-table" style="font-size: 0.9em;">
+                        <tr>
+                            <td><code>&</code></td>
+                            <td>Concatenate</td>
+                            <td><code>[First] & " " & [Last]</code></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Syntax Examples</h3>
+            <div class="example-box">
+                <h4>✅ Correct Syntax Examples</h4>
+                <div class="code-examples">
+                    <div class="code-block">
+                        <code>Total Sales := SUM(Sales[Revenue])</code>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Measure with clear name and table
+                            reference</p>
+                    </div>
+
+                    <div class="code-block">
+                        <code>Profit Margin := DIVIDE([Total Profit], [Total Revenue], 0)</code>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Uses measures in formula with
+                            DIVIDE for safe division</p>
+                    </div>
+
+                    <div class="code-block">
+                        <code>Full Name = [First Name] & " " & [Last Name]</code>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Calculated column concatenating
+                            text</p>
+                    </div>
+
+                    <div class="code-block">
+                        <code>Sales Rank = IF([Revenue] >= 1000, "High", IF([Revenue] >= 500, "Medium", "Low"))</code>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Nested IF for multiple conditions
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h4>❌ Common Syntax Errors</h4>
+                <div class="code-examples">
+                    <div class="code-block error">
+                        <code>Total Sales = SUM(Revenue)</code>
+                        <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing table name - should be
+                            Sales[Revenue]</p>
+                    </div>
+
+                    <div class="code-block error">
+                        <code>Profit = Revenue - Cost</code>
+                        <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing brackets - should be
+                            [Revenue] - [Cost]</p>
+                    </div>
+
+                    <div class="code-block error">
+                        <code>Average := Sales[Revenue] / COUNT()</code>
+                        <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ COUNT needs a column - use
+                            AVERAGE() instead</p>
+                    </div>
+
+                    <div class="code-block error">
+                        <code>Total = SUM(Sales[Revenue]</code>
+                        <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing closing parenthesis</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Tip:</strong> DAX formula bar has IntelliSense! Start typing and it will suggest functions,
+                tables, and columns.
+            </div>
+        </div>
+
+        <!-- Basic Functions Section -->
+        <div class="content-section" id="basic-functions">
+            <h2>🔢 Basic DAX Functions</h2>
+
+            <h3>Aggregation Functions</h3>
+
+            <div class="function-grid">
+                <div class="function-card">
+                    <h4>SUM</h4>
+                    <p><strong>Purpose:</strong> Add up all values</p>
+                    <div class="code-block">
+                        <code>Total Sales := SUM(Sales[Revenue])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Totaling numbers (revenue,
+                        quantity, cost)</p>
+                </div>
+
+                <div class="function-card">
+                    <h4>AVERAGE</h4>
+                    <p><strong>Purpose:</strong> Calculate mean value</p>
+                    <div class="code-block">
+                        <code>Avg Price := AVERAGE(Products[Price])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding typical value
+                        (average sale, price)</p>
+                </div>
+
+                <div class="function-card">
+                    <h4>COUNT</h4>
+                    <p><strong>Purpose:</strong> Count numeric values</p>
+                    <div class="code-block">
+                        <code>Transaction Count := COUNT(Sales[SalesID])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting transactions,
+                        occurrences</p>
+                </div>
+
+                <div class="function-card">
+                    <h4>COUNTA</h4>
+                    <p><strong>Purpose:</strong> Count non-blank values</p>
+                    <div class="code-block">
+                        <code>Customer Count := COUNTA(Sales[CustomerID])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting text or mixed
+                        data</p>
+                </div>
+
+                <div class="function-card">
+                    <h4>DISTINCTCOUNT</h4>
+                    <p><strong>Purpose:</strong> Count uniquevalues</p>
+                    <div class="code-block">
+                        <code>Unique Customers := DISTINCTCOUNT(Sales[CustomerID])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting unique items
+                        (customers, products)</p>
+                </div>
+                <div class="function-card">
+                    <h4>MIN / MAX</h4>
+                    <p><strong>Purpose:</strong> Find smallest/largest value</p>
+                    <div class="code-block">
+                        <code>Max Sale := MAX(Sales[Revenue])</code>
+                        <code>Min Sale := MIN(Sales[Revenue])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding extremes</p>
+                </div>
+            </div>
+
+            <h3>Mathematical Functions</h3>
+            <div class="function-grid">
+                <div class="function-card">
+                    <h4>DIVIDE</h4>
+                    <p><strong>Purpose:</strong> Safe division (handles divide by zero)</p>
+                    <div class="code-block">
+                        <code>Profit Margin := DIVIDE([Total Profit], [Total Revenue], 0)</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Syntax:</strong> DIVIDE(numerator,
+                        denominator, alternate_result)</p>
+                    <p style="font-size: 0.85em; color: #666;">Third parameter is what to return if division by zero</p>
+                </div>
+
+                <div class="function-card">
+                    <h4>ROUND</h4>
+                    <p><strong>Purpose:</strong> Round to specified decimals</p>
+                    <div class="code-block">
+                        <code>Rounded Price = ROUND([Price], 2)</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Cleaning decimal places
+                    </p>
+                </div>
+
+                <div class="function-card">
+                    <h4>ABS</h4>
+                    <p><strong>Purpose:</strong> Absolute value (remove negative)</p>
+                    <div class="code-block">
+                        <code>Abs Variance = ABS([Actual] - [Budget])</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Variance analysis</p>
+                </div>
+            </div>
+
+            <h3>Logical Functions</h3>
+            <div class="function-grid">
+                <div class="function-card">
+                    <h4>IF</h4>
+                    <p><strong>Purpose:</strong> Conditional logic</p>
+                    <div class="code-block">
+                        <code>Status = IF([Revenue] > 1000, "High", "Low")</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Syntax:</strong> IF(condition, value_if_true,
+                        value_if_false)</p>
+                </div>
+
+                <div class="function-card">
+                    <h4>SWITCH</h4>
+                    <p><strong>Purpose:</strong> Multiple conditions (cleaner than nested IF)</p>
+                    <div class="code-block">
+                        <code>Region Name = SWITCH([RegionID], 1, "North", 2, "South", 3, "East", "West")</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Many conditions to check
+                    </p>
+                </div>
+
+                <div class="function-card">
+                    <h4>AND / OR</h4>
+                    <p><strong>Purpose:</strong> Combine conditions</p>
+                    <div class="code-block">
+                        <code>Premium = IF(AND([Revenue] > 5000, [Customer Type] = "Gold"), "Yes", "No")</code>
+                    </div>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Multiple criteria needed
+                    </p>
+                </div>
+            </div>
+
+            <h3>Step-by-Step: Creating a Measure</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📝</div>
+                    <h3 style="margin: 0;">How Power BI Calculates a Measure</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Example Measure:</strong> <code>Total Sales := SUM(Sales[Revenue])</code></p>
+
+                    <h4 style="margin-top: 15px;">What Happens When You Use This Measure:</h4>
+                    <ol>
+                        <li><strong>User interacts with report</strong> (e.g., selects "2024" in year slicer)</li>
+                        <li><strong>Power BI determines filter context</strong>
+                            <ul>
+                                <li>Current filters: Year = 2024</li>
+                                <li>Visual context: Maybe also Product = "Laptop"</li>
+                            </ul>
+                        </li>
+                        <li><strong>DAX engine applies filters</strong>
+                            <ul>
+                                <li>Filters Sales table to matching rows</li>
+                                <li>Only rows where Year = 2024 AND Product = "Laptop"</li>
+                            </ul>
+                        </li>
+                        <li><strong>SUM function executes</strong>
+                            <ul>
+                                <li>Adds up [Revenue] for filtered rows</li>
+                                <li>Returns single number</li>
+                            </ul>
+                        </li>
+                        <li><strong>Result displays in visual</strong></li>
+                    </ol>
+
+                    <p
+                        style="margin-top: 15px; padding: 15px; background: #d4edda; border-left: 4px solid #28a745; border-radius: 5px;">
+                        <strong>This is why measures are dynamic!</strong> Same formula, different results based on
+                        filters.
+                    </p>
+                </div>
+            </div>
+
+            <h3>DAX Best Practices</h3>
+            <div class="feature-grid">
+                <div class="feature-card" style="background: #d4edda; border-left: 4px solid #28a745;">
+                    <h4>✅ DO's</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Use clear, descriptive names</li>
+                        <li>Always use table references: Table[Column]</li>
+                        <li>Use DIVIDE instead of / for division</li>
+                        <li>Format measures properly (currency, percentage)</li>
+                        <li>Add descriptions to complex measures</li>
+                        <li>Organize measures in display folders</li>
+                        <li>Test measures with different filters</li>
+                        <li>Use variables for repeated calculations</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card" style="background: #f8d7da; border-left: 4px solid #dc3545;">
+                    <h4>❌ DON'Ts</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Don't use calculated columns for aggregations</li>
+                        <li>Don't create circular references</li>
+                        <li>Don't use column references without table name</li>
+                        <li>Don't ignore errors or warnings</li>
+                        <li>Don't create overly complex formulas</li>
+                        <li>Don't forget to test edge cases</li>
+                        <li>Don't use vague names like "Calc1", "Measure2"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Lab Section -->
+        <div class="content-section" id="practical">
+            <h2>🔨 Practical Lab: Your First DAX Formulas</h2>
+
+            <div class="important">
+                <strong>⏱️ Lab Duration:</strong> 90 minutes<br>
+                <strong>🎯 Objective:</strong> Create calculated columns and measures from scratch
+            </div>
+
+            <div class="note">
+                <strong>📋 Prerequisites:</strong> Use the data model from Day 5 (Sales, Products, Customers, Date
+                tables with relationships)
+            </div>
+
+            <h3>Exercise 1: Create Calculated Columns (25 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Add Calculated Columns to Sales Table</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Open your Day 5 Power BI file</li>
+                        <li>Go to <strong>Data View</strong></li>
+                        <li>Select the <strong>Sales</strong> table</li>
+                        <li>Click <strong>Table tools → New column</strong></li>
+
+                        <li style="margin-top: 15px;"><strong>Column 1: Total Amount</strong>
+                            <ul>
+                                <li>Formula: <code>Total Amount = Sales[Quantity] * Sales[UnitPrice]</code></li>
+                                <li>Press Enter</li>
+                                <li>Verify: Each row should show quantity × price</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Column 2: Sales Category</strong>
+                            <ul>
+                                <li>Formula:
+                                    <code>Sales Category = IF(Sales[Total Amount] >= 1000, "High", IF(Sales[Total Amount] >= 500, "Medium", "Low"))</code>
+                                </li>
+                                <li>Press Enter</li>
+                                <li>Check: Sales should be categorized correctly</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Column 3: Discount Amount</strong>
+                            <ul>
+                                <li>Formula: <code>Discount Amount = Sales[Total Amount] * 0.1</code></li>
+                                <li>This gives 10% discount on each sale</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 2: Create Basic Measures (30 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Build Essential Measures</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Stay in <strong>Data View</strong> or switch to <strong>Report View</strong></li>
+                        <li>Select <strong>Sales</strong> table in Fields pane</li>
+                        <li>Click <strong>Table tools → New measure</strong></li>
+
+                        <li style="margin-top: 15px;"><strong>Measure 1: Total Revenue</strong>
+                            <div class="code-block">
+                                <code>Total Revenue := SUM(Sales[Total Amount])</code>
+                            </div>
+                            <ul>
+                                <li>Press Enter</li>
+                                <li>Format as Currency: Select measure → Measure tools → Format: Currency → $ English
+                                    (United States)</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Measure 2: Total Quantity</strong>
+                            <div class="code-block">
+                                <code>Total Quantity := SUM(Sales[Quantity])</code>
+                            </div>
+                            <ul>
+                                <li>Format as Whole Number</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Measure 3: Average Sale</strong>
+                            <div class="code-block">
+                                <code>Average Sale := AVERAGE(Sales[Total Amount])</code>
+                            </div>
+                            <ul>
+                                <li>Format as Currency</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Measure 4: Number of Transactions</strong>
+                            <div class="code-block">
+                                <code>Transaction Count := COUNT(Sales[SalesID])</code>
+                            </div>
+                            <ul>
+                                <li>Format as Whole Number</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Measure 5: Unique Customers</strong>
+                            <div class="code-block">
+                                <code>Unique Customers := DISTINCTCOUNT(Sales[CustomerKey])</code>
+                            </div>
+                            <ul>
+                                <li>Format as Whole Number</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 3: Test Your Measures (20 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Verify Measures Work Correctly</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Go to <strong>Report View</strong></li>
+                        <li>Create a <strong>Card</strong> visual for each measure:
+                            <ul>
+                                <li>Insert → Card</li>
+                                <li>Drag each measure to the card</li>
+                                <li>Arrange cards across the top of the page</li>
+                            </ul>
+                        </li>
+                        <li>Add a <strong>Slicer</strong> with Date[Year]</li>
+                        <li>Test dynamic behavior:
+                            <ul>
+                                <li>Click different years in slicer</li>
+                                <li>Watch measure values change</li>
+                                <li>Verify calculations make sense</li>
+                            </ul>
+                        </li>
+                        <li>Create a <strong>Table</strong> visual:
+                            <ul>
+                                <li>Add Products[ProductName]</li>
+                                <li>Add your measures</li>
+                                <li>See measures broken down by product</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Exercise 4: Create Advanced Measures (15 minutes)</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">4</div>
+                    <h3 style="margin: 0;">Build Measures Using Other Measures</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li><strong>Measure: Average per Customer</strong>
+                            <div class="code-block">
+                                <code>Avg per Customer := DIVIDE([Total Revenue], [Unique Customers], 0)</code>
+                            </div>
+                            <ul>
+                                <li>Format as Currency</li>
+                                <li>This shows average revenue per unique customer</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Measure: Average Items per Transaction</strong>
+                            <div class="code-block">
+                                <code>Avg Items per Transaction := DIVIDE([Total Quantity], [Transaction Count], 0)</code>
+                            </div>
+                            <ul>
+                                <li>Format as Decimal (2 places)</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Measure: Total with Discount</strong>
+                            <div class="code-block">
+                                <code>Revenue After Discount := [Total Revenue] - SUM(Sales[Discount Amount])</code>
+                            </div>
+                            <ul>
+                                <li>Format as Currency</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="important" style="margin-top: 30px;">
+                <strong>🎉 Lab Complete!</strong> You have successfully:
+                <ul style="margin-top: 10px;">
+                    <li>✅ Created calculated columns with formulas</li>
+                    <li>✅ Built multiple DAX measures</li>
+                    <li>✅ Used measures in other measure calculations</li>
+                    <li>✅ Formatted measures properly</li>
+                    <li>✅ Tested dynamic behavior with filters</li>
+                    <li>✅ Verified calculations are correct</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="content-section" id="tasks">
+            <h2>✅ Practice Tasks & Homework</h2>
+
+            <h3>Task 1: DAX Challenge</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🎯</div>
+                    <h3 style="margin: 0;">Create These Measures</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Using your Sales data, create:</strong></p>
+                    <ol>
+                        <li><strong>Max Single Sale:</strong> Find the highest sale amount</li>
+                        <li><strong>Min Single Sale:</strong> Find the lowest sale amount</li>
+                        <li><strong>Sales Range:</strong> Difference between max and min</li>
+                        <li><strong>Above Average Count:</strong> Count of sales above average (hint: use COUNTROWS and
+                            FILTER)</li>
+                        <li><strong>Revenue per Transaction:</strong> Average value per transaction</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>Bonus:</strong> Create a measure that shows "Goal Met" or
+                        "Below Goal" if revenue is above/below $10,000</p>
+                </div>
+            </div>
+
+            <h3>Task 2: Calculated Column Practice</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📊</div>
+                    <h3 style="margin: 0;">Enhance Your Tables</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Add these calculated columns:</strong></p>
+                    <ol>
+                        <li><strong>In Customers table:</strong> Full Address = City & ", " & Country</li>
+                        <li><strong>In Products table:</strong> Price Range = IF(UnitPrice > 100, "Premium",
+                            IF(UnitPrice > 50, "Standard", "Budget"))</li>
+                        <li><strong>In Sales table:</strong> High Value Flag = IF(Total Amount > 1000, "Yes", "No")</li>
+                        <li><strong>In Date table:</strong> Is Weekend = IF(WEEKDAY(Date[Date]) IN {1, 7}, "Weekend",
+                            "Weekday")</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Task 3: Quiz</h3>
+            <div class="theory-box">
+                <p><strong>Answer these questions:</strong></p>
+                <ol>
+                    <li>What's the main difference between a calculated column and a measure?</li>
+                    <li>When should you use DIVIDE instead of the / operator?</li>
+                    <li>What's the difference between COUNT and DISTINCTCOUNT?</li>
+                    <li>Can you use a measure inside a calculated column formula? Why or why not?</li>
+                    <li>What's the syntax for referencing a column in DAX?</li>
+                    <li>What does := mean in DAX?</li>
+                    <li>What are the two types of evaluation context in DAX?</li>
+                    <li>Which uses more memory: calculated columns or measures?</li>
+                </ol>
+            </div>
+
+            <h3>Task 4: Real-World Scenario</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">💼</div>
+                    <h3 style="margin: 0;">Business Case: KPI Dashboard</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Scenario:</strong> Your manager wants a sales KPI dashboard</p>
+                    <p><strong>Requirements:</strong></p>
+                    <ol>
+                        <li>Create measures for:
+                            <ul>
+                                <li>Total Sales</li>
+                                <li>Total Cost (if you have cost data)</li>
+                                <li>Profit (Sales - Cost)</li>
+                                <li>Profit Margin % (Profit / Sales)</li>
+                                <li>YTD Sales (we'll do this properly tomorrow, use SUM for now)</li>
+                            </ul>
+                        </li>
+                        <li>Create a report page with:
+                            <ul>
+                                <li>Cards showing each KPI</li>
+                                <li>Slicers for Year, Product Category</li>
+                                <li>A table showing KPIs by month</li>
+                            </ul>
+                        </li>
+                        <li>Save as "Day6_KPI_Dashboard"</li>
+                        <li>Present on Day 7</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="content-section" id="resources">
+            <h2>📦 Resources & Downloads</h2>
+
+            <h3>📚 DAX Learning Resources</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📖 Essential Reading</h4>
+                    <ul>
+                        <li>"The Definitive Guide to DAX" - Marco Russo & Alberto Ferrari</li>
+                        <li>Microsoft DAX Documentation</li>
+                        <li>SQLBI.com DAX articles</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🎥 Video Tutorials</h4>
+                    <ul>
+                        <li>Guy in a Cube - DAX Fridays</li>
+                        <li>SQLBI - DAX Video Course</li>
+                        <li>Curbal - DAX Basics Series</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🔧 Tools & Resources</h4>
+                    <ul>
+                        <li>DAX.guide - Function reference</li>
+                        <li>DAX Formatter - Format your code</li>
+                        <li>DAX Studio - Advanced DAX tool</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="download-section" style="background: #ff6b9d;">
+                <h3 style="color: white;">📥 Practice Data for Day 6</h3>
+                <p>Download this dataset to follow along with the DAX exercises in the Practical Lab.</p>
+                <div style="margin-top: 15px;">
+                    <button class="download-btn" onclick="generateDAXData()" style="color: #ff6b9d;">
+                        📥 Download DAX_Practice_Data.csv
+                    </button>
+                </div>
+            </div>
+
+            <h3>📋 DAX Cheat Sheet</h3>
+            <div class="theory-box">
+                <h4>Quick Reference</h4>
+                <table class="comparison-table" style="font-size: 0.9em;">
+                    <tr>
+                        <td><strong>Aggregation</strong></td>
+                        <td>SUM, AVERAGE, MIN, MAX, COUNT, COUNTA, DISTINCTCOUNT</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Math</strong></td>
+                        <td>DIVIDE, ROUND, ABS, SQRT, POWER</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Logical</strong></td>
+                        <td>IF, SWITCH, AND, OR, NOT</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Text</strong></td>
+                        <td>CONCATENATE, LEFT, RIGHT, LEN, UPPER, LOWER</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date</strong></td>
+                        <td>TODAY, NOW, YEAR, MONTH, DAY, DATEDIFF</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Filter</strong></td>
+                        <td>CALCULATE, FILTER, ALL, ALLEXCEPT (Day 7!)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>🎯 Day 7 Preview</h3>
+            <div class="note">
+                <strong>📅 Coming Tomorrow: Advanced DAX Functions</strong>
+                <p style="margin-top: 10px;">Topics we'll cover:</p>
+                <ul>
+                    <li>Date and Time functions in detail</li>
+                    <li>Conditional & Logical functions (nested IF, SWITCH)</li>
+                    <li>Text functions (CONCATENATE, SUBSTITUTE, FORMAT)</li>
+                    <li>CALCULATE function - the most powerful DAX function</li>
+                    <li>FILTER and ALL functions</li>
+                    <li>Iterator functions (SUMX, AVERAGEX)</li>
+                    <li>Time Intelligence formulas (YTD, MTD, SAMEPERIODLASTYEAR)</li>
+                </ul>
+                <div class="tip">
+                    <strong>💡 Note on Advanced DAX:</strong> CALCULATE is coming tomorrow. It is the most important
+                    function in Power BI. Make sure you understand SUM and AVERAGE perfectly before we start!
+                </div>
+
+                <h3>✅ Day 6 Final Checklist</h3>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Created a Calculated Column for Total Amount</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Built an explicit SUM Measure for Total Revenue</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Used the DIVIDE function for safe math calculations</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Successfully tested measures in a Card and Table visual</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Verified that measures respond dynamically to slicers (Filter Context)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <h3>🎉 Congratulations on Completing Day 6!</h3>
+            <p>You've mastered the foundation of DAX — the calculation language of Power BI!</p>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Practice Tip:</strong> DAX is like a language; the more you speak it, the more natural it
+                becomes. Keep practicing the basic functions!
+            </p>
+            <div style="margin-top: 30px;">
+                <a href="Day5.html" class="next-day-btn"
+                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;color: white;">← Back to
+                    Day 5</a>
+                <a style="text-decoration: none;">
+                    <button class="next-day-btn" onclick="alert('Day 7 will be available soon!')">
+                        Continue to Day 7 →
+                    </button>
+                </a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+                Created by <strong>Muhammed Rifad KP</strong> | Power BI Training Course | Day 6 of 10 | © 2026
+            </p>
+        </footer>
+    </div>
+
+
+    <script>
+        // Navigation Logic
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+        const progressFill = document.querySelector('.progress-fill');
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetSection = btn.getAttribute('data-section');
+
+                // Update navigation buttons
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update content sections
+                sections.forEach(s => s.classList.remove('active'));
+                const targetEl = document.getElementById(targetSection);
+                if (targetEl) {
+                    targetEl.classList.add('active');
+                }
+
+                // Update progress bar
+                const currentIndex = Array.from(navBtns).indexOf(btn);
+                const progress = ((currentIndex + 1) / navBtns.length) * 100;
+                progressFill.style.width = progress + '%';
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Initialize progress bar
+        progressFill.style.width = (1 / navBtns.length * 100) + '%';
+
+        // Checklist Logic
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('.checkbox');
+            checkbox.classList.toggle('checked');
+            if (checkbox.classList.contains('checked')) {
+                checkbox.innerHTML = '✓';
+                checkbox.style.background = '#ff6b9d';
+                checkbox.style.borderColor = '#ff6b9d';
+                checkbox.style.color = 'white';
+                element.style.opacity = '0.7';
+            } else {
+                checkbox.innerHTML = '';
+                checkbox.style.background = 'white';
+                checkbox.style.borderColor = '#ddd';
+                element.style.opacity = '1';
+            }
+        }
+
+        // DAX Practice Data Generator
+        function generateDAXData() {
+            const content = `SalesID,Date,Product,Category,Quantity,UnitPrice,Cost
+1,2024-01-01,Laptop Pro,Electronics,2,1200,800
+2,2024-01-02,Wireless Mouse,Electronics,10,25,10
+3,2024-01-03,Desk Chair,Furniture,5,150,90
+4,2024-01-04,Laptop Pro,Electronics,1,1200,800
+5,2024-01-05,Monitor 24,Electronics,3,250,180
+6,2024-01-06,Wireless Mouse,Electronics,15,25,10
+7,2024-01-07,Office Desk,Furniture,2,400,300
+8,2024-01-08,Headphones,Electronics,8,100,60
+9,2024-01-09,Desk Chair,Furniture,4,150,90
+10,2024-01-10,Laptop Pro,Electronics,2,1200,800`;
+
+            downloadFile(content, "DAX_Practice_Data.csv", "text/csv");
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(a.href);
+        }
+    </script>
+</body>
+
+</html>

@@ -999,108 +999,111 @@
 
         <!-- Hierarchies Section -->
         <div class="content-section" id="hierarchies">
-            <h2>📊 Creating Hierarchies for Drill-Down</h2>
+            <h2>� Date & Geography Hierarchies</h2>
 
             <div class="theory-box">
-                <p>A <strong>Hierarchy</strong> is a series of related data fields organized in levels. This allows
-                    report users to <strong>"Drill Down"</strong> from a high-level summary to specific details in the
-                    same visual.</p>
-                <p style="margin-top: 10px;"><strong>Think of it like:</strong> A folder structure on your computer. You
-                    open a folder (Year) to see the files (Months) inside.</p>
+                <p>Using the <code>date HIERARCHY.xlsx</code> data, we can create powerful drill-down reports.
+                    Hierarchies allow you to analyze trends over time (Year → Month) or locations (Country → City)
+                    without needing multiple charts.</p>
             </div>
 
             <div class="example-box">
-                <h3>🔍 The Power of Drill-Down</h3>
-                <p>When you add a hierarchy to a chart, Power BI enables these icons:</p>
-                <div
-                    style="display: flex; justify-content: center; gap: 20px; font-size: 1.5em; margin: 15px 0; color: #f5576c;">
-                    <span title="Drill Up">⬆️</span>
-                    <span title="Click to turn on Drill Down">⬇️</span>
-                    <span title="Go to next level">⏬</span>
-                    <span title="Expand all down one level">🔱</span>
-                </div>
-
-                <div class="merge-diagram">
-                    <div class="table-box" style="border: 2px solid #fecdd3;">
-                        <p><strong>Level 1: Year</strong></p>
-                        <div
-                            style="background: #f5576c; height: 100px; width: 60px; margin: 0 auto; border-radius: 5px;">
-                        </div>
-                        <p>2023</p>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="table-box" style="border: 2px solid #fecdd3;">
-                        <p><strong>Level 2: Quarter</strong></p>
-                        <div style="display: flex; gap: 5px; justify-content: center;">
-                            <div style="background: #f093fb; height: 60px; width: 25px; border-radius: 3px;"></div>
-                            <div style="background: #f093fb; height: 80px; width: 25px; border-radius: 3px;"></div>
-                        </div>
-                        <p>Q1, Q2...</p>
-                    </div>
-                </div>
+                <h3>📊 Dataset Overview (Example Data)</h3>
+                <table class="comparison-table" style="font-size: 0.9em;">
+                    <thead>
+                        <tr>
+                            <th>OrderDate</th>
+                            <th>Country</th>
+                            <th>City</th>
+                            <th>Category</th>
+                            <th>SalesAmount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2019-01-05</td>
+                            <td>India</td>
+                            <td>Bangalore</td>
+                            <td>Electronics</td>
+                            <td>45,000</td>
+                        </tr>
+                        <tr>
+                            <td>2020-11-20</td>
+                            <td>India</td>
+                            <td>Kochi</td>
+                            <td>Electronics</td>
+                            <td>51,000</td>
+                        </tr>
+                        <tr>
+                            <td>2023-03-25</td>
+                            <td>India</td>
+                            <td>Furniture</td>
+                            <td>Kochi</td>
+                            <td>28,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">* This data is perfect for practicing both
+                    <strong>Date</strong> and <strong>Location</strong> hierarchies.
+                </p>
             </div>
-
-            <h3>Common Hierarchy Structures</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Hierarchy</th>
-                        <th>Top Level</th>
-                        <th>Mid Level</th>
-                        <th>Bottom Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>📅 Date</strong></td>
-                        <td>Year</td>
-                        <td>Quarter / Month</td>
-                        <td>Day</td>
-                    </tr>
-                    <tr>
-                        <td><strong>🗺️ Geography</strong></td>
-                        <td>Continent / Region</td>
-                        <td>Country / State</td>
-                        <td>City / ZIP</td>
-                    </tr>
-                    <tr>
-                        <td><strong>📦 Product</strong></td>
-                        <td>Category</td>
-                        <td>Sub-Category</td>
-                        <td>Product Name</td>
-                    </tr>
-                </tbody>
-            </table>
 
             <div class="practical-task">
                 <div class="task-header">
-                    <div class="task-number">🖱️</div>
-                    <h3 style="margin: 0;">How to Create a Hierarchy (Desktop View)</h3>
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">Step 1: Setting up the Date Hierarchy</h3>
                 </div>
                 <div class="steps">
+                    <p>Power BI usually detects <code>OrderDate</code> and creates a hierarchy automatically. If not:
+                    </p>
                     <ol>
-                        <li>In the <strong>Data</strong> pane (right side), right-click the top-level field (e.g.,
-                            <code>Region</code>).
-                        </li>
-                        <li>Select <strong>Create hierarchy</strong>. A new item with a hierarchy icon (📉) appears.
-                        </li>
-                        <li>To add more levels: Right-click another field (e.g., <code>Country</code>) → <strong>Add to
-                                hierarchy</strong> → select your hierarchy name.</li>
-                        <li>Alternatively, simply <strong>drag and drop</strong> fields directly into the hierarchy
-                            group.</li>
-                        <li><strong>Rename:</strong> Right-click the hierarchy name to give it a clear title like
-                            <code>Geography_Drill</code>.
-                        </li>
+                        <li>In the <strong>Data Pane</strong>, ensure <code>OrderDate</code> has a calendar icon.</li>
+                        <li>By default, Power BI creates <strong>Year > Quarter > Month > Day</strong>.</li>
+                        <li>Drag <code>OrderDate</code> into the <strong>X-axis</strong> of a Bar Chart.</li>
+                        <li>Drag <code>SalesAmount</code> into the <strong>Y-axis</strong>.</li>
+                        <li>Use the <strong>Drill Down (⬇️)</strong> button to see sales for 2019, 2020, etc., down to
+                            the specific months.</li>
                     </ol>
                 </div>
             </div>
 
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">Step 2: Creating a Geography Hierarchy</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Right-click <code>Country</code> in the Data Pane.</li>
+                        <li>Select <strong>Create hierarchy</strong>. (It will name it <code>Country Hierarchy</code>).
+                        </li>
+                        <li>Right-click <code>City</code> → Select <strong>Add to hierarchy</strong> → <strong>Country
+                                Hierarchy</strong>.</li>
+                        <li>Drag the new <code>Country Hierarchy</code> onto a Map or Bar Chart.</li>
+                        <li>Now you can drill down from <strong>India</strong> into <strong>Bangalore, Mumbai, Kochi,
+                                and Delhi</strong>.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="download-section" style="background: #27ae60;">
+                <h3 style="color: white;">� Download This Specific Practice Data</h3>
+                <p>Download the <code>date HIERARCHY</code> dataset to follow the steps above.</p>
+                <div style="margin-top: 15px;">
+                    <button class="download-btn" onclick="downloadDateHierarchyData()"
+                        style="color: #27ae60; font-size: 1.1em; padding: 15px 40px;">
+                        📥 Download date HIERARCHY.csv
+                    </button>
+                </div>
+            </div>
+
             <div class="tip">
-                <strong>💡 Note:</strong> Power BI creates an automatic <strong>Date Hierarchy</strong> for any field
-                marked as a Date type. However, creating a custom hierarchy is better when you want to control exactly
-                which levels the user sees!
+                <strong>💡 Teaching Tip:</strong> Explain to students that hierarchies keep the report "Clean". Instead
+                of having 5 different charts for Year, Month, Country, and City, you just have <strong>2 drillable
+                    charts</strong>!
             </div>
         </div>
+
 
         <!-- Practical Lab Section -->
         <div class="content-section" id="practical">
@@ -1340,6 +1343,117 @@
                 "C10,Katrina Bennett,katrina@test.com,London";
             downloadFile(content, "Big_Customers_Dataset.csv", "text/csv");
         }
+
+        function downloadHugeHierarchyData() {
+            const countries = ["USA", "India", "UK"];
+            const states = {
+                "USA": ["California", "Texas", "New York"],
+                "India": ["Kerala", "Tamil Nadu", "Maharashtra"],
+                "UK": ["London", "Manchester", "Birmingham"]
+            };
+            const cities = {
+                "California": ["Los Angeles", "San Francisco"],
+                "Texas": ["Houston", "Austin"],
+                "New York": ["NYC", "Buffalo"],
+                "Kerala": ["Kochi", "Calicut"],
+                "Tamil Nadu": ["Chennai", "Madurai"],
+                "Maharashtra": ["Mumbai", "Pune"],
+                "London": ["Camden", "Westminster"],
+                "Manchester": ["Old Trafford", "City Centre"],
+                "Birmingham": ["Solihull", "Sutton"]
+            };
+            const categories = ["Electronics", "Furniture", "Clothing"];
+            const subCats = {
+                "Electronics": ["Phones", "Laptops", "Tablets"],
+                "Furniture": ["Chairs", "Tables", "Beds"],
+                "Clothing": ["T-Shirts", "Jeans", "Jackets"]
+            };
+
+            let csv = "OrderDate,Country,State,City,Category,SubCategory,Product,Sales,Quantity\n";
+
+            for (let i = 1; i <= 150; i++) {
+                const country = countries[Math.floor(Math.random() * countries.length)];
+                const state = states[country][Math.floor(Math.random() * states[country].length)];
+                const city = cities[state][Math.floor(Math.random() * cities[state].length)];
+                const cat = categories[Math.floor(Math.random() * categories.length)];
+                const subCat = subCats[cat][Math.floor(Math.random() * subCats[cat].length)];
+                const product = subCat + " " + (Math.floor(Math.random() * 50) + 1);
+                const sales = (Math.random() * 1000 + 50).toFixed(2);
+                const qty = Math.floor(Math.random() * 10) + 1;
+                const date = `2023-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`;
+
+                csv += `${date},${country},${state},${city},${cat},${subCat},${product},${sales},${qty}\n`;
+            }
+
+            downloadFile(csv, "Huge_Hierarchy_Practice_Data.csv", "text/csv");
+        }
+
+        function downloadDateHierarchyData() {
+            const content = `OrderDate,Country,City,Category,SalesAmount
+2019-01-05,India,Bangalore,Electronics,45000
+2019-02-14,India,Bangalore,Electronics,52000
+2019-03-22,India,Mumbai,Furniture,18000
+2019-04-10,India,Mumbai,Electronics,61000
+2019-05-18,India,Kochi,Electronics,39000
+2019-06-27,India,Kochi,Furniture,22000
+2019-07-09,India,Delhi,Electronics,58000
+2019-08-16,India,Delhi,Electronics,63000
+2019-09-03,India,Bangalore,Furniture,17000
+2019-10-21,India,Mumbai,Electronics,70000
+2019-11-11,India,Kochi,Electronics,48000
+2019-12-29,India,Delhi,Furniture,26000
+2020-01-06,India,Bangalore,Electronics,50000
+2020-02-19,India,Mumbai,Electronics,56000
+2020-03-25,India,Kochi,Furniture,24000
+2020-04-13,India,Delhi,Electronics,62000
+2020-05-30,India,Bangalore,Electronics,54000
+2020-06-17,India,Mumbai,Furniture,20000
+2020-07-08,India,Kochi,Electronics,46000
+2020-08-24,India,Delhi,Electronics,68000
+2020-09-14,India,Bangalore,Furniture,19000
+2020-10-02,India,Mumbai,Electronics,72000
+2020-11-20,India,Kochi,Electronics,51000
+2020-12-28,India,Delhi,Furniture,27000
+2021-01-09,India,Bangalore,Electronics,56000
+2021-02-18,India,Mumbai,Electronics,59000
+2021-03-27,India,Kochi,Furniture,25000
+2021-04-15,India,Delhi,Electronics,64000
+2021-05-23,India,Bangalore,Electronics,58000
+2021-06-11,India,Mumbai,Furniture,21000
+2021-07-19,India,Kochi,Electronics,48000
+2021-08-26,India,Delhi,Electronics,71000
+2021-09-07,India,Bangalore,Furniture,20000
+2021-10-16,India,Mumbai,Electronics,76000
+2021-11-28,India,Kochi,Electronics,53000
+2021-12-31,India,Delhi,Furniture,29000
+2022-01-08,India,Bangalore,Electronics,60000
+2022-02-17,India,Mumbai,Electronics,63000
+2022-03-26,India,Kochi,Furniture,26000
+2022-04-14,India,Delhi,Electronics,68000
+2022-05-22,India,Bangalore,Electronics,61000
+2022-06-10,India,Mumbai,Furniture,22000
+2022-07-18,India,Kochi,Electronics,52000
+2022-08-25,India,Delhi,Electronics,75000
+2022-09-06,India,Bangalore,Furniture,21000
+2022-10-15,India,Mumbai,Electronics,80000
+2022-11-27,India,Kochi,Electronics,56000
+2022-12-30,India,Delhi,Furniture,31000
+2023-01-07,India,Bangalore,Electronics,64000
+2023-02-16,India,Mumbai,Electronics,67000
+2023-03-25,India,Kochi,Furniture,28000
+2023-04-13,India,Delhi,Electronics,72000
+2023-05-21,India,Bangalore,Electronics,66000
+2023-06-09,India,Mumbai,Furniture,24000
+2023-07-17,India,Kochi,Electronics,58000
+2023-08-24,India,Delhi,Electronics,82000
+2023-09-05,India,Bangalore,Furniture,23000
+2023-10-14,India,Mumbai,Electronics,86000
+2023-11-26,India,Kochi,Electronics,60000
+2023-12-29,India,Delhi,Furniture,34000
+`;
+            downloadFile(content, "date_HIERARCHY_Practice.csv", "text/csv");
+        }
+
 
         function downloadFile(content, fileName, contentType) {
             const a = document.createElement("a");
