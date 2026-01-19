@@ -349,7 +349,7 @@
         }
 
         .code-block::before {
-            content: 'DAX';
+            /* content: 'DAX'; */
             position: absolute;
             top: 5px;
             right: 10px;
@@ -661,9 +661,6 @@
 
         /* Button group for navigation */
         nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
             background: white;
         }
 
@@ -884,7 +881,7 @@
                     <h4>TODAY() & NOW()</h4>
                     <p><strong>Purpose:</strong> Get current date/time</p>
                     <div class="code-block">
-                        <code>Days Since Order = DATEDIFF(Orders[OrderDate], TODAY(), DAY)</code>
+                        <code>Days Since Order = DATEDIFF(Table1[Order Date], TODAY(), DAY)</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Note:</strong> Updates on refresh</p>
                 </div>
@@ -893,7 +890,7 @@
                     <h4>DATEDIFF</h4>
                     <p><strong>Purpose:</strong> Calculate difference between dates</p>
                     <div class="code-block">
-                        <code>Lead Time = DATEDIFF(Orders[OrderDate], Orders[ShipDate], DAY)</code>
+                        <code>Lead Time = DATEDIFF(Table1[Order Date], Table1[Ship Date], DAY)</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Intervals:</strong> YEAR, QUARTER, MONTH,
                         DAY, HOUR, MINUTE, SECOND</p>
@@ -903,9 +900,9 @@
                     <h4>YEAR, MONTH, DAY</h4>
                     <p><strong>Purpose:</strong> Extract date components</p>
                     <div class="code-block">
-                        <code>Order Year = YEAR(Orders[OrderDate])</code>
-                        <code>Order Month = MONTH(Orders[OrderDate])</code>
-                        <code>Order Day = DAY(Orders[OrderDate])</code>
+                        <code>Order Year = YEAR(Table1[Order Date])</code>
+                        <code>Order Month = MONTH(Table1[Order Date])</code>
+                        <code>Order Day = DAY(Table1[Order Date])</code>
                     </div>
                 </div>
 
@@ -913,7 +910,7 @@
                     <h4>WEEKDAY & WEEKNUM</h4>
                     <p><strong>Purpose:</strong> Get day of week or week number</p>
                     <div class="code-block">
-                        <code>Day of Week = WEEKDAY(Date[Date], 2)</code>
+                        <code>Day of Week = WEEKDAY('Date Table'[Date], 2)</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;">Return type: 2 = Monday as 1, Sunday as 7</p>
                 </div>
@@ -940,17 +937,17 @@
 
             <h3>Practical Date Examples</h3>
             <div class="example-box">
-                <h4>Example 1: Age Calculation</h4>
+                <h4>Example 1: Long Pending Orders</h4>
                 <div class="code-block">
-                    <code>Age = DATEDIFF(Customers[BirthDate], TODAY(), YEAR)</code>
+                    <code>Pending Days = DATEDIFF(Table1[Order Date], TODAY(), DAY)</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Use case:</strong> Customer age for segmentation</p>
+                <p style="margin-top: 10px;"><strong>Use case:</strong> Track how long ago an order was placed</p>
             </div>
 
             <div class="example-box">
                 <h4>Example 2: Is Weekend?</h4>
                 <div class="code-block">
-                    <code>Is Weekend = IF(WEEKDAY(Date[Date], 2) >= 6, "Weekend", "Weekday")</code>
+                    <code>Is Weekend = IF(WEEKDAY('Date Table'[Date], 2) >= 6, "Weekend", "Weekday")</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Use case:</strong> Analyze weekend vs weekday sales</p>
             </div>
@@ -958,17 +955,17 @@
             <div class="example-box">
                 <h4>Example 3: Quarter Label</h4>
                 <div class="code-block">
-                    <code>Quarter = "Q" & QUARTER(Date[Date])</code>
+                    <code>Quarter = "Q" & QUARTER('Date Table'[Date])</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Q1, Q2, Q3, Q4</p>
             </div>
 
             <div class="example-box">
-                <h4>Example 4: Days Until Due</h4>
+                <h4>Example 4: Days to Ship</h4>
                 <div class="code-block">
-                    <code>Days Until Due = DATEDIFF(TODAY(), Orders[DueDate], DAY)</code>
+                    <code>Days to Ship = DATEDIFF(Table1[Order Date], Table1[Ship Date], DAY)</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Use case:</strong> Track overdue orders (negative = overdue)</p>
+                <p style="margin-top: 10px;"><strong>Use case:</strong> Track shipping efficiency</p>
             </div>
 
             <h3>Text Functions</h3>
@@ -977,8 +974,8 @@
                     <h4>CONCATENATE / &</h4>
                     <p><strong>Purpose:</strong> Combine text</p>
                     <div class="code-block">
-                        <code>Full Name = [FirstName] & " " & [LastName]</code>
-                        <code>Full Name = CONCATENATE([FirstName], " " & [LastName])</code>
+                        <code>Product Full Info = Table1[Category] & " - " & Table1[Product]</code>
+                        <code>Category Code = CONCATENATE(LEFT(Table1[Category], 3), " - " & Table1[Product])</code>
                     </div>
                 </div>
 
@@ -986,8 +983,8 @@
                     <h4>UPPER, LOWER, PROPER</h4>
                     <p><strong>Purpose:</strong> Change text case</p>
                     <div class="code-block">
-                        <code>Upper Name = UPPER([Name])</code>
-                        <code>Proper Name = PROPER([Name])</code>
+                        <code>Upper Product = UPPER(Table1[Product])</code>
+                        <code>Proper Category = PROPER(Table1[Category])</code>
                     </div>
                 </div>
 
@@ -995,8 +992,8 @@
                     <h4>LEFT, RIGHT, MID</h4>
                     <p><strong>Purpose:</strong> Extract portions of text</p>
                     <div class="code-block">
-                        <code>First 3 Chars = LEFT([ProductCode], 3)</code>
-                        <code>Middle Chars = MID([Text], 2, 5)</code>
+                        <code>Region Code = LEFT(Table1[Region], 1)</code>
+                        <code>Order Num = MID(Table1[Order ID], 5, 5)</code>
                     </div>
                 </div>
 
@@ -1004,7 +1001,7 @@
                     <h4>LEN</h4>
                     <p><strong>Purpose:</strong> Get text length</p>
                     <div class="code-block">
-                        <code>Name Length = LEN([CustomerName])</code>
+                        <code>Product Length = LEN(Table1[Product])</code>
                     </div>
                 </div>
 
@@ -1012,7 +1009,7 @@
                     <h4>SUBSTITUTE</h4>
                     <p><strong>Purpose:</strong> Replace text</p>
                     <div class="code-block">
-                        <code>Clean Phone = SUBSTITUTE([Phone], "-", "")</code>
+                        <code>Clean ID = SUBSTITUTE(Table1[Order ID], "ORD-", "")</code>
                     </div>
                 </div>
 
@@ -1020,8 +1017,8 @@
                     <h4>FORMAT</h4>
                     <p><strong>Purpose:</strong> Format numbers/dates as text</p>
                     <div class="code-block">
-                        <code>Month Year = FORMAT(Date[Date], "MMM YYYY")</code>
-                        <code>Currency Text = FORMAT([Amount], "$#,##0.00")</code>
+                        <code>Month Year = FORMAT('Date Table'[Date], "MMM YYYY")</code>
+                        <code>Currency Sales = FORMAT(SUM(Table1[Sales]), "$#,##0.00")</code>
                     </div>
                 </div>
             </div>
@@ -1041,14 +1038,14 @@
             <div class="example-box">
                 <h4>Example: Customer Tier Classification</h4>
                 <div class="code-block">
-                    <code>Customer Tier = 
+                    <code>Sales Performance = 
 IF(
-    [Total Revenue] >= 10000, "Platinum",
+    SUM(Table1[Sales]) >= 10000, "Excellent",
     IF(
-        [Total Revenue] >= 5000, "Gold",
+        SUM(Table1[Sales]) >= 5000, "Good",
         IF(
-            [Total Revenue] >= 1000, "Silver",
-            "Bronze"
+            SUM(Table1[Sales]) >= 1000, "Average",
+            "Low"
         )
     )
 )</code>
@@ -1069,13 +1066,13 @@ IF(
             <div class="example-box">
                 <h4>Example 1: Region Name Lookup</h4>
                 <div class="code-block">
-                    <code>Region Name = SWITCH(
-    [RegionID],
-    1, "North America",
-    2, "Europe",
-    3, "Asia Pacific",
-    4, "Latin America",
-    5, "Middle East & Africa",
+                    <code>Region Category = SWITCH(
+    Table1[Region],
+    "North", "Northern Territory",
+    "South", "Southern Territory",
+    "East", "Eastern Territory",
+    "West", "Western Territory",
+    "Central", "Central Territory",
     "Unknown"
 )</code>
                 </div>
@@ -1084,13 +1081,12 @@ IF(
             <div class="example-box">
                 <h4>Example 2: Performance Rating</h4>
                 <div class="code-block">
-                    <code>Performance = SWITCH(
+                    <code>Profit Rating = SWITCH(
     TRUE(),
-    [Score] >= 90, "Excellent",
-    [Score] >= 75, "Good",
-    [Score] >= 60, "Average",
-    [Score] >= 50, "Below Average",
-    "Poor"
+    SUM(Table1[Profit]) >= 100, "High Profit",
+    SUM(Table1[Profit]) >= 50, "Medium Profit",
+    SUM(Table1[Profit]) >= 0, "Low Profit",
+    "Loss"
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Note:</strong> SWITCH(TRUE(), ...) allows using comparison
@@ -1103,15 +1099,15 @@ IF(
                     <h4>AND</h4>
                     <p><strong>Purpose:</strong> All conditions must be true</p>
                     <div class="code-block">
-                        <code>Premium Customer = 
+                        <code>High Priority Order = 
 IF(
     AND(
-        [Total Revenue] > 5000,
-        [Customer Type] = "Business",
-        [Years Active] >= 2
+        Table1[Sales] > 500,
+        Table1[Category] = "Technology",
+        Table1[Quantity] >= 5
     ),
-    "Yes",
-    "No"
+    "High",
+    "Normal"
 )</code>
                     </div>
                 </div>
@@ -1123,9 +1119,9 @@ IF(
                         <code>Discount Eligible = 
 IF(
     OR(
-        [Order Amount] > 1000,
-        [Customer Type] = "VIP",
-        [Loyalty Points] > 500
+        Table1[Sales] > 1000,
+        Table1[Category] = "Electronics",
+        Table1[Quantity] > 10
     ),
     "Yes",
     "No"
@@ -1203,9 +1199,9 @@ IF(
             <div class="example-box">
                 <h4>Example 1: Sales for Specific Product</h4>
                 <div class="code-block">
-                    <code>Laptop Sales := CALCULATE(
-    SUM(Sales[Revenue]),
-    Products[Category] = "Laptop"
+                    <code>Electronics Sales := CALCULATE(
+    SUM(Table1[Sales]),
+    Table1[Category] = "Electronics"
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Always shows laptop sales, regardless of slicer
@@ -1217,7 +1213,7 @@ IF(
                 <div class="code-block">
                     <code>North Sales := CALCULATE(
     [Total Sales],
-    Customers[Region] = "North"
+    Table1[Region] = "North"
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Total sales for North region only</p>
@@ -1228,8 +1224,8 @@ IF(
                 <div class="code-block">
                     <code>Premium Product Sales := CALCULATE(
     [Total Sales],
-    Products[Category] = "Electronics",
-    Products[Price] > 500
+    Table1[Category] = "Technology",
+    Table1[Sales] > 500
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Sales of electronics priced over $500</p>
@@ -1248,8 +1244,8 @@ IF(
                     <code>High Value Sales := CALCULATE(
     [Total Sales],
     FILTER(
-        Sales,
-        Sales[Revenue] > 1000
+        Table1,
+        Table1[Sales] > 1000
     )
 )</code>
                 </div>
@@ -1267,7 +1263,7 @@ IF(
                 <div class="code-block">
                     <code>All Sales := CALCULATE(
     [Total Sales],
-    ALL(Sales)
+    ALL(Table1)
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Grand total, no matter what filters are applied
@@ -1279,7 +1275,7 @@ IF(
                 <div class="code-block">
                     <code>% of Total Sales := DIVIDE(
     [Total Sales],
-    CALCULATE([Total Sales], ALL(Sales)),
+    CALCULATE([Total Sales], ALL(Table1)),
     0
 )</code>
                 </div>
@@ -1297,7 +1293,7 @@ IF(
                 <div class="code-block">
                     <code>Sales by Product Only := CALCULATE(
     [Total Sales],
-    ALLEXCEPT(Sales, Products[ProductName])
+    ALLEXCEPT(Table1, Table1[Product])
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Removes all filters except product filter</p>
@@ -1353,9 +1349,9 @@ IF(
                     <h4>SUMX</h4>
                     <p><strong>Purpose:</strong> Calculate expression for each row, then sum</p>
                     <div class="code-block">
-                        <code>Total Revenue := SUMX(
-    Sales,
-    Sales[Quantity] * Sales[UnitPrice]
+                        <code>Total Sales (Explicit) := SUMX(
+    Table1,
+    Table1[Sales]
 )</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;">Calculates Quantity × Price for each row, then sums
@@ -1367,8 +1363,8 @@ IF(
                     <p><strong>Purpose:</strong> Calculate expression for each row, then average</p>
                     <div class="code-block">
                         <code>Avg Order Value := AVERAGEX(
-    Orders,
-    Orders[TotalAmount]
+    Table1,
+    Table1[Sales]
 )</code>
                     </div>
                 </div>
@@ -1377,9 +1373,9 @@ IF(
                     <h4>COUNTX</h4>
                     <p><strong>Purpose:</strong> Count non-blank expression results</p>
                     <div class="code-block">
-                        <code>Orders with Discount := COUNTX(
-    FILTER(Orders, Orders[Discount] > 0),
-    Orders[OrderID]
+                        <code>High Quantity Orders := COUNTX(
+    FILTER(Table1, Table1[Quantity] > 5),
+    Table1[Order ID]
 )</code>
                     </div>
                 </div>
@@ -1389,8 +1385,8 @@ IF(
                     <p><strong>Purpose:</strong> Find min/max of expression</p>
                     <div class="code-block">
                         <code>Highest Sale := MAXX(
-    Sales,
-    Sales[Quantity] * Sales[UnitPrice]
+    Table1,
+    Table1[Sales]
 )</code>
                     </div>
                 </div>
@@ -1401,18 +1397,18 @@ IF(
                 <div class="example-box">
                     <h4>❌ Without Iterator (Wrong for calculated values)</h4>
                     <div class="code-block">
-                        <code>-- This won't work if Profit is a calculated column
-Total Profit := SUM(Sales[Profit])</code>
+                        <code>-- In simple DAX, this works on physical columns
+Total Profit := SUM(Table1[Profit])</code>
                     </div>
                 </div>
 
                 <div class="example-box">
                     <h4>✅ With Iterator (Correct)</h4>
                     <div class="code-block">
-                        <code>-- Calculate profit for each row, then sum
+                        <code>-- For this dataset, Profit is already provided in each row
 Total Profit := SUMX(
-    Sales,
-    Sales[Revenue] - Sales[Cost]
+    Table1,
+    Table1[Profit]
 )</code>
                     </div>
                 </div>
@@ -1422,9 +1418,9 @@ Total Profit := SUMX(
             <div class="example-box">
                 <h4>Example 1: Weighted Average</h4>
                 <div class="code-block">
-                    <code>Weighted Avg Price := DIVIDE(
-    SUMX(Sales, Sales[Quantity] * Sales[UnitPrice]),
-    SUM(Sales[Quantity])
+                    <code>Weighted Avg Quantity := DIVIDE(
+    SUMX(Table1, Table1[Sales] * Table1[Quantity]),
+    SUM(Table1[Sales])
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Use case:</strong> Average price weighted by quantity sold</p>
@@ -1434,10 +1430,10 @@ Total Profit := SUMX(
                 <h4>Example 2: Profit Margin per Transaction</h4>
                 <div class="code-block">
                     <code>Avg Profit Margin := AVERAGEX(
-    Sales,
+    Table1,
     DIVIDE(
-        Sales[Revenue] - Sales[Cost],
-        Sales[Revenue]
+        Table1[Profit],
+        Table1[Sales]
     )
 )</code>
                 </div>
@@ -1448,10 +1444,10 @@ Total Profit := SUMX(
                 <div class="code-block">
                     <code>High Value Orders := COUNTX(
     FILTER(
-        Orders,
-        Orders[TotalAmount] > 1000
+        Table1,
+        Table1[Sales] > 1000
     ),
-    Orders[OrderID]
+    Table1[Order ID]
 )</code>
                 </div>
             </div>
@@ -1464,28 +1460,81 @@ Total Profit := SUMX(
 
         <!-- Time Intelligence Section -->
         <div class="content-section" id="timeintel">
-            <h2>⏰ Time Intelligence Formulas</h2>
+            <h2>⏰ Advanced Date & Time Analysis</h2>
 
-            <h3>Prerequisites for Time Intelligence</h3>
             <div class="important">
-                <strong>⚠️ CRITICAL Requirements:</strong>
+                <strong>📥 Live Practice Data:</strong>
+                <p>For this section, we will use a <strong>Large Dataset (10,000+ rows)</strong> to demonstrate
+                    performance
+                    and advanced date scenarios.</p>
+                <button class="download-btn" onclick="generateBigData()">
+                    📊 Download Global Superstore Data (CSV)
+                </button>
+                <p style="font-size: 0.9em; margin-top: 5px;"><strong>Note:</strong> Import the CSV and name the table
+                    as <strong>Table1</strong>.
+                    Contains: Order ID, Order Date, Ship Date, Order Time, Region, Category, Product, Sales, Quantity,
+                    Profit</p>
+            </div>
+
+            <h3>1. Date & Time Transformations</h3>
+            <div class="theory-box">
+                <p>Before using time intelligence, we often need to calculate durations or extract specific parts of a
+                    date.</p>
+            </div>
+
+            <div class="function-grid">
+                <div class="function-card">
+                    <h4>DATEDIFF (Duration)</h4>
+                    <p><strong>Scenario:</strong> Calculate "Days to Ship"</p>
+                    <div class="code-block">
+                        <code>Days to Ship = DATEDIFF(
+    Table1[Order Date],
+    Table1[Ship Date],
+    DAY
+)</code>
+                    </div>
+                </div>
+
+                <div class="function-card">
+                    <h4>WEEKDAY (Weekend Analysis)</h4>
+                    <p><strong>Scenario:</strong> Identify weekend orders</p>
+                    <div class="code-block">
+                        <code>Is Weekend = IF(
+    WEEKDAY(Table1[Order Date], 2) > 5,
+    "Weekend",
+    "Weekday"
+)</code>
+                    </div>
+                </div>
+
+                <div class="function-card">
+                    <h4>HOUR (Time Extraction)</h4>
+                    <p><strong>Scenario:</strong> Analyze peak ordering hours</p>
+                    <div class="code-block">
+                        <code>Order Hour = HOUR(Table1[Order Time])</code>
+                    </div>
+                </div>
+            </div>
+
+            <h3>2. Time Intelligence Prerequisites</h3>
+            <div class="warning">
+                <strong>⚠️ CRITICAL Requirements for DAX Time Intel:</strong>
                 <ul style="margin-top: 10px;">
-                    <li>Must have a proper Date table</li>
-                    <li>Date table must be marked as Date Table</li>
-                    <li>Date table must have continuous dates (no gaps)</li>
-                    <li>Relationship from fact table to date table must exist</li>
-                    <li>Date column must be Date data type</li>
+                    <li><strong>Date Table:</strong> You MUST create a dedicated Date table linked to your Data table.
+                    </li>
+                    <li><strong>Continuous Dates:</strong> The Date table must have no gaps in dates.</li>
+                    <li><strong>Mark as Date Table:</strong> In Table Tools, select "Mark as Date Table".</li>
                 </ul>
             </div>
 
-            <h3>Year-to-Date (YTD) Calculations</h3>
+            <h3>3. Year-to-Date (YTD) Calculations</h3>
             <div class="function-card">
                 <h4>TOTALYTD</h4>
                 <p><strong>Purpose:</strong> Calculate year-to-date total</p>
                 <div class="code-block">
                     <code>YTD Sales := TOTALYTD(
-    [Total Sales],
-    Date[Date]
+    SUM(Table1[Sales]),
+    'Date Table'[Date]
 )</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Running total from Jan 1 to current date in filter
@@ -1496,128 +1545,90 @@ Total Profit := SUMX(
                 <h4>Custom YTD (Manual Method)</h4>
                 <div class="code-block">
                     <code>YTD Sales Manual := CALCULATE(
-    [Total Sales],DATESYTD(Date[Date])
+    SUM(Table1[Sales]),
+    DATESYTD('Date Table'[Date])
 )</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Note:</strong> DATESYTD returns year-to-date dates</p>
             </div>
-            <h3>Quarter and Month-to-Date</h3>
+
+            <h3>4. Period Comparisons (Growth Analysis)</h3>
             <div class="function-grid">
                 <div class="function-card">
-                    <h4>QTD - Quarter to Date</h4>
-                    <div class="code-block">
-                        <code>QTD Sales := TOTALQTD(
-[Total Sales],
-Date[Date])</code>
-                    </div>
-                </div>
-                <div class="function-card">
-                    <h4>MTD - Month to Date</h4>
-                    <div class="code-block">
-                        <code>MTD Sales := TOTALMTD(
-[Total Sales],
-Date[Date]
-)</code>
-                    </div>
-                </div>
-            </div>
-            <h3>Period Comparisons</h3>
-            <div class="function-grid">
-                <div class="function-card">
-                    <h4>Previous Year</h4>
+                    <h4>Previous Year (PY)</h4>
                     <div class="code-block">
                         <code>PY Sales := CALCULATE(
-[Total Sales],
-SAMEPERIODLASTYEAR(Date[Date])
+    [Total Sales],
+    SAMEPERIODLASTYEAR('Date Table'[Date])
 )</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;">Shows sales for same period in previous year</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;">Sales for the same dates in the previous year</p>
                 </div>
                 <div class="function-card">
                     <h4>Year-over-Year Growth</h4>
                     <div class="code-block">
-                        <code>YoY Growth := DIVIDE(
-[Total Sales] - [PY Sales],
-[PY Sales],
-0
+                        <code>YoY Growth % := DIVIDE(
+    [Total Sales] - [PY Sales],
+    [PY Sales],
+    0
 )</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;">Format as Percentage</p>
                 </div>
                 <div class="function-card">
-                    <h4>Previous Month</h4>
+                    <h4>Previous Month (PM)</h4>
                     <div class="code-block">
                         <code>PM Sales := CALCULATE(
-[Total Sales],
-DATEADD(Date[Date], -1, MONTH)
-)</code>
-                    </div>
-                </div>
-                <div class="function-card">
-                    <h4>Month-over-Month Growth</h4>
-                    <div class="code-block">
-                        <code>MoM Growth := DIVIDE(
-[Total Sales] - [PM Sales],
-[PM Sales],
-0
+    [Total Sales],
+    DATEADD('Date Table'[Date], -1, MONTH)
 )</code>
                     </div>
                 </div>
             </div>
-            <h3>Rolling Calculations</h3>
+
+            <h3>5. Rolling & Moving Calculations</h3>
             <div class="example-box">
-                <h4>Example: Last 12 Months Sales</h4>
+                <h4>Moving Annual Total (MAT) / Rolling 12 Months</h4>
                 <div class="code-block">
                     <code>L12M Sales := CALCULATE(
-[Total Sales],
-DATESINPERIOD(
-    Date[Date],
-    LASTDATE(Date[Date]),
-    -12,
-    MONTH
-)
+    [Total Sales],
+    DATESINPERIOD(
+        'Date Table'[Date],
+        MAX('Date Table'[Date]),
+        -12,
+        MONTH
+    )
 )</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Rolling 12-month total</p>
+                <p style="margin-top: 10px;"><strong>Real-world use:</strong> Analyzing trends without seasonality
+                    noise</p>
             </div>
-            <div class="example-box">
-                <h4>Example: Last 7 Days</h4>
-                <div class="code-block">
-                    <code>L7D Sales := CALCULATE(
-[Total Sales],
-DATESINPERIOD(
-    Date[Date],
-    MAX(Date[Date]),
-    -7,
-    DAY
-)
-)</code>
-                </div>
-            </div>
-            <h3>Complete Time Intelligence Example</h3>
+
+            <h3>6. Complete Time Intelligence Script</h3>
             <div class="theory-box">
-                <h4>Building a Complete Set of Time Measures:</h4>
+                <h4>Copy-Paste Measure Pattern:</h4>
                 <div class="code-block">
-                    <code>-- Base Measure
-Total Sales := SUM(Sales[Revenue])
--- Time Intelligence
-YTD Sales := TOTALYTD([Total Sales], Date[Date])
-QTD Sales := TOTALQTD([Total Sales], Date[Date])
-MTD Sales := TOTALMTD([Total Sales], Date[Date])
--- Previous Periods
-PY Sales := CALCULATE([Total Sales], SAMEPERIODLASTYEAR(Date[Date]))
-PM Sales := CALCULATE([Total Sales], DATEADD(Date[Date], -1, MONTH))
--- Growth Calculations
-YoY Growth % := DIVIDE([Total Sales] - [PY Sales], [PY Sales], 0)
-MoM Growth % := DIVIDE([Total Sales] - [PM Sales], [PM Sales], 0)
--- Rolling Windows
-L12M Sales := CALCULATE([Total Sales], DATESINPERIOD(Date[Date], LASTDATE(Date[Date]), -12, MONTH))
-L3M Sales := CALCULATE([Total Sales], DATESINPERIOD(Date[Date], LASTDATE(Date[Date]), -3, MONTH))</code>
+                    <code>-- 1. Base Measure
+Total Sales = SUM(Table1[Sales])
+
+-- 2. Cumulative
+YTD Sales = TOTALYTD([Total Sales], 'Date Table'[Date])
+
+-- 3. Previous Periods
+PY Sales = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date Table'[Date]))
+MOM Sales = CALCULATE([Total Sales], PARALLELPERIOD('Date Table'[Date], -1, MONTH))
+
+-- 4. Growth Rates
+YoY Growth = DIVIDE([Total Sales] - [PY Sales], [PY Sales])
+
+-- 5. Rolling Average (3 Months)
+Rolling 3M Avg = CALCULATE(
+    AVERAGEX(Table1, Table1[Sales]),
+    DATESINPERIOD('Date Table'[Date], LASTDATE('Date Table'[Date]), -3, MONTH)
+)</code>
                 </div>
             </div>
             <div class="tip">
-                <strong>💡 Pro Tip:</strong> Create a "Time Intelligence" folder in your model and organize all these
-                measures there for easy access!
+                <strong>💡 Pro Tip:</strong> Create a "Time Intelligence" display folder in the Model View to keep these
+                organized!
             </div>
         </div>
 
@@ -1639,14 +1650,17 @@ L3M Sales := CALCULATE([Total Sales], DATESINPERIOD(Date[Date], LASTDATE(Date[Da
                 <div class="steps">
                     <ol>
                         <li>Open your Power BI file from Day 6</li>
-                        <li>Verify your Date table is marked as Date Table</li>
-                        <li>Create these measures in Sales table:
+                        <li>Verify your <strong>'Date Table'</strong> is marked as Date Table</li>
+                        <li>Create these measures in <strong>Table1</strong>:
                             <ul>
-                                <li><strong>YTD Sales:</strong> <code>TOTALYTD([Total Sales], Date[Date])</code></li>
-                                <li><strong>QTD Sales:</strong> <code>TOTALQTD([Total Sales], Date[Date])</code></li>
-                                <li><strong>MTD Sales:</strong> <code>TOTALMTD([Total Sales], Date[Date])</code></li>
+                                <li><strong>YTD Sales:</strong> <code>TOTALYTD([Total Sales], 'Date Table'[Date])</code>
+                                </li>
+                                <li><strong>QTD Sales:</strong> <code>TOTALQTD([Total Sales], 'Date Table'[Date])</code>
+                                </li>
+                                <li><strong>MTD Sales:</strong> <code>TOTALMTD([Total Sales], 'Date Table'[Date])</code>
+                                </li>
                                 <li><strong>PY Sales:</strong>
-                                    <code>CALCULATE([Total Sales], SAMEPERIODLASTYEAR(Date[Date]))</code>
+                                    <code>CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date Table'[Date]))</code>
                                 </li>
                                 <li><strong>YoY Growth %:</strong>
                                     <code>DIVIDE([Total Sales] - [PY Sales], [PY Sales], 0)</code>
@@ -1670,20 +1684,20 @@ L3M Sales := CALCULATE([Total Sales], DATESINPERIOD(Date[Date], LASTDATE(Date[Da
                         <li>Create category-specific measures:
                             <ul>
                                 <li><strong>Electronics Sales:</strong>
-                                    <code>CALCULATE([Total Sales], Products[Category] = "Electronics")</code>
+                                    <code>CALCULATE([Total Sales], Table1[Category] = "Electronics")</code>
                                 </li>
-                                <li><strong>Furniture Sales:</strong>
-                                    <code>CALCULATE([Total Sales], Products[Category] = "Furniture")</code>
+                                <li><strong>Technology Sales:</strong>
+                                    <code>CALCULATE([Total Sales], Table1[Category] = "Technology")</code>
                                 </li>
                             </ul>
                         </li>
                         <li>Create percentage measures:
                             <ul>
                                 <li><strong>% of Total:</strong>
-                                    <code>DIVIDE([Total Sales], CALCULATE([Total Sales], ALL(Sales)), 0)</code>
+                                    <code>DIVIDE([Total Sales], CALCULATE([Total Sales], ALL(Table1)), 0)</code>
                                 </li>
                                 <li><strong>% of Category:</strong>
-                                    <code>DIVIDE([Total Sales], CALCULATE([Total Sales], ALLEXCEPT(Sales, Products[Category])), 0)</code>
+                                    <code>DIVIDE([Total Sales], CALCULATE([Total Sales], ALLEXCEPT(Table1, Table1[Category])), 0)</code>
                                 </li>
                             </ul>
                         </li>
@@ -1702,26 +1716,23 @@ L3M Sales := CALCULATE([Total Sales], DATESINPERIOD(Date[Date], LASTDATE(Date[Da
                     <ol>
                         <li>Create calculated measures using iterators:
                             <ul>
-                                <li><strong>Total Revenue (calc):</strong>
-                                    <code>SUMX(Sales, Sales[Quantity] * Sales[UnitPrice])</code>
+                                <li><strong>Explicit Total Sales:</strong>
+                                    <code>SUMX(Table1, Table1[Sales])</code>
                                 </li>
                                 <li><strong>Avg Order Value:</strong>
-                                    <code>AVERAGEX(Sales, Sales[Quantity] * Sales[UnitPrice])</code>
+                                    <code>AVERAGEX(Table1, Table1[Sales])</code>
                                 </li>
                                 <li><strong>Max Single Sale:</strong>
-                                    <code>MAXX(Sales, Sales[Quantity] * Sales[UnitPrice])</code>
+                                    <code>MAXX(Table1, Table1[Sales])</code>
                                 </li>
                             </ul>
                         </li>
                         <li>Create profit margin measure:
                             <div class="code-block">
-                                <code>Avg Margin % := AVERAGEX(
-Sales,
-DIVIDE(
-    (Sales[UnitPrice] - Sales[UnitCost]) * Sales[Quantity],
-    Sales[UnitPrice] * Sales[Quantity],
-    0
-)
+                                <code>Global Profit Margin := DIVIDE(SUM(Table1[Profit]), SUM(Table1[Sales]), 0)</code>
+                                <code>Avg Transaction Margin % := AVERAGEX(
+Table1,
+DIVIDE(Table1[Profit], Table1[Sales], 0)
 )</code>
                             </div>
                         </li>
@@ -1747,14 +1758,14 @@ DIVIDE(
                         </li>
                         <li>Add Line Chart:
                             <ul>
-                                <li>X-axis: Date[Month]</li>
+                                <li>X-axis: 'Date Table'[Month]</li>
                                 <li>Y-axis: [Total Sales], [PY Sales]</li>
                                 <li>Show trend over time</li>
                             </ul>
                         </li>
                         <li>Add Matrix:
                             <ul>
-                                <li>Rows: Products[Category]</li>
+                                <li>Rows: Table1[Category]</li>
                                 <li>Values: [Total Sales], [% of Total], [YoY Growth %]</li>
                             </ul>
                         </li>
@@ -1999,9 +2010,12 @@ DIVIDE(
             <p style="margin-top: 10px; color: #666;">
                 <strong>Tomorrow:</strong> We bring it all together with stunning visualizations!
             </p>
+            <a href="Day6.html" class="next-day-btn"
+                style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;color: white;">←
+                Back to
+                Day 6</a>
             <a href="Day8.html" style="text-decoration: none;">
-                <button class="next-day-btn"
-                    onclick="alert('Day 8 materials coming soon! Practice time intelligence tonight.')">
+                <button class="next-day-btn">
                     Continue to Day 8 →
                 </button>
             </a>
@@ -2070,6 +2084,53 @@ DIVIDE(
                 element.style.opacity = '1';
                 element.style.background = 'white';
             }
+        }
+
+        // Generate Big Data Set
+        function generateBigData() {
+            let csvContent = "Order ID,Order Date,Ship Date,Order Time,Region,Category,Product,Sales,Quantity,Profit\n";
+            const regions = ['North', 'South', 'East', 'West', 'Central'];
+            const categories = ['Electronics', 'Furniture', 'Office Supplies', 'Technology'];
+            const products = ['Laptop', 'Chair', 'Desk', 'Phone', 'Monitor', 'Mouse', 'Keyboard', 'Table', 'Printer', 'Accessories'];
+
+            // Generate 10,000 rows
+            const startDate = new Date('2022-01-01');
+            const endDate = new Date('2024-12-31');
+
+            for (let i = 1; i <= 10000; i++) {
+                const date = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
+                const orderDate = date.toISOString().split('T')[0];
+
+                // Ship date 1-7 days later
+                const shipDateObj = new Date(date);
+                shipDateObj.setDate(date.getDate() + Math.floor(Math.random() * 7) + 1);
+                const shipDate = shipDateObj.toISOString().split('T')[0];
+
+                // Random Time (08:00 to 20:00)
+                const hour = Math.floor(Math.random() * (20 - 8 + 1)) + 8;
+                const minute = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+                const second = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+                const orderTime = `${hour}:${minute}:${second}`;
+
+                const region = regions[Math.floor(Math.random() * regions.length)];
+                const category = categories[Math.floor(Math.random() * categories.length)];
+                const product = products[Math.floor(Math.random() * products.length)];
+                const sales = (Math.random() * 1000 + 50).toFixed(2);
+                const quantity = Math.floor(Math.random() * 10) + 1;
+                const profit = (sales * 0.2 * (Math.random() - 0.2)).toFixed(2); // Random profit/loss
+
+                csvContent += `ORD-${10000 + i},${orderDate},${shipDate},${orderTime},${region},${category},${product},${sales},${quantity},${profit}\n`;
+            }
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Global_Superstore_BigData.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 
