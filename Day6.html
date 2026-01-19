@@ -949,6 +949,21 @@
         <div class="content-section" id="columns-vs-measures">
             <h2>⚖️ Calculated Columns vs Measures</h2>
 
+            <!-- Lab Data Download Callout -->
+            <div class="download-section"
+                style="background: #17a2b8; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
+                <div style="flex: 1;">
+                    <h3 style="color: white; margin-top: 0;">📊 Day 6 Laboratory Dataset</h3>
+                    <p style="margin-bottom: 0;">Download this updated dataset containing Order Details, Discounts, and
+                        Customer Info to practice the calculations shown below.</p>
+                </div>
+                <button class="download-btn" onclick="downloadDay6LabData()" style="color: #17a2b8; min-width: 250px;">
+                    📥 Download Calculations_Lab.xlsx
+                </button>
+
+            </div>
+
+
             <h3>The Big Difference</h3>
             <div class="comparison-visual">
                 <div class="column-box">
@@ -1027,58 +1042,117 @@
                 </tbody>
             </table>
 
-            <h3>Calculated Column Examples</h3>
+            <h3>Calculated Column Examples (Lab Data)</h3>
             <div class="example-box">
-                <h4>Example 1: Simple Math</h4>
+                <h4>Example 1: Gross Sales (Base Math)</h4>
                 <div class="code-block">
-                    <code>Profit = Sales[Revenue] - Sales[Cost]</code>
+                    <code>Gross Sales = Orders[Quantity] * Orders[UnitPrice]</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Every row gets a Profit value</p>
-                <p style="font-size: 0.9em; color: #666;">Row 1: $1000 - $600 = $400</p>
-                <p style="font-size: 0.9em; color: #666;">Row 2: $500 - $300 = $200</p>
+                <p style="margin-top: 10px;"><strong>Logic:</strong> Finds the cost before any discounts are applied.
+                </p>
+                <div
+                    style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.9em;">
+                    Calculation: 2 (Quantity) × 1200 (Price) = <strong>2400</strong>
+                </div>
             </div>
 
             <div class="example-box">
-                <h4>Example 2: Conditional Logic</h4>
+                <h4>Example 2: Discount Amount</h4>
                 <div class="code-block">
-                    <code>Sales Category = IF(Sales[Revenue] >= 1000, "High", "Low")</code>
+                    <code>Discount = Orders[Gross Sales] * (Orders[DiscountPercent] / 100)</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Each sale is categorized as High or Low</p>
+                <p style="margin-top: 10px;"><strong>Logic:</strong> Calculates the actual dollar value of the discount.
+                </p>
+                <div
+                    style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.9em;">
+                    Calculation: 2400 (Gross) × 10% (@DiscountPercent) = <strong>240</strong>
+                </div>
             </div>
 
             <div class="example-box">
-                <h4>Example 3: Text Concatenation</h4>
+                <h4>Example 3: Revenue (Net Sale)</h4>
                 <div class="code-block">
-                    <code>Full Name = Customers[FirstName] & " " & Customers[LastName]</code>
+                    <code>Revenue = Orders[Gross Sales] - Orders[Discount]</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Combines first and last names</p>
-            </div>
-
-            <h3>Measure Examples</h3>
-            <div class="example-box">
-                <h4>Example 1: Simple Aggregation</h4>
-                <div class="code-block">
-                    <code>Total Revenue := SUM(Sales[Revenue])</code>
+                <p style="margin-top: 10px;"><strong>Logic:</strong> The final amount earned after subtracting the
+                    discount.</p>
+                <div
+                    style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 0.9em;">
+                    Calculation: 2400 (Gross) − 240 (Discount) = <strong>2160</strong>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Sums all revenue based on current filters</p>
-                <p style="font-size: 0.9em; color: #666;">Changes dynamically based on slicers!</p>
             </div>
 
             <div class="example-box">
-                <h4>Example 2: Average</h4>
+                <h4>Example 4: Conditional Logic</h4>
                 <div class="code-block">
-                    <code>Average Sale := AVERAGE(Sales[Revenue])</code>
+                    <code>Order Class = IF(Orders[Gross Sales] >= 1000, "High Value", "Standard")</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Average of visible sales</p>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Automatically categories orders based on total
+                    value.</p>
             </div>
 
             <div class="example-box">
-                <h4>Example 3: Calculated Measure</h4>
+                <h4>Example 5: Advanced Logic (SWITCH)</h4>
                 <div class="code-block">
-                    <code>Profit Margin := DIVIDE([Total Profit], [Total Revenue])</code>
+                    <code>Order Class = 
+SWITCH(
+    TRUE(),
+    Orders[Gross Sales] >= 5000, "Premium",
+    Orders[Gross Sales] >= 1000, "High Value",
+    "Standard"
+)</code>
                 </div>
-                <p style="margin-top: 10px;"><strong>Result:</strong> Calculates margin using other measures</p>
+                <p style="margin-top: 10px;"><strong>Result:</strong> More powerful categorization with multiple rules.
+                </p>
             </div>
+
+            <div class="example-box">
+                <h4>Example 6: Text Concatenation</h4>
+                <div class="code-block">
+                    <code>Customer Memo = Orders[CustomerName] & " from " & Orders[CustomerCity]</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> "John Smith from New York"</p>
+            </div>
+
+
+
+
+            <h3>Measure Examples (Lab Data)</h3>
+            <div class="example-box">
+                <h4>Example 1: Total Revenue (Dynamic)</h4>
+                <div class="code-block">
+                    <code>Total Net Revenue := SUM(Orders[Revenue])</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Sums the final earned amount. Responds to slicers
+                    (e.g., viewing revenue only for "Dell" brand).</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 2: Total Transactions</h4>
+                <div class="code-block">
+                    <code>Order Count := COUNT(Orders[OrderID])</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Shows how many orders were placed in total.</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 3: Average Order Value</h4>
+                <div class="code-block">
+                    <code>Avg Order Value := AVERAGE(Orders[Revenue])</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Calculates the mean revenue per order visible in
+                    the report.</p>
+            </div>
+
+            <div class="example-box">
+                <h4>Example 4: Discount Ratio (Calculated Measure)</h4>
+                <div class="code-block">
+                    <code>Overall Discount % := DIVIDE(SUM(Orders[Discount]), SUM(Orders[Gross Sales]), 0)</code>
+                </div>
+                <p style="margin-top: 10px;"><strong>Result:</strong> Shows what percentage of our potential sales were
+                    given away as discounts.</p>
+            </div>
+
 
             <h3>When to Use Each</h3>
             <div class="decision-tree">
@@ -1120,21 +1194,87 @@
             <div class="theory-box">
                 <h4>Implicit Measures (Auto-created)</h4>
                 <p><strong>What:</strong> Power BI automatically creates when you drag a numeric column to Values</p>
-                <p><strong>Example:</strong> Drag [Revenue] to Values → Creates "Sum of Revenue"</p>
+                <p><strong>Example:</strong> Drag <code>[Revenue]</code> to Values → Creates "Sum of Revenue"</p>
                 <p><strong>Problem:</strong> Limited control, can't reference in other measures, not reusable</p>
 
                 <h4 style="margin-top: 20px;">Explicit Measures (You create)</h4>
                 <p><strong>What:</strong> Measures you deliberately create with specific formulas</p>
-                <p><strong>Example:</strong> Create measure "Total Revenue := SUM(Sales[Revenue])"</p>
+                <p><strong>Example:</strong> Create measure <code>Total Revenue := SUM(Orders[Revenue])</code></p>
                 <p><strong>Benefits:</strong> Full control, can reference in other calculations, reusable, documented
                 </p>
+
             </div>
 
             <div class="tip">
                 <strong>💡 Best Practice:</strong> Always create explicit measures! Don't rely on implicit measures for
                 important calculations.
             </div>
+
+            <!-- Detailed Step-by-Step Example Section -->
+            <h3>🚀 Step-by-Step Practice: Sales Calculation</h3>
+            <div class="practical-task" style="border: 2px solid #17a2b8; background: #f0fbfc;">
+                <div class="task-header">
+                    <div class="task-number" style="background: #17a2b8;">🏁</div>
+                    <h3 style="margin: 0; color: #0c5460;">DAX Implementation Guide</h3>
+                </div>
+                <div class="steps">
+                    <p>Using the data you downloaded (<code>Day6_Calculations_Lab.xlsx</code>), follow these steps to
+                        build your sales metrics:</p>
+
+                    <ol>
+                        <li>
+                            <strong>Import the Data:</strong>
+                            <p>Get Data → Excel Workbook → Load <code>Day6_Calculations_Lab.xlsx</code>. Name the table
+                                <code>Orders</code>.
+                            </p>
+                        </li>
+
+                        <li style="margin-top: 15px;">
+                            <strong>Step 1: Create a Calculated Column for 'Gross Amount'</strong>
+                            <p>In Data View, select Orders table → New Column:</p>
+                            <div class="code-block"><code>Gross Amount = Orders[Quantity] * Orders[UnitPrice]</code>
+                            </div>
+                            <p><small><em>Why? Each row needs its subtotal before discount.</em></small></p>
+                        </li>
+
+                        <li style="margin-top: 15px;">
+                            <strong>Step 2: Create a Calculated Column for 'Net Sale'</strong>
+                            <p>Subtract the discount for each item:</p>
+                            <div class="code-block">
+                                <code>Net Sale = Orders[Gross Amount] * (1 - (Orders[DiscountPercent] / 100))</code>
+                            </div>
+                            <p><small><em>This calculates the actual money earned for every single order
+                                        row.</em></small></p>
+                        </li>
+
+                        <li style="margin-top: 15px;">
+                            <strong>Step 3: Create an Aggregated Measure for 'Total Revenue'</strong>
+                            <p>Go to Report View → New Measure:</p>
+                            <div class="code-block"><code>Total Revenue := SUM(Orders[Net Sale])</code></div>
+                            <p><small><em>Why Measure? This will update when you filter by Product, City, or
+                                        Category.</em></small></p>
+                        </li>
+
+                        <li style="margin-top: 15px;">
+                            <strong>Step 4: Create a Measure for 'Total Savings'</strong>
+                            <p>Let's see how much customer saved in total:</p>
+                            <div class="code-block">
+                                <code>Total Discount := SUM(Orders[Gross Amount]) - [Total Revenue]</code>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <div class="tip" style="margin-top: 20px;">
+                        <strong>Check Your Results:</strong>
+                        <br>• Create a <strong>Card Visual</strong> for <code>Total Revenue</code>.
+                        <br>• Create a <strong>Slicer</strong> for <code>CustomerCity</code>.
+                        <br>• Select "New York" — does the value change? If yes, your <strong>Filter Context</strong> is
+                        working!
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <!-- DAX Syntax Section -->
         <div class="content-section" id="syntax">
@@ -1267,63 +1407,70 @@
                 </div>
             </div>
 
-            <h3>Syntax Examples</h3>
+            <h3>Syntax Examples (Lab Data)</h3>
             <div class="example-box">
                 <h4>✅ Correct Syntax Examples</h4>
                 <div class="code-examples">
                     <div class="code-block">
-                        <code>Total Sales := SUM(Sales[Revenue])</code>
+                        <code>Total Sales := SUM(Orders[Revenue])</code>
                         <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Measure with clear name and table
-                            reference</p>
+                            reference (Orders)</p>
                     </div>
 
                     <div class="code-block">
-                        <code>Profit Margin := DIVIDE([Total Profit], [Total Revenue], 0)</code>
-                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Uses measures in formula with
-                            DIVIDE for safe division</p>
+                        <code>Total Discount := SUM(Orders[Discount])</code>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Aggregating the calculated column
+                            'Discount'</p>
                     </div>
 
                     <div class="code-block">
-                        <code>Full Name = [First Name] & " " & [Last Name]</code>
+                        <code>Customer Label = Orders[CustomerName] & " (" & Orders[CustomerCity] & ")"</code>
                         <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Calculated column concatenating
-                            text</p>
+                            name and city</p>
                     </div>
 
                     <div class="code-block">
-                        <code>Sales Rank = IF([Revenue] >= 1000, "High", IF([Revenue] >= 500, "Medium", "Low"))</code>
-                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Nested IF for multiple conditions
-                        </p>
+                        <code>High Value = IF(Orders[Revenue] >= 1000, "Yes", "No")</code>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Logical check on the Revenue
+                            column</p>
                     </div>
                 </div>
             </div>
+
 
             <div class="example-box">
                 <h4>❌ Common Syntax Errors</h4>
                 <div class="code-examples">
                     <div class="code-block error">
-                        <code>Total Sales = SUM(Revenue)</code>
+                        <code>Total Revenue = SUM(Revenue)</code>
                         <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing table name - should be
-                            Sales[Revenue]</p>
+                            <code>Orders[Revenue]</code>
+                        </p>
                     </div>
 
                     <div class="code-block error">
-                        <code>Profit = Revenue - Cost</code>
+                        <code>Line Total = Quantity * UnitPrice</code>
                         <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing brackets - should be
-                            [Revenue] - [Cost]</p>
+                            <code>[Quantity] * [UnitPrice]</code>
+                        </p>
                     </div>
 
                     <div class="code-block error">
-                        <code>Average := Sales[Revenue] / COUNT()</code>
+                        <code>Avg := Orders[Revenue] / COUNT()</code>
                         <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ COUNT needs a column - use
-                            AVERAGE() instead</p>
+                            <code>AVERAGE(Orders[Revenue])</code> instead
+                        </p>
                     </div>
 
                     <div class="code-block error">
-                        <code>Total = SUM(Sales[Revenue]</code>
-                        <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing closing parenthesis</p>
+                        <code>Total = SUM(Orders[Revenue]</code>
+                        <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ Missing closing parenthesis
+                            <code>)</code>
+                        </p>
                     </div>
                 </div>
             </div>
+
 
             <div class="tip">
                 <strong>💡 Tip:</strong> DAX formula bar has IntelliSense! Start typing and it will suggest functions,
@@ -1335,68 +1482,70 @@
         <div class="content-section" id="basic-functions">
             <h2>🔢 Basic DAX Functions</h2>
 
-            <h3>Aggregation Functions</h3>
+            <h3>Aggregation Functions (Lab Data)</h3>
 
             <div class="function-grid">
                 <div class="function-card">
                     <h4>SUM</h4>
                     <p><strong>Purpose:</strong> Add up all values</p>
                     <div class="code-block">
-                        <code>Total Sales := SUM(Sales[Revenue])</code>
+                        <code>Total Gross := SUM(Orders[Gross Sales])</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Totaling numbers (revenue,
-                        quantity, cost)</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Totaling numbers like
+                        Gross Sales or Revenue.</p>
                 </div>
 
                 <div class="function-card">
                     <h4>AVERAGE</h4>
                     <p><strong>Purpose:</strong> Calculate mean value</p>
                     <div class="code-block">
-                        <code>Avg Price := AVERAGE(Products[Price])</code>
+                        <code>Avg Unit Price := AVERAGE(Orders[UnitPrice])</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding typical value
-                        (average sale, price)</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding typical price or
+                        average revenue.</p>
                 </div>
 
                 <div class="function-card">
                     <h4>COUNT</h4>
                     <p><strong>Purpose:</strong> Count numeric values</p>
                     <div class="code-block">
-                        <code>Transaction Count := COUNT(Sales[SalesID])</code>
+                        <code>Order Count := COUNT(Orders[OrderID])</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting transactions,
-                        occurrences</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting specific order
+                        IDs.</p>
                 </div>
 
                 <div class="function-card">
                     <h4>COUNTA</h4>
                     <p><strong>Purpose:</strong> Count non-blank values</p>
                     <div class="code-block">
-                        <code>Customer Count := COUNTA(Sales[CustomerID])</code>
+                        <code>Customer Name Count := COUNTA(Orders[CustomerName])</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting text or mixed
-                        data</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting text entries like
+                        Customer Names.</p>
                 </div>
 
                 <div class="function-card">
                     <h4>DISTINCTCOUNT</h4>
-                    <p><strong>Purpose:</strong> Count uniquevalues</p>
+                    <p><strong>Purpose:</strong> Count unique values</p>
                     <div class="code-block">
-                        <code>Unique Customers := DISTINCTCOUNT(Sales[CustomerID])</code>
+                        <code>Unique Customers := DISTINCTCOUNT(Orders[CustomerID])</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting unique items
-                        (customers, products)</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting individual
+                        customers or unique products.</p>
                 </div>
                 <div class="function-card">
                     <h4>MIN / MAX</h4>
                     <p><strong>Purpose:</strong> Find smallest/largest value</p>
                     <div class="code-block">
-                        <code>Max Sale := MAX(Sales[Revenue])</code>
-                        <code>Min Sale := MIN(Sales[Revenue])</code>
+                        <code>Max Revenue := MAX(Orders[Revenue])</code><br>
+                        <code>Min Revenue := MIN(Orders[Revenue])</code>
                     </div>
-                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding extremes</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding highest or lowest
+                        sales amount.</p>
                 </div>
             </div>
+
 
             <h3>Mathematical Functions</h3>
             <div class="function-grid">
@@ -1554,42 +1703,51 @@
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">1</div>
-                    <h3 style="margin: 0;">Add Calculated Columns to Sales Table</h3>
+                    <h3 style="margin: 0;">Add Calculated Columns to Orders Table</h3>
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>Open your Day 5 Power BI file</li>
+                        <li>Open your Power BI file where you loaded <strong>Day6_Calculations_Lab.xlsx</strong></li>
                         <li>Go to <strong>Data View</strong></li>
-                        <li>Select the <strong>Sales</strong> table</li>
+                        <li>Select the <strong>Orders</strong> table</li>
                         <li>Click <strong>Table tools → New column</strong></li>
 
-                        <li style="margin-top: 15px;"><strong>Column 1: Total Amount</strong>
+                        <li style="margin-top: 15px;"><strong>Column 1: Gross Sales</strong>
                             <ul>
-                                <li>Formula: <code>Total Amount = Sales[Quantity] * Sales[UnitPrice]</code></li>
+                                <li>Formula: <code>Gross Sales = Orders[Quantity] * Orders[UnitPrice]</code></li>
                                 <li>Press Enter</li>
-                                <li>Verify: Each row should show quantity × price</li>
+                                <li>Verify: Each row shows the total price before discount</li>
                             </ul>
                         </li>
 
-                        <li style="margin-top: 15px;"><strong>Column 2: Sales Category</strong>
+                        <li style="margin-top: 15px;"><strong>Column 2: Discount Amount</strong>
                             <ul>
                                 <li>Formula:
-                                    <code>Sales Category = IF(Sales[Total Amount] >= 1000, "High", IF(Sales[Total Amount] >= 500, "Medium", "Low"))</code>
+                                    <code>Discount = Orders[Gross Sales] * (Orders[DiscountPercent] / 100)</code>
                                 </li>
-                                <li>Press Enter</li>
-                                <li>Check: Sales should be categorized correctly</li>
+                                <li>This calculates how much money is taken off the price</li>
                             </ul>
                         </li>
 
-                        <li style="margin-top: 15px;"><strong>Column 3: Discount Amount</strong>
+                        <li style="margin-top: 15px;"><strong>Column 3: Net Revenue</strong>
                             <ul>
-                                <li>Formula: <code>Discount Amount = Sales[Total Amount] * 0.1</code></li>
-                                <li>This gives 10% discount on each sale</li>
+                                <li>Formula: <code>Revenue = Orders[Gross Sales] - Orders[Discount]</code></li>
+                                <li>This is the final amount earned</li>
+                            </ul>
+                        </li>
+
+                        <li style="margin-top: 15px;"><strong>Column 4: Sale Priority</strong>
+                            <ul>
+                                <li>Formula:
+                                    <code>Sale Priority = IF(Orders[Revenue] >= 1000, "High Priority", "Standard")</code>
+                                </li>
+                                <li>Check: High value orders are flagged correctly</li>
                             </ul>
                         </li>
                     </ol>
                 </div>
             </div>
+
 
             <h3>Exercise 2: Create Basic Measures (30 minutes)</h3>
             <div class="practical-task">
@@ -1600,32 +1758,31 @@
                 <div class="steps">
                     <ol>
                         <li>Stay in <strong>Data View</strong> or switch to <strong>Report View</strong></li>
-                        <li>Select <strong>Sales</strong> table in Fields pane</li>
+                        <li>Select <strong>Orders</strong> table in Fields pane</li>
                         <li>Click <strong>Table tools → New measure</strong></li>
 
                         <li style="margin-top: 15px;"><strong>Measure 1: Total Revenue</strong>
                             <div class="code-block">
-                                <code>Total Revenue := SUM(Sales[Total Amount])</code>
+                                <code>Total Revenue := SUM(Orders[Revenue])</code>
                             </div>
                             <ul>
                                 <li>Press Enter</li>
-                                <li>Format as Currency: Select measure → Measure tools → Format: Currency → $ English
-                                    (United States)</li>
+                                <li>Format as Currency: Select measure → Measure tools → Format: Currency ($)</li>
                             </ul>
                         </li>
 
                         <li style="margin-top: 15px;"><strong>Measure 2: Total Quantity</strong>
                             <div class="code-block">
-                                <code>Total Quantity := SUM(Sales[Quantity])</code>
+                                <code>Total Quantity := SUM(Orders[Quantity])</code>
                             </div>
                             <ul>
                                 <li>Format as Whole Number</li>
                             </ul>
                         </li>
 
-                        <li style="margin-top: 15px;"><strong>Measure 3: Average Sale</strong>
+                        <li style="margin-top: 15px;"><strong>Measure 3: Average Order Value</strong>
                             <div class="code-block">
-                                <code>Average Sale := AVERAGE(Sales[Total Amount])</code>
+                                <code>Avg Order Value := AVERAGE(Orders[Revenue])</code>
                             </div>
                             <ul>
                                 <li>Format as Currency</li>
@@ -1634,7 +1791,7 @@
 
                         <li style="margin-top: 15px;"><strong>Measure 4: Number of Transactions</strong>
                             <div class="code-block">
-                                <code>Transaction Count := COUNT(Sales[SalesID])</code>
+                                <code>Order Count := COUNT(Orders[OrderID])</code>
                             </div>
                             <ul>
                                 <li>Format as Whole Number</li>
@@ -1643,7 +1800,7 @@
 
                         <li style="margin-top: 15px;"><strong>Measure 5: Unique Customers</strong>
                             <div class="code-block">
-                                <code>Unique Customers := DISTINCTCOUNT(Sales[CustomerKey])</code>
+                                <code>Customer Reach := DISTINCTCOUNT(Orders[CustomerID])</code>
                             </div>
                             <ul>
                                 <li>Format as Whole Number</li>
@@ -1652,6 +1809,7 @@
                     </ol>
                 </div>
             </div>
+
 
             <h3>Exercise 3: Test Your Measures (20 minutes)</h3>
             <div class="practical-task">
@@ -1696,36 +1854,38 @@
                 </div>
                 <div class="steps">
                     <ol>
-                        <li><strong>Measure: Average per Customer</strong>
+                        <li><strong>Measure: Revenue per Customer</strong>
                             <div class="code-block">
-                                <code>Avg per Customer := DIVIDE([Total Revenue], [Unique Customers], 0)</code>
+                                <code>Rev per Customer := DIVIDE([Total Revenue], [Customer Reach], 0)</code>
                             </div>
                             <ul>
                                 <li>Format as Currency</li>
-                                <li>This shows average revenue per unique customer</li>
+                                <li>Tells us how much each customer is worth on average</li>
                             </ul>
                         </li>
 
-                        <li style="margin-top: 15px;"><strong>Measure: Average Items per Transaction</strong>
+                        <li style="margin-top: 15px;"><strong>Measure: Average Items per Order</strong>
                             <div class="code-block">
-                                <code>Avg Items per Transaction := DIVIDE([Total Quantity], [Transaction Count], 0)</code>
+                                <code>Avg Items per Order := DIVIDE([Total Quantity], [Order Count], 0)</code>
                             </div>
                             <ul>
                                 <li>Format as Decimal (2 places)</li>
                             </ul>
                         </li>
 
-                        <li style="margin-top: 15px;"><strong>Measure: Total with Discount</strong>
+                        <li style="margin-top: 15px;"><strong>Measure: Overall Discount %</strong>
                             <div class="code-block">
-                                <code>Revenue After Discount := [Total Revenue] - SUM(Sales[Discount Amount])</code>
+                                <code>Total Discount Value := SUM(Orders[Discount])</code><br>
+                                <code>Discount % := DIVIDE([Total Discount Value], SUM(Orders[Gross Sales]), 0)</code>
                             </div>
                             <ul>
-                                <li>Format as Currency</li>
+                                <li>Format as Percentage</li>
                             </ul>
                         </li>
                     </ol>
                 </div>
             </div>
+
 
             <div class="important" style="margin-top: 30px;">
                 <strong>🎉 Lab Complete!</strong> You have successfully:
@@ -1751,19 +1911,20 @@
                     <h3 style="margin: 0;">Create These Measures</h3>
                 </div>
                 <div class="steps">
-                    <p><strong>Using your Sales data, create:</strong></p>
+                    <p><strong>Using your Orders data, create:</strong></p>
                     <ol>
-                        <li><strong>Max Single Sale:</strong> Find the highest sale amount</li>
-                        <li><strong>Min Single Sale:</strong> Find the lowest sale amount</li>
-                        <li><strong>Sales Range:</strong> Difference between max and min</li>
-                        <li><strong>Above Average Count:</strong> Count of sales above average (hint: use COUNTROWS and
-                            FILTER)</li>
-                        <li><strong>Revenue per Transaction:</strong> Average value per transaction</li>
+                        <li><strong>Highest Order Value:</strong> Find the maximum revenue from a single order.</li>
+                        <li><strong>Lowest Order Value:</strong> Find the minimum revenue from a single order.</li>
+                        <li><strong>Total Discount Given:</strong> Sum of all discounts provided.</li>
+                        <li><strong>High Value Orders:</strong> Count how many orders have Revenue > $1000.</li>
+                        <li><strong>Revenue Share:</strong> (Optional) Try to find % of total revenue for a specific
+                            Brand.</li>
                     </ol>
-                    <p style="margin-top: 15px;"><strong>Bonus:</strong> Create a measure that shows "Goal Met" or
-                        "Below Goal" if revenue is above/below $10,000</p>
+                    <p style="margin-top: 15px;"><strong>Bonus:</strong> Create a measure showing "Target Met" if Total
+                        Revenue > $50,000, otherwise "Keep Pushing".</p>
                 </div>
             </div>
+
 
             <h3>Task 2: Calculated Column Practice</h3>
             <div class="practical-task">
@@ -1772,17 +1933,22 @@
                     <h3 style="margin: 0;">Enhance Your Tables</h3>
                 </div>
                 <div class="steps">
-                    <p><strong>Add these calculated columns:</strong></p>
+                    <p><strong>Add these calculated columns to 'Orders':</strong></p>
                     <ol>
-                        <li><strong>In Customers table:</strong> Full Address = City & ", " & Country</li>
-                        <li><strong>In Products table:</strong> Price Range = IF(UnitPrice > 100, "Premium",
-                            IF(UnitPrice > 50, "Standard", "Budget"))</li>
-                        <li><strong>In Sales table:</strong> High Value Flag = IF(Total Amount > 1000, "Yes", "No")</li>
-                        <li><strong>In Date table:</strong> Is Weekend = IF(WEEKDAY(Date[Date]) IN {1, 7}, "Weekend",
-                            "Weekday")</li>
+                        <li><strong>Customer Location:</strong> <code>Location = Orders[CustomerCity] & ", US"</code>
+                        </li>
+                        <li><strong>Price Tier:</strong>
+                            <code>Tier = IF(Orders[UnitPrice] > 500, "Premium", "Standard")</code>
+                        </li>
+                        <li><strong>Short Category:</strong> <code>Code = LEFT(Orders[Category], 3)</code> (This
+                            extracts first 3 letters)</li>
+                        <li><strong>Is Weekend:</strong>
+                            <code>Weekend Order = IF(WEEKDAY(Orders[OrderDate], 2) > 5, "Yes", "No")</code>
+                        </li>
                     </ol>
                 </div>
             </div>
+
 
             <h3>Task 3: Quiz</h3>
             <div class="theory-box">
@@ -1870,11 +2036,12 @@
                 <h3 style="color: white;">📥 Practice Data for Day 6</h3>
                 <p>Download this dataset to follow along with the DAX exercises in the Practical Lab.</p>
                 <div style="margin-top: 15px;">
-                    <button class="download-btn" onclick="generateDAXData()" style="color: #ff6b9d;">
-                        📥 Download DAX_Practice_Data.csv
+                    <button class="download-btn" onclick="downloadDay6LabData()" style="color: #ff6b9d;">
+                        📥 Download Day6_Calculations_Lab.xlsx
                     </button>
                 </div>
             </div>
+
 
             <h3>📋 DAX Cheat Sheet</h3>
             <div class="theory-box">
@@ -1961,7 +2128,8 @@
             </p>
             <div style="margin-top: 30px;">
                 <a href="Day5.html" class="next-day-btn"
-                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;color: white;">← Back to
+                    style="background: #666; text-decoration: none; padding: 15px 30px; margin-right: 15px;color: white;">←
+                    Back to
                     Day 5</a>
                 <a style="text-decoration: none;">
                     <button class="next-day-btn" onclick="alert('Day 7 will be available soon!')">
@@ -2028,22 +2196,14 @@
             }
         }
 
-        // DAX Practice Data Generator
-        function generateDAXData() {
-            const content = `SalesID,Date,Product,Category,Quantity,UnitPrice,Cost
-1,2024-01-01,Laptop Pro,Electronics,2,1200,800
-2,2024-01-02,Wireless Mouse,Electronics,10,25,10
-3,2024-01-03,Desk Chair,Furniture,5,150,90
-4,2024-01-04,Laptop Pro,Electronics,1,1200,800
-5,2024-01-05,Monitor 24,Electronics,3,250,180
-6,2024-01-06,Wireless Mouse,Electronics,15,25,10
-7,2024-01-07,Office Desk,Furniture,2,400,300
-8,2024-01-08,Headphones,Electronics,8,100,60
-9,2024-01-09,Desk Chair,Furniture,4,150,90
-10,2024-01-10,Laptop Pro,Electronics,2,1200,800`;
-
-            downloadFile(content, "DAX_Practice_Data.csv", "text/csv");
+        // Day 6 Lab Data Download (Excel File)
+        function downloadDay6LabData() {
+            const link = document.createElement('a');
+            link.href = "data's/Day6_Calculations_Lab.xlsx";
+            link.download = 'Day6_Calculations_Lab.xlsx';
+            link.click();
         }
+
 
         function downloadFile(content, fileName, contentType) {
             const a = document.createElement("a");
