@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Day 9 - AI Visuals & Final Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #1e3c72;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #7e22ce;
+        }
+
+        .info-card strong {
+            color: #1e3c72;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.3s ease;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        nav button:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button.active {
+            background: #7e22ce;
+            color: white;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #7e22ce;
+        }
+
+        h3 {
+            color: #2a5298;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        h5 {
+            color: #7e22ce;
+            margin-bottom: 8px;
+        }
+
+        .theory-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 5px solid #2a5298;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .theory-box:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .important::before {
+            content: "⚡ ";
+            font-size: 1.2em;
+        }
+
+        .note {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 5px solid #17a2b8;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note::before {
+            content: "📝 ";
+            font-size: 1.2em;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip::before {
+            content: "💡 ";
+            font-size: 1.2em;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 5px solid #dc3545;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+
+        .diagram {
+            background: #f0f0f0;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .practical-task {
+            background: #f0f4ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px dashed #2a5298;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-number {
+            background: #2a5298;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(42, 82, 152, 0.3);
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .steps ol,
+        .steps ul {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        .steps ol li strong,
+        .steps ul li strong {
+            color: #2a5298;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: #28a745;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(42, 82, 152, 0.2);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #2a5298;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #e3f2fd;
+            transition: background 0.3s ease;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+            font-size: 0.95em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block code {
+            background: transparent;
+            color: #f8f8f2;
+            padding: 0;
+            white-space: pre;
+            display: block;
+        }
+
+        .example-box {
+            background: white;
+            border: 2px solid #2a5298;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-box:hover {
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* Q&A Question Grid */
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .question-card {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.2);
+        }
+
+        .question-card p {
+            margin: 5px 0;
+        }
+
+        .question-card .result {
+            color: #28a745;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        /* Setup and Results Boxes */
+        .setup-box {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .results-box {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        /* Tree Demo */
+        .tree-demo {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+
+        .tree-demo p {
+            margin: 8px 0;
+        }
+
+        .tree-demo ul {
+            margin: 5px 0;
+        }
+
+        /* Checklist */
+        .checklist-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .checklist {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            background: #f0f4ff;
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #7e22ce;
+            border-radius: 6px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .checkbox.checked {
+            background: #7e22ce;
+            border-color: #7e22ce;
+            color: white;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .checklist-item.completed {
+            opacity: 0.7;
+            background: #f8f9fa;
+        }
+
+        .checklist-item.completed span {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer h3 {
+            color: #1e3c72;
+        }
+
+        .next-day-btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #7e22ce 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .next-day-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #1e3c72 0%, #7e22ce 100%);
+            height: 100%;
+            width: 90%;
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            nav button {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .feature-grid,
+            .question-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .day-info {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav button {
+                padding: 8px 10px;
+                font-size: 11px;
+                margin: 3px;
+            }
+
+            .task-number {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            nav,
+            footer,
+            .next-day-btn,
+            .download-section {
+                display: none;
+            }
+
+            .content-section {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+
+            .practical-task,
+            .feature-card,
+            .example-box {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Accessibility */
+        button:focus,
+        .download-btn:focus,
+        .next-day-btn:focus {
+            outline: 3px solid #2a5298;
+            outline-offset: 2px;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a5298;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1e3c72;
+        }
+
+        /* Selection Highlight */
+        ::selection {
+            background: #7e22ce;
+            color: white;
+        }
+
+        ::-moz-selection {
+            background: #7e22ce;
+            color: white;
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced spacing for nested lists */
+        .steps ul ul,
+        .steps ol ul,
+        .steps ul ol,
+        .steps ol ol {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        /* Better visual hierarchy */
+        h2 {
+            font-size: 2em;
+        }
+
+        h3 {
+            font-size: 1.5em;
+        }
+
+        h4 {
+            font-size: 1.2em;
+        }
+
+        h5 {
+            font-size: 1.1em;
+        }
+
+        /* Smooth transitions */
+        button,
+        .download-btn,
+        .next-day-btn,
+        .feature-card,
+        .question-card {
+            transition: all 0.3s ease;
+        }
+
+        /* Enhanced shadow for elevated elements */
+        .content-section {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Better list markers */
+        .theory-box ul li::marker,
+        .steps ul li::marker {
+            color: #2a5298;
+        }
+
+        /* Enhanced code block */
+        .code-block::before {
+            content: 'AI';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #7e22ce;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        /* Grid alignment improvements */
+        .feature-grid .feature-card {
+            min-height: 200px;
+        }
+
+        /* Hover effects */
+        .theory-box:hover,
+        .example-box:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* Enhanced table styling */
+        .comparison-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Button group styling */
+        nav button {
+            font-weight: 500;
+        }
+
+        /* Improved spacing */
+        .setup-box p strong,
+        .results-box p strong {
+            color: #1e3c72;
+        }
+
+        /* Checklist hover effect */
+        .checklist li:hover {
+            background: #e3f2fd;
+            padding-left: 10px;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        /* Question card emphasis */
+        .question-card strong {
+            color: #1e3c72;
+        }
+
+        /* Tree demo emphasis */
+        .tree-demo strong {
+            color: #7e22ce;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Power BI Training - Day 9</h1>
+            <p>AI-Powered Visuals & Final Project</p>
+            <div class="day-info">
+                <div class="info-card">
+                    <strong>Duration:</strong> 3 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Theory:</strong> 1 Hour
+                </div>
+                <div class="info-card">
+                    <strong>Practical:</strong> 2 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Level:</strong> Advanced
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Course Progress: Day 9 of 10 (90% - Almost
+                There!)</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-section="overview">📋 Overview</button>
+            <button class="nav-btn" data-section="qna">💬 Q&A Visual</button>
+            <button class="nav-btn" data-section="keyinfluencers">🎯 Key Influencers</button>
+            <button class="nav-btn" data-section="decomposition">🌳 Decomposition Tree</button>
+            <button class="nav-btn" data-section="publishing">🌐 Publishing</button>
+            <button class="nav-btn" data-section="practical">🔨 Final Project</button>
+            <button class="nav-btn" data-section="tasks">✅ Tasks</button>
+            <button class="nav-btn" data-section="resources">📦 Resources</button>
+        </nav>
+
+        <!-- Overview Section -->
+        <div class="content-section active" id="overview">
+            <h2>📋 Day 9 Overview</h2>
+
+            <div class="theory-box">
+                <h3>Learning Objectives</h3>
+                <p>By the end of Day 9, students will be able to:</p>
+                <ul>
+                    <li>Use Q&A visual for natural language queries</li>
+                    <li>Implement Key Influencers visual for root cause analysis</li>
+                    <li>Create Decomposition Tree for hierarchical exploration</li>
+                    <li>Use Smart Narrative for automated insights</li>
+                    <li>Detect anomalies in time series data</li>
+                    <li>Publish reports to Power BI Service</li>
+                    <li>Share and collaborate on reports</li>
+                    <li>Configure refresh schedules</li>
+                    <li>Complete and present final project</li>
+                </ul>
+            </div>
+
+            <h3>📅 Session Structure</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Part 1: AI Visuals (45 min)</h4>
+                    <ul>
+                        <li>Q&A Visual setup and usage</li>
+                        <li>Key Influencers analysis</li>
+                        <li>Decomposition Tree exploration</li>
+                        <li>Smart Narrative insights</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 2: Publishing (15 min)</h4>
+                    <ul>
+                        <li>Power BI Service overview</li>
+                        <li>Publishing process</li>
+                        <li>Sharing reports</li>
+                        <li>Data refresh setup</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 3: Final Project (90 min)</h4>
+                    <ul>
+                        <li>Complete dashboard</li>
+                        <li>Add AI visuals</li>
+                        <li>Polish and optimize</li>
+                        <li>Prepare presentation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>Part 4: Presentations (30 min)</h4>
+                    <ul>
+                        <li>Student presentations</li>
+                        <li>Peer feedback</li>
+                        <li>Best practices review</li>
+                        <li>Q&A session</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Today's Focus:</strong> Apply everything you've learned to create a production-ready
+                dashboard with AI-powered insights!
+            </div>
+
+            <div class="tip">
+                <strong>💡 Final Day Tomorrow:</strong> Day 10 covers Power BI Service in depth, mobile apps, and course
+                wrap-up.
+            </div>
+        </div>
+
+        <!-- Q&A Visual Section -->
+        <div class="content-section" id="qna">
+            <h2>💬 Q&A Visual - Natural Language Queries</h2>
+
+            <h3>What is Q&A Visual?</h3>
+            <div class="theory-box">
+                <p><strong>Q&A Visual:</strong> Allows users to ask questions about data in natural language and get
+                    visual answers automatically.</p>
+
+                <p style="margin-top: 15px;"><strong>How it works:</strong></p>
+                <ol>
+                    <li>User types a question (e.g., "total sales by region")</li>
+                    <li>Power BI interprets the question</li>
+                    <li>Creates appropriate visualization</li>
+                    <li>User can refine or ask follow-up questions</li>
+                </ol>
+
+                <p style="margin-top: 15px;"><strong>Benefits:</strong></p>
+                <ul>
+                    <li>Enables self-service analytics for non-technical users</li>
+                    <li>Reduces need for pre-built visuals</li>
+                    <li>Accelerates data exploration</li>
+                    <li>Natural, conversational interface</li>
+                </ul>
+            </div>
+
+            <h3>Adding Q&A Visual</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">1</div>
+                    <h3 style="margin: 0;">How to Add Q&A</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Go to Report View</li>
+                        <li>Insert tab → <strong>Q&A</strong> button</li>
+                        <li>Q&A visual appears with question box</li>
+                        <li>Resize to fit your layout</li>
+                        <li>Users can now type questions</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Example Questions</h3>
+            <div class="example-box">
+                <h4>Sample Questions Users Can Ask:</h4>
+                <div class="question-grid">
+                    <div class="question-card">
+                        <p><strong>"total sales by category"</strong></p>
+                        <p class="result">→ Creates bar chart</p>
+                    </div>
+                    <div class="question-card">
+                        <p><strong>"show revenue over time"</strong></p>
+                        <p class="result">→ Creates line chart</p>
+                    </div>
+                    <div class="question-card">
+                        <p><strong>"top 5 products by revenue"</strong></p>
+                        <p class="result">→ Creates sorted bar chart</p>
+                    </div>
+                    <div class="question-card">
+                        <p><strong>"average order value"</strong></p>
+                        <p class="result">→ Creates card with number</p>
+                    </div>
+                    <div class="question-card">
+                        <p><strong>"sales by region as map"</strong></p>
+                        <p class="result">→ Creates filled map</p>
+                    </div>
+                    <div class="question-card">
+                        <p><strong>"what drove sales increase"</strong></p>
+                        <p class="result">→ Analyzes key factors</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Teaching Q&A to Understand Your Data</h3>
+            <div class="theory-box">
+                <h4>Q&A Setup (Power BI Service Only):</h4>
+                <ol>
+                    <li>Publish report to Power BI Service</li>
+                    <li>Open in service → Q&A Setup</li>
+                    <li>Add synonyms (e.g., "revenue" = "sales")</li>
+                    <li>Define suggested questions</li>
+                    <li>Review and train on user questions</li>
+                </ol>
+
+                <p style="margin-top: 15px;"><strong>Best Practices:</strong></p>
+                <ul>
+                    <li>Use clear, descriptive field names</li>
+                    <li>Add synonyms for common terms</li>
+                    <li>Create suggested questions for guidance</li>
+                    <li>Test with actual user questions</li>
+                </ul>
+            </div>
+
+            <h3>Converting Q&A to Standard Visual</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">💡</div>
+                    <h3 style="margin: 0;">Save Q&A Results</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>If a user asks a good question:</strong></p>
+                    <ol>
+                        <li>After Q&A creates visualization</li>
+                        <li>Click "Turn this Q&A result into a standard visual"</li>
+                        <li>Visual becomes permanent on the page</li>
+                        <li>Can be formatted like any other visual</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 Pro Tip:</strong> Place Q&A visual on a dedicated "Explore" page for ad-hoc analysis!
+            </div>
+        </div>
+
+        <!-- Key Influencers Section -->
+        <div class="content-section" id="keyinfluencers">
+            <h2>🎯 Key Influencers Visual</h2>
+
+            <h3>What is Key Influencers?</h3>
+            <div class="theory-box">
+                <p><strong>Key Influencers:</strong> AI-powered visual that analyzes what factors influence a metric to
+                    increase or decrease.</p>
+
+                <p style="margin-top: 15px;"><strong>Use cases:</strong></p>
+                <ul>
+                    <li>What drives customer churn?</li>
+                    <li>What influences high sales?</li>
+                    <li>What factors affect satisfaction scores?</li>
+                    <li>What drives product returns?</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Two tabs:</strong></p>
+                <ul>
+                    <li><strong>Key Influencers:</strong> Shows top factors influencing the metric</li>
+                    <li><strong>Top Segments:</strong> Shows groups with highest/lowest values</li>
+                </ul>
+            </div>
+
+            <h3>Setting Up Key Influencers</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">2</div>
+                    <h3 style="margin: 0;">How to Configure</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Insert → AI Visuals → <strong>Key Influencers</strong></li>
+                        <li>Configure fields:
+                            <ul>
+                                <li><strong>Analyze:</strong> Metric to analyze (e.g., Sales, CustomerRating)</li>
+                                <li><strong>Explain by:</strong> Potential influencing factors (Category, Region,
+                                    Product, etc.)</li>
+                                <li><strong>Expand by:</strong> (Optional) Additional drill-down fields</li>
+                            </ul>
+                        </li>
+                        <li>Choose what to analyze: "Increase" or "Decrease"</li>
+                        <li>Power BI analyzes and shows results</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Example: What Influences High Sales?</h3>
+            <div class="example-box">
+                <h4>Scenario: Analyze what drives sales above $1000</h4>
+
+                <div class="setup-box">
+                    <p><strong>Setup:</strong></p>
+                    <ul>
+                        <li><strong>Analyze:</strong> Sales[Revenue]</li>
+                        <li><strong>Explain by:</strong> Products[Category], Customers[Region], Date[Year]</li>
+                        <li><strong>Filter:</strong> Revenue > 1000</li>
+                    </ul>
+                </div>
+
+                <div class="results-box">
+                    <p><strong>Possible Results:</strong></p>
+                    <ul>
+                        <li>"Sales is 2.5x more likely to be high when Category is Electronics"</li>
+                        <li>"Sales is 1.8x more likely to be high when Region is North"</li>
+                        <li>"Sales increases by avg $450 when Product is Laptop Pro"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Reading Key Influencers Results</h3>
+            <div class="theory-box">
+                <h4>Understanding the Output:</h4>
+
+                <p><strong>For Categorical Metrics (e.g., High/Low Rating):</strong></p>
+                <ul>
+                    <li>"X is Y times more likely when..."</li>
+                    <li>Shows probability multiplier</li>
+                    <li>Bubble size = number of records</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>For Continuous Metrics (e.g., Sales Amount):</strong></p>
+                <ul>
+                    <li>"On average, X increases/decreases by..."</li>
+                    <li>Shows average impact</li>
+                    <li>Bar length = strength of influence</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Top Segments Tab:</strong></p>
+                <ul>
+                    <li>Shows groups with highest concentration</li>
+                    <li>Example: "Electronics + North Region = 85% high sales"</li>
+                    <li>Helps identify target segments</li>
+                </ul>
+            </div>
+
+            <h3>Best Practices</h3>
+            <div class="feature-grid">
+                <div class="feature-card" style="background: #d4edda; border-left: 4px solid #28a745;">
+                    <h4>✅ DO's</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Use with sufficient data (100+ rows minimum)</li>
+                        <li>Include diverse potential influencers</li>
+                        <li>Analyze meaningful metrics</li>
+                        <li>Consider correlation vs causation</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card" style="background: #f8d7da; border-left: 4px solid #dc3545;">
+                    <h4>❌ DON'Ts</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Don't use with very small datasets</li>
+                        <li>Don't assume causation from correlation</li>
+                        <li>Don't ignore domain knowledge</li>
+                        <li>Don't over-interpret results</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Remember:</strong> Key Influencers shows correlation, not necessarily causation. Always apply
+                business knowledge when interpreting results!
+            </div>
+        </div>
+
+        <!-- Decomposition Tree Section -->
+        <div class="content-section" id="decomposition">
+            <h2>🌳 Decomposition Tree Visual</h2>
+
+            <h3>What is Decomposition Tree?</h3>
+            <div class="theory-box">
+                <p><strong>Decomposition Tree:</strong> AI-powered visual for ad-hoc hierarchical exploration of data.
+                </p>
+
+                <p style="margin-top: 15px;"><strong>Key features:</strong></p>
+                <ul>
+                    <li>Start with a metric (e.g., Total Sales)</li>
+                    <li>Drill down by any dimension</li>
+                    <li>AI suggests best splits</li>
+                    <li>Interactive exploration</li>
+                    <li>Find high/low contributors quickly</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Use cases:</strong></p>
+                <ul>
+                    <li>Root cause analysis</li>
+                    <li>Finding outliers</li>
+                    <li>Exploratory data analysis</li>
+                    <li>Multi-dimensional drill-down</li>
+                </ul>
+            </div>
+
+            <h3>Setting Up Decomposition Tree</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">3</div>
+                    <h3 style="margin: 0;">Configuration Steps</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>Insert → AI Visuals → <strong>Decomposition Tree</strong></li>
+                        <li>Configure fields:
+                            <ul>
+                                <li><strong>Analyze:</strong> The metric (e.g., Sum of Sales)</li>
+                                <li><strong>Explain by:</strong> All dimensions you might drill by (Product, Region,
+                                    Date, Customer, etc.)</li>
+                            </ul>
+                        </li>
+                        <li>Visual starts with total metric value</li>
+                        <li>Click "+" to drill down</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Using the Decomposition Tree</h3>
+            <div class="example-box">
+                <h4>Interactive Exploration:</h4>
+
+                <div class="tree-demo">
+                    <p><strong>Level 0:</strong> Total Sales: $1,250,000</p>
+                    <p style="margin-left: 20px;">↓ Click "+" → Choose dimension</p>
+
+                    <p style="margin-left: 20px;"><strong>Level 1:</strong> Split by Category</p>
+                    <ul style="margin-left: 40px;">
+                        <li>Electronics: $650,000 (52%)</li>
+                        <li>Furniture: $400,000 (32%)</li>
+                        <li>Stationery: $200,000 (16%)</li>
+                    </ul>
+
+                    <p style="margin-left: 40px;">↓ Click "+" on Electronics</p>
+
+                    <p style="margin-left: 40px;"><strong>Level 2:</strong> Split by Region</p>
+                    <ul style="margin-left: 60px;">
+                        <li>North: $280,000</li>
+                        <li>South: $220,000</li>
+                        <li>East: $150,000</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>AI-Powered Features</h3>
+            <div class="theory-box">
+                <h4>High Value & Low Value:</h4>
+                <p>When you click "+", you get three options:</p>
+                <ul>
+                    <li><strong>Manual split:</strong> Choose dimension yourself</li>
+                    <li><strong>High value:</strong> AI finds path to highest values</li>
+                    <li><strong>Low value:</strong> AI finds path to lowest values</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Example:</strong></p>
+                <p>Click "High value" on Total Sales:</p>
+                <ul>
+                    <li>AI might split by "Category = Electronics"</li>
+                    <li>Then "Region = North"</li>
+                    <li>Then "Product = Laptop Pro"</li>
+                    <li>Shows path to highest sales</li>
+                </ul>
+            </div>
+
+            <h3>Decomposition Tree vs Matrix</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Decomposition Tree</th>
+                        <th>Matrix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Structure</strong></td>
+                        <td>Flexible, user-driven</td>
+                        <td>Fixed hierarchy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exploration</strong></td>
+                        <td>Ad-hoc, any path</td>
+                        <td>Pre-defined drill-down</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Assistance</strong></td>
+                        <td>Yes (High/Low value)</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Root cause analysis, exploration</td>
+                        <td>Systematic reporting</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Other AI Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Smart Narrative</h4>
+                    <p><strong>What:</strong> Auto-generated text summary of visuals</p>
+                    <p><strong>How:</strong> Insert → Smart Narrative</p>
+                    <p><strong>Use:</strong> Automatic executive summary</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Anomaly Detection</h4>
+                    <p><strong>What:</strong> Finds unusual data points in line charts</p>
+                    <p><strong>How:</strong> Add to line chart analytics pane</p>
+                    <p><strong>Use:</strong> Spot outliers automatically</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Clustering</h4>
+                    <p><strong>What:</strong> Groups similar data points</p>
+                    <p><strong>How:</strong> Analytics pane → Clustering</p>
+                    <p><strong>Use:</strong> Find natural segments</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publishing Section -->
+        <div class="content-section" id="publishing">
+            <h2>🌐 Publishing to Power BI Service</h2>
+
+            <h3>Power BI Desktop vs Power BI Service</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Power BI Desktop</th>
+                        <th>Power BI Service</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Platform</strong></td>
+                        <td>Windows application</td>
+                        <td>Cloud web service</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Purpose</strong></td>
+                        <td>Create & develop reports</td>
+                        <td>Share & collaborate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Modeling</strong></td>
+                        <td>Full capabilities</td>
+                        <td>Limited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Report Design</strong></td>
+                        <td>Full capabilities</td>
+                        <td>View & light editing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sharing</strong></td>
+                        <td>Share .pbix file</td>
+                        <td>Share links, embed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Refresh</strong></td>
+                        <td>Manual</td>
+                        <td>Scheduled automatic</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Collaboration</strong></td>
+                        <td>Limited</td>
+                        <td>Full (workspaces, apps)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Publishing Process</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">📤</div>
+                    <h3 style="margin: 0;">How to Publish</h3>
+                </div>
+                <div class="steps">
+                    <ol>
+                        <li>In Power BI Desktop, ensure you're signed in
+                            <ul>
+                                <li>Top right → Sign in with work/school account</li>
+                            </ul>
+                        </li>
+                        <li>Save your .pbix file</li>
+                        <li>Click <strong>Home → Publish</strong></li>
+                        <li>Choose destination workspace:
+                            <ul>
+                                <li>My Workspace (personal)</li>
+                                <li>Shared workspace (team)</li>
+                            </ul>
+                        </li>
+                        <li>Click <strong>Select</strong></li>
+                        <li>Wait for publishing to complete</li>
+                        <li>Click link to open in Power BI Service</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Power BI Service Overview</h3>
+            <div class="theory-box">
+                <p><strong>URL:</strong> app.powerbi.com</p>
+
+                <h4 style="margin-top: 15px;">Main Components:</h4>
+                <ul>
+                    <li><strong>Workspaces:</strong> Containers for reports, dashboards, datasets</li>
+                    <li><strong>Reports:</strong> Interactive multi-page reports</li>
+                    <li><strong>Dashboards:</strong> Single-page pinned visuals from reports</li>
+                    <li><strong>Datasets:</strong> Data models</li>
+                    <li><strong>Dataflows:</strong> Reusable data prep</li>
+                    <li><strong>Apps:</strong> Published collections for distribution</li>
+                </ul>
+            </div>
+
+            <h3>Sharing Reports</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Method 1: Share Link</h4>
+                    <p><strong>How:</strong> Report → Share → Copy link</p>
+                    <p><strong>Who:</strong> Anyone with link (if allowed)</p>
+                    <p><strong>Permissions:</strong> Read-only or can reshare</p>
+                    <p><strong>Best for:</strong> Quick sharing</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Method 2: Email</h4>
+                    <p><strong>How:</strong> File → Share → Email</p>
+                    <p><strong>Who:</strong> Specific people</p>
+                    <p><strong>Features:</strong> Can include snapshot</p>
+                    <p><strong>Best for:</strong> Scheduled distributions</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Method 3: Publish to Web</h4>
+                    <p><strong>How:</strong> File → Embed → Publish to web</p>
+                    <p><strong>Who:</strong> Public, anyone on internet</p>
+                    <p><strong>Warning:</strong> Data becomes public!</p>
+                    <p><strong>Best for:</strong> Public dashboards</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Method 4: App</h4>
+                    <p><strong>How:</strong> Create app from workspace</p>
+                    <p><strong>Who:</strong> Specific users/groups</p>
+                    <p><strong>Features:</strong> Professional distribution</p>
+                    <p><strong>Best for:</strong> Enterprise deployment</p>
+                </div>
+            </div>
+
+            <h3>Data Refresh</h3>
+            <div class="theory-box">
+                <h4>Setting Up Scheduled Refresh:</h4>
+                <ol>
+                    <li>In Power BI Service, go to workspace</li>
+                    <li>Find dataset → More options (...) → Settings</li>
+                    <li>Expand <strong>Scheduled refresh</strong></li>
+                    <li>Configure:
+                        <ul>
+                            <li>Refresh frequency (Daily, Weekly)</li>
+                            <li>Time slots</li>
+                            <li>Time zone</li>
+                            <li>Email notifications on failure</li>
+                        </ul>
+                    </li>
+                    <li>Apply</li>
+                </ol>
+
+                <p style="margin-top: 15px;"><strong>Requirements:</strong></p>
+                <ul>
+                    <li>Data gateway for on-premises data</li>
+                    <li>Pro or Premium license</li>
+                    <li>Valid credentials configured</li>
+                </ul>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Licensing Note:</strong> Free license allows publishing but limited sharing. Pro/Premium
+                required for full collaboration features.
+            </div>
+        </div>
+
+        <!-- Practical Lab Section -->
+        <div class="content-section" id="practical">
+            <h2>🔨 Final Project: Complete Professional Dashboard</h2>
+
+            <div class="important">
+                <strong>⏱️ Project Duration:</strong> 120 minutes<br>
+                <strong>🎯 Objective:</strong> Create a comprehensive, production-ready dashboard showcasing all skills
+                learned
+            </div>
+
+            <h3>Project Requirements</h3>
+            <div class="theory-box">
+                <h4>Your dashboard MUST include:</h4>
+
+                <p><strong>Data & Modeling (Days 1-5):</strong></p>
+                <ul>
+                    <li>✅ At least 3 related tables</li>
+                    <li>✅ Proper star schema with relationships</li>
+                    <li>✅ Date table with time intelligence</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>DAX (Days 6-7):</strong></p>
+                <ul>
+                    <li>✅ Minimum 10 measures</li>
+                    <li>✅ Time intelligence (YTD, YoY, etc.)</li>
+                    <li>✅ CALCULATE with filter modifications</li>
+                    <li>✅ At least one iterator function</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Visualizations (Day 8):</strong></p>
+                <ul>
+                    <li>✅ Minimum 3 pages (Summary, Detail, Analysis)</li>
+                    <li>✅ At least 8 different visual types</li>
+                    <li>✅ Consistent theme and formatting</li>
+                    <li>✅ Conditional formatting applied</li>
+                    <li>✅ Drill-through page</li>
+                    <li>✅ Bookmarks for navigation</li>
+                    <li>✅ Mobile layout for one page</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>AI Features (Day 9):</strong></p>
+                <ul>
+                    <li>✅ Q&A visual</li>
+                    <li>✅ Either Key Influencers OR Decomposition Tree</li>
+                </ul>
+            </div>
+
+            <h3>Project Workflow</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🎯</div>
+                    <h3 style="margin: 0;">Step-by-Step Project Plan</h3>
+                </div>
+                <div class="steps">
+                    <h4>Phase 1: Review & Enhance Data Model (20 min)</h4>
+                    <ol>
+                        <li>Open your existing project from Day 8</li>
+                        <li>Go to Model View</li>
+                        <li>Verify all relationships are correct</li>
+                        <li>Add any missing measures</li>
+                        <li>Organize measures into display folders</li>
+                        <li>Hide unnecessary columns</li>
+                    </ol>
+
+                    <h4 style="margin-top: 20px;">Phase 2: Build Summary Page (25 min)</h4>
+                    <ol>
+                        <li>Create/refine "Executive Summary" page</li>
+                        <li>Add KPI cards at top (4-6 key metrics)</li>
+                        <li>Add trend chart (sales over time)</li>
+                        <li>Add breakdown charts (by category, region)</li>
+                        <li>Add map if geographic data available</li>
+                        <li>Add slicers (Year, Quarter)</li>
+                        <li>Apply consistent formatting</li>
+                        <li>Configure interactions</li>
+                    </ol>
+
+                    <h4 style="margin-top: 20px;">Phase 3: Build Detail Page (20 min)</h4>
+                    <ol>
+                        <li>Create "Product/Customer Detail" page</li>
+                        <li>Add matrix with drill-down capability</li>
+                        <li>Apply conditional formatting</li>
+                        <li>Add supporting charts</li>
+                        <li>Link from summary with drill-through</li>
+                    </ol>
+
+                    <h4 style="margin-top: 20px;">Phase 4: Add AI Visuals (20 min)</h4>
+                    <ol>
+                        <li>Create "Analysis" page</li>
+                        <li>Add Q&A visual</li>
+                        <li>Add Key Influencers or Decomposition Tree</li>
+                        <li>Configure properly</li>
+                        <li>Test functionality</li>
+                    </ol>
+
+                    <h4 style="margin-top: 20px;">Phase 5: Navigation & Polish (20 min)</h4>
+                    <ol>
+                        <li>Create bookmarks for key views</li>
+                        <li>Add navigation buttons between pages</li>
+                        <li>Add back buttons on detail pages</li>
+                        <li>Review all formatting for consistency</li>
+                        <li>Test all interactions</li>
+                        <li>Create mobile layout for summary page</li>
+                    </ol>
+
+                    <h4 style="margin-top: 20px;">Phase 6: Presentation Prep (15 min)</h4>
+                    <ol>
+                        <li>Save final version</li>
+                        <li>Prepare 5-minute presentation covering:
+                            <ul>
+                                <li>Business scenario/problem</li>
+                                <li>Data model overview</li>
+                                <li>Key insights/findings</li>
+                                <li>Demonstration of features</li>
+                                <li>Challenges overcome</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Presentation Guidelines</h3>
+            <div class="theory-box">
+                <h4>Your 5-Minute Presentation Should Include:</h4>
+                <ol>
+                    <li><strong>Introduction (30 sec):</strong> Your name, dashboard purpose</li>
+                    <li><strong>Business Context (1 min):</strong> What problem does this solve?</li>
+                    <li><strong>Data Model (1 min):</strong> Show Model View, explain relationships</li>
+                    <li><strong>Dashboard Demo (2 min):</strong> Walk through main features</li>
+                    <li><strong>Key Insights (30 sec):</strong> What did you discover?</li>
+                    <li><strong>Q&A (30 sec):</strong> Answer questions</li>
+                </ol>
+            </div>
+
+            <h3>Evaluation Criteria</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Data Model (20 points)</h4>
+                    <ul>
+                        <li>Proper relationships (5)</li>
+                        <li>Star schema design (5)</li>
+                        <li>Date table implemented (5)</li>
+                        <li>Clean organization (5)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>DAX Measures (20 points)</h4>
+                    <ul>
+                        <li>Complexity and variety (8)</li>
+                        <li>Time intelligence (6)</li>
+                        <li>Proper formatting (3)</li>
+                        <li>Clear naming (3)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Visualizations (30 points)</h4>
+                    <ul>
+                        <li>Visual selection (10)</li>
+                        <li>Formatting & design (10)</li>
+                        <li>Interactivity (5)</li>
+                        <li>Mobile optimization (5)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Advanced Features (20 points)</h4>
+                    <ul>
+                        <li>AI visuals (8)</li>
+                        <li>Drill-through (4)</li>
+                        <li>Bookmarks (4)</li>
+                        <li>Conditional formatting (4)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Presentation (10 points)</h4>
+                    <ul>
+                        <li>Clarity (4)</li>
+                        <li>Story/insights (4)</li>
+                        <li>Time management (2)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important" style="margin-top: 30px;">
+                <strong>🎉 Project Complete!</strong> You've built a professional Power BI dashboard from scratch!
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="content-section" id="tasks">
+            <h2>✅ Final Tasks & Checklist</h2>
+
+            <h3>Pre-Presentation Checklist</h3>
+            <div class="checklist-box">
+                <h4>✓ Data & Model:</h4>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>All relationships active and correct</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Date table marked as date table</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Foreign keys hidden</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Measures organized in folders</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>No data quality errors</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 20px;">✓ DAX & Calculations:</h4>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>All measures working correctly</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Measures properly formatted (currency, %, etc.)</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Time intelligence formulas tested</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>No #ERROR values visible</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Calculations verified with sample data</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 20px;">✓ Visuals & Design:</h4>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Consistent theme applied</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>All visuals aligned to grid</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Titles are descriptive</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Color scheme is professional</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>No overlapping visuals</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Appropriate visual types chosen</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 20px;">✓ Interactivity:</h4>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Slicers filter correctly</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Cross-filtering configured properly</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Drill-through works</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Bookmarks function correctly</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Navigation buttons work</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 20px;">✓ AI & Advanced:</h4>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Q&A visual responds to questions</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Key Influencers/Decomposition Tree configured</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Mobile layout created</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Conditional formatting applied</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 20px;">✓ Final Polish:</h4>
+                <div class="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>File saved with clear name</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Tested in Reading View</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>All pages have meaningful names</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Presentation notes prepared</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Demo scenario practiced</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Post-Course Action Items</h3>
+            <div class="theory-box">
+                <h4>To Continue Your Power BI Journey:</h4>
+                <ol>
+                    <li><strong>Practice Regularly:</strong> Build reports weekly</li>
+                    <li><strong>Join Community:</strong> Power BI Community forums</li>
+                    <li><strong>Stay Updated:</strong> Follow Power BI blog for new features</li>
+                    <li><strong>Get Certified:</strong> Consider Microsoft PL-300 certification</li>
+                    <li><strong>Share Knowledge:</strong> Help others, teach concepts</li>
+                    <li><strong>Build Portfolio:</strong> Create sample reports for resume</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="content-section" id="resources">
+            <h2>📦 Resources & Next Steps</h2>
+
+            <h3>📚 Continued Learning Resources</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📖 Books</h4>
+                    <ul>
+                        <li>"The Definitive Guide to DAX" (2nd Ed)</li>
+                        <li>"Collect, Combine & Transform Data Using Power Query"</li>
+                        <li>"Power BI Cookbook"</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🎥 Video Channels</h4>
+                    <ul>
+                        <li>Guy in a Cube</li>
+                        <li>SQLBI</li>
+                        <li>Curbal</li>
+                        <li>Enterprise DNA</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🌐 Websites</h4>
+                    <ul>
+                        <li>dax.guide</li>
+                        <li>sqlbi.com</li>
+                        <li>powerbi.microsoft.com/blog</li>
+                        <li>community.powerbi.com</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🎓 Certifications</h4>
+                    <ul>
+                        <li>PL-300: Power BI Data Analyst</li>
+                        <li>DA-100 (older version)</li>
+                        <li>Microsoft Learn paths</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🎯 Day 10 Preview</h3>
+            <div class="note">
+                <strong>📅 Tomorrow: Power BI Service Deep Dive & Course Wrap-up</strong>
+                <p style="margin-top: 10px;">Final day topics:</p>
+                <ul>
+                    <li>Power BI Service workspaces in detail</li>
+                    <li>Creating and managing dashboards</li>
+                    <li>Power BI Mobile apps</li>
+                    <li>Row-level security (RLS)</li>
+                    <li>Deployment pipelines</li>
+                    <li>Governance and best practices</li>
+                    <li>Course review and Q&A</li>
+                    <li>Certificates and next steps</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Bring:</strong> Your questions and completed project!</p>
+            </div>
+        </div>
+
+        <footer>
+            <h3>🎉 Outstanding Work!</h3>
+            <p>You've completed your comprehensive Power BI dashboard!</p>
+            <p style="margin-top: 10px; color: #666;">
+                <strong>Tomorrow:</strong> Final day - Power BI Service mastery and course wrap-up!
+            </p>
+            <div style="margin-top: 20px;">
+                <a href="Day8.html" class="next-day-btn"
+                    style="background: #333; text-decoration: none; padding: 15px 30px; margin-right: 15px;">← Back to
+                    Day 8</a>
+                <button class="next-day-btn"
+                    onclick="alert('Day 10 materials coming soon! Prepare your final presentation.')">
+                    Continue to Day 10 (Final Day!) →
+                </button>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #999;">
+                Power BI Training Course | Day 9 of 10 | © 2025
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation Logic
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const sections = document.querySelectorAll('.content-section');
+        const progressFill = document.querySelector('.progress-fill');
+
+        function updateProgress(index) {
+            const progress = ((index + 1) / navBtns.length) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        navBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const targetSection = btn.getAttribute('data-section');
+
+                // Update navigation buttons
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update content sections
+                sections.forEach(s => s.classList.remove('active'));
+                const targetEl = document.getElementById(targetSection);
+                if (targetEl) {
+                    targetEl.classList.add('active');
+                    // Add animation
+                    targetEl.style.animation = 'none';
+                    targetEl.offsetHeight; /* trigger reflow */
+                    targetEl.style.animation = 'fadeIn 0.5s ease';
+                }
+
+                // Update progress bar
+                updateProgress(index);
+
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize progress bar
+        updateProgress(0);
+
+        // Checklist Logic
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('.checkbox');
+            checkbox.classList.toggle('checked');
+            element.classList.toggle('completed');
+
+            // Optional: Save state to localStorage
+            const itemText = element.querySelector('span').innerText;
+            const isChecked = checkbox.classList.contains('checked');
+            localStorage.setItem('day9_check_' + itemText, isChecked);
+        }
+
+        // Restore checklist states
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            const itemText = item.querySelector('span').innerText;
+            const savedState = localStorage.getItem('day9_check_' + itemText);
+            if (savedState === 'true') {
+                item.querySelector('.checkbox').classList.add('checked');
+                item.classList.add('completed');
+            }
+        });
+
+        // Reveal effect for sections on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .practical-task, .theory-box').forEach(el => {
+            el.style.opacity = '0.8';
+            el.style.transform = 'translateY(10px)';
+            el.style.transition = 'all 0.5s ease-out';
+            observer.observe(el);
+        });
+    </script>
+
+
+</body>
+
+</html>
