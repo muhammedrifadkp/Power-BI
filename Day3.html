@@ -1109,6 +1109,40 @@
                 </div>
             </div>
 
+            <div class="example-box" style="margin-top: 20px;">
+                <h4 style="margin-top: 0;">Practice Dataset: Regional Product Sales</h4>
+                <p>This dataset has dates spread across multiple columns (Wide Format), making it perfect for practicing the Unpivot technique.</p>
+                <div style="overflow-x: auto; margin-top: 15px;">
+                    <table class="comparison-table" style="font-size: 0.85em; white-space: nowrap; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Region</th>
+                                <th style="text-align: left;">Product</th>
+                                <th style="text-align: right;">01-Jan-2024</th>
+                                <th style="text-align: right;">15-Jan-2024</th>
+                                <th style="text-align: right;">01-Feb-2024</th>
+                                <th style="text-align: right;">15-Feb-2024</th>
+                                <th style="text-align: right;">01-Mar-2024</th>
+                                <th style="text-align: right;">15-Mar-2024</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>North</td><td>Laptop</td><td style="text-align: right;">12000</td><td style="text-align: right;">15000</td><td style="text-align: right;">13000</td><td style="text-align: right;">14000</td><td style="text-align: right;">16000</td><td style="text-align: right;">17000</td></tr>
+                            <tr><td>North</td><td>Mobile</td><td style="text-align: right;">8000</td><td style="text-align: right;">9000</td><td style="text-align: right;">8500</td><td style="text-align: right;">8700</td><td style="text-align: right;">9200</td><td style="text-align: right;">9500</td></tr>
+                            <tr><td>South</td><td>Laptop</td><td style="text-align: right;">10000</td><td style="text-align: right;">11000</td><td style="text-align: right;">10500</td><td style="text-align: right;">11500</td><td style="text-align: right;">12000</td><td style="text-align: right;">12500</td></tr>
+                            <tr><td>South</td><td>Mobile</td><td style="text-align: right;">7000</td><td style="text-align: right;">7500</td><td style="text-align: right;">7200</td><td style="text-align: right;">7600</td><td style="text-align: right;">8000</td><td style="text-align: right;">8200</td></tr>
+                            <tr><td>East</td><td>Laptop</td><td style="text-align: right;">9000</td><td style="text-align: right;">9500</td><td style="text-align: right;">9200</td><td style="text-align: right;">9800</td><td style="text-align: right;">10000</td><td style="text-align: right;">10500</td></tr>
+                            <tr><td>East</td><td>Mobile</td><td style="text-align: right;">6000</td><td style="text-align: right;">6500</td><td style="text-align: right;">6200</td><td style="text-align: right;">6600</td><td style="text-align: right;">7000</td><td style="text-align: right;">7200</td></tr>
+                            <tr><td>West</td><td>Laptop</td><td style="text-align: right;">11000</td><td style="text-align: right;">12000</td><td style="text-align: right;">11500</td><td style="text-align: right;">12500</td><td style="text-align: right;">13000</td><td style="text-align: right;">13500</td></tr>
+                            <tr><td>West</td><td>Mobile</td><td style="text-align: right;">7500</td><td style="text-align: right;">8000</td><td style="text-align: right;">7800</td><td style="text-align: right;">8200</td><td style="text-align: right;">8500</td><td style="text-align: right;">8800</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="download-btn" onclick="downloadUnpivotData()">📥 Download Practice Data</button>
+                </div>
+            </div>
+
             <h3>The Magic of Pivot</h3>
             <div class="example-box">
                 <div class="pivot-demo">
@@ -1421,6 +1455,22 @@
                 "2023-01-03,148,2790,288,3290";
 
             downloadFile(csvContent, "Stock_Data.csv", "text/csv");
+        }
+
+        function downloadUnpivotData() {
+            const csvContent = "Region,Product,01-Jan-2024,15-Jan-2024,01-Feb-2024,15-Feb-2024,01-Mar-2024,15-Mar-2024\n" +
+                "North,Laptop,12000,15000,13000,14000,16000,17000\n" +
+                "North,Mobile,8000,9000,8500,8700,9200,9500\n" +
+                "South,Laptop,10000,11000,10500,11500,12000,12500\n" +
+                "South,Mobile,7000,7500,7200,7600,8000,8200\n" +
+                "East,Laptop,9000,9500,9200,9800,10000,10500\n" +
+                "East,Mobile,6000,6500,6200,6600,7000,7200\n" +
+                "West,Laptop,11000,12000,11500,12500,13000,13500\n" +
+                "West,Mobile,7500,8000,7800,8200,8500,8800";
+
+            // If the user's computer is configured to open CSVs in Excel, this works perfectly. 
+            // Setting extension to .csv works just like it does for Stock_Data.csv
+            downloadFile(csvContent, "Unpivot_Practice_Data.csv", "text/csv");
         }
 
         function downloadFile(content, fileName, contentType) {
