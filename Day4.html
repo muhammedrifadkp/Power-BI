@@ -704,33 +704,33 @@
                 </div>
             </div>
 
-            <h3>Example: Merging Orders with Customers</h3>
+            <h3>Example: Merging Students Data</h3>
             <div class="example-box">
-                <h4>Scenario: Add customer name and email to order data</h4>
+                <h4>Scenario: Add Exam Marks to student profiles</h4>
 
                 <div class="merge-diagram">
                     <div class="table-box">
-                        <h4>Orders Table</h4>
+                        <h4>Students Table</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
                             <tr style="background: #f5576c; color: white;">
-                                <th style="padding: 5px; border: 1px solid #ddd;">OrderID</th>
-                                <th style="padding: 5px; border: 1px solid #ddd;">CustomerID</th>
-                                <th style="padding: 5px; border: 1px solid #ddd;">Amount</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">StudentID</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Name</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Department</th>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #ddd;">1001</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">C01</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">$500</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">101</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Akhil</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">CS</td>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #ddd;">1002</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">C02</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">$300</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">102</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Beena</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">IT</td>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #ddd;">1003</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">C01</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">$150</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">103</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Arjun</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">CS</td>
                             </tr>
                         </table>
                     </div>
@@ -738,27 +738,27 @@
                     <div class="arrow">+</div>
 
                     <div class="table-box">
-                        <h4>Customers Table</h4>
+                        <h4>ExamMarks Table</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
                             <tr style="background: #f5576c; color: white;">
-                                <th style="padding: 5px; border: 1px solid #ddd;">CustomerID</th>
-                                <th style="padding: 5px; border: 1px solid #ddd;">Name</th>
-                                <th style="padding: 5px; border: 1px solid #ddd;">Email</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">StudentID</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Subject</th>
+                                <th style="padding: 5px; border: 1px solid #ddd;">Marks</th>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #ddd;">C01</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">John Doe</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">j@mail.com</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">101</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Maths</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">85</td>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #ddd;">C02</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">Jane Smith</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">jane@mail.com</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">102</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Maths</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">78</td>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #ddd;">C03</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">Mike Ross</td>
-                                <td style="padding: 5px; border: 1px solid #ddd;">mike@mail.com</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">103</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">Maths</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">92</td>
                             </tr>
                         </table>
                     </div>
@@ -769,32 +769,32 @@
                         <h4>Merged Result</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
                             <tr style="background: #28a745; color: white;">
-                                <th style="padding: 4px; border: 1px solid #ddd;">OrderID</th>
-                                <th style="padding: 4px; border: 1px solid #ddd;">CustomerID</th>
-                                <th style="padding: 4px; border: 1px solid #ddd;">Amount</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">StudentID</th>
                                 <th style="padding: 4px; border: 1px solid #ddd;">Name</th>
-                                <th style="padding: 4px; border: 1px solid #ddd;">Email</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Department</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Subject</th>
+                                <th style="padding: 4px; border: 1px solid #ddd;">Marks</th>
                             </tr>
                             <tr>
-                                <td style="padding: 4px; border: 1px solid #ddd;">1001</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">C01</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$500</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">John Doe</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">j@mail.com</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">101</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Akhil</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">CS</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Maths</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">85</td>
                             </tr>
                             <tr>
-                                <td style="padding: 4px; border: 1px solid #ddd;">1002</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">C02</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$300</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">Jane Smith</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">jane@mail.com</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">102</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Beena</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">IT</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Maths</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">78</td>
                             </tr>
                             <tr>
-                                <td style="padding: 4px; border: 1px solid #ddd;">1003</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">C01</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$150</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">John Doe</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">j@mail.com</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">103</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Arjun</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">CS</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">Maths</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">92</td>
                             </tr>
                         </table>
                     </div>
@@ -803,16 +803,16 @@
                 <div class="steps" style="margin-top: 20px;">
                     <p><strong>Steps:</strong></p>
                     <ol>
-                        <li>Select <strong>Orders</strong> query</li>
+                        <li>Select <strong>Students</strong> query</li>
                         <li>Home → Merge Queries</li>
-                        <li>Choose <strong>Customers</strong> as second table</li>
-                        <li>Click <strong>CustomerID</strong> in both tables</li>
+                        <li>Choose <strong>ExamMarks</strong> as second table</li>
+                        <li>Click <strong>StudentID</strong> in both tables</li>
                         <li>Select <strong>Join Kind: Left Outer</strong> (all from first, matching from second)</li>
                         <li>Check the <strong>Privacy Levels</strong> if prompted (set to 'Public' or 'Organizational'
                             for the lab)</li>
                         <li>Click <strong>OK</strong></li>
-                        <li>Click the <strong>Expand</strong> icon (⇄) in the new column "Customer"</li>
-                        <li>Select only "Name" and "Email" and click OK</li>
+                        <li>Click the <strong>Expand</strong> icon (⇄) in the new column "ExamMarks"</li>
+                        <li>Select only "Subject" and "Marks" and click OK</li>
                     </ol>
                 </div>
 
@@ -820,10 +820,8 @@
                     style="text-align: center; margin-top: 15px; padding: 15px; background: #fff5f7; border-radius: 8px; border: 1px solid #fecdd3;">
                     <p style="margin-bottom: 10px; color: #f5576c; font-weight: bold;">📥 Practice with the real "Big
                         Data" samples:</p>
-                    <button class="download-btn" onclick="downloadBigOrders()"
-                        style="background: #007bff; color: white; margin: 5px;">📥 Download Orders Table</button>
-                    <button class="download-btn" onclick="downloadBigCustomers()"
-                        style="background: #007bff; color: white; margin: 5px;">📥 Download Customers Table</button>
+                    <a href="data's/power_query_join_practice.xlsx" class="download-btn" download
+                        style="display: inline-block; text-decoration: none; background: #007bff; color: white; margin: 5px;">📥 Download Practice Dataset</a>
                 </div>
             </div>
 
@@ -1314,35 +1312,7 @@
             downloadFile(catalog, "Product_Catalog.csv", "text/csv");
         }
 
-        function downloadBigOrders() {
-            const content = "OrderID,CustomerID,OrderDate,Amount\n" +
-                "1001,C01,01-01-23,500\n" +
-                "1002,C02,05-01-23,300\n" +
-                "1004,C03,15-01-23,750\n" +
-                "1005,C04,20-01-23,200\n" +
-                "1007,C05,01-02-23,1000\n" +
-                "1009,C06,10-02-23,600\n" +
-                "1011,C07,20-02-23,900\n" +
-                "1013,C08,01-03-23,800\n" +
-                "1015,C09,10-03-23,400\n" +
-                "1017,C10,20-03-23,300";
-            downloadFile(content, "Orders_Dataset.csv", "text/csv");
-        }
 
-        function downloadBigCustomers() {
-            const content = "CustomerID,Name,Email,City\n" +
-                "C01,John Doe,john@test.com,New York\n" +
-                "C02,Jane Smith,jane@test.com,London\n" +
-                "C03,Mike Ross,mike@test.com,Chicago\n" +
-                "C04,Harvey Specter,harvey@test.com,New York\n" +
-                "C05,Donna Paulsen,donna@test.com,London\n" +
-                "C06,Rachel Zane,rachel@test.com,Chicago\n" +
-                "C07,Louis Litt,louis@test.com,Boston\n" +
-                "C08,Jessica Pearson,jessica@test.com,Toronto\n" +
-                "C09,Robert Zane,robert@test.com,Chicago\n" +
-                "C10,Katrina Bennett,katrina@test.com,London";
-            downloadFile(content, "Big_Customers_Dataset.csv", "text/csv");
-        }
 
         function downloadHugeHierarchyData() {
             const countries = ["USA", "India", "UK"];
