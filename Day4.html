@@ -860,19 +860,22 @@
             <div class="example-box">
                 <div class="merge-diagram">
                     <div class="table-box">
-                        <h4 style="color: #11998e;">Jan Sales</h4>
+                        <h4 style="color: #11998e;">Sales_Jan</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
                             <tr style="background: #11998e; color: white;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">OrderID</th>
                                 <th style="padding: 5px; border: 1px solid #ddd;">Date</th>
                                 <th style="padding: 5px; border: 1px solid #ddd;">Sales</th>
                             </tr>
                             <tr>
-                                <td>01-Jan</td>
-                                <td>$200</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">1001</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">01-Jan-2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">12000</td>
                             </tr>
                             <tr>
-                                <td>15-Jan</td>
-                                <td>$150</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">1002</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">03-Jan-2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">8000</td>
                             </tr>
                         </table>
                     </div>
@@ -880,19 +883,22 @@
                     <div class="arrow" style="transform: rotate(90deg);">→</div>
 
                     <div class="table-box">
-                        <h4 style="color: #38ef7d;">Feb Sales</h4>
+                        <h4 style="color: #38ef7d;">Sales_Feb</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
                             <tr style="background: #38ef7d; color: white;">
+                                <th style="padding: 5px; border: 1px solid #ddd;">OrderID</th>
                                 <th style="padding: 5px; border: 1px solid #ddd;">Date</th>
                                 <th style="padding: 5px; border: 1px solid #ddd;">Sales</th>
                             </tr>
                             <tr>
-                                <td>05-Feb</td>
-                                <td>$300</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2001</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">02-Feb-2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">14000</td>
                             </tr>
                             <tr>
-                                <td>20-Feb</td>
-                                <td>$250</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">2002</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">04-Feb-2024</td>
+                                <td style="padding: 5px; border: 1px solid #ddd;">9000</td>
                             </tr>
                         </table>
                     </div>
@@ -903,27 +909,38 @@
                         <h4 style="color: #f5576c;">Appended Result</h4>
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
                             <tr style="background: #f5576c; color: white;">
+                                <th style="padding: 4px; border: 1px solid #ddd;">OrderID</th>
                                 <th style="padding: 4px; border: 1px solid #ddd;">Date</th>
                                 <th style="padding: 4px; border: 1px solid #ddd;">Sales</th>
                             </tr>
                             <tr style="background: #e6fffa;">
-                                <td style="padding: 4px; border: 1px solid #ddd;">01-Jan</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$200</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">1001</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">01-Jan-2024</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">12000</td>
                             </tr>
                             <tr style="background: #e6fffa;">
-                                <td style="padding: 4px; border: 1px solid #ddd;">15-Jan</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$150</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">1002</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">03-Jan-2024</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">8000</td>
                             </tr>
                             <tr style="background: #f0fff4;">
-                                <td style="padding: 4px; border: 1px solid #ddd;">05-Feb</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$300</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">2001</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">02-Feb-2024</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">14000</td>
                             </tr>
                             <tr style="background: #f0fff4;">
-                                <td style="padding: 4px; border: 1px solid #ddd;">20-Feb</td>
-                                <td style="padding: 4px; border: 1px solid #ddd;">$250</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">2002</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">04-Feb-2024</td>
+                                <td style="padding: 4px; border: 1px solid #ddd;">9000</td>
                             </tr>
                         </table>
                     </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 15px; padding: 15px; background: #fff5f7; border-radius: 8px; border: 1px solid #fecdd3;">
+                    <p style="margin-bottom: 10px; color: #f5576c; font-weight: bold;">📥 Practice with the real "Big Data" samples:</p>
+                    <a href="data's/power_query_append_practice.xlsx" class="download-btn" download
+                        style="display: inline-block; text-decoration: none; background: #007bff; color: white; margin: 5px;">📥 Download Append Practice Dataset</a>
                 </div>
             </div>
 
