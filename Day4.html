@@ -1029,6 +1029,7 @@
                         <tr>
                             <th>OrderDate</th>
                             <th>Country</th>
+                            <th>State</th>
                             <th>City</th>
                             <th>Category</th>
                             <th>SalesAmount</th>
@@ -1037,23 +1038,26 @@
                     <tbody>
                         <tr>
                             <td>2019-01-05</td>
-                            <td>India</td>
-                            <td>Bangalore</td>
+                            <td>USA</td>
+                            <td>California</td>
+                            <td>Los Angeles</td>
                             <td>Electronics</td>
                             <td>45,000</td>
                         </tr>
                         <tr>
                             <td>2020-11-20</td>
                             <td>India</td>
-                            <td>Kochi</td>
+                            <td>Maharashtra</td>
+                            <td>Mumbai</td>
                             <td>Electronics</td>
                             <td>51,000</td>
                         </tr>
                         <tr>
                             <td>2023-03-25</td>
-                            <td>India</td>
+                            <td>UK</td>
+                            <td>England</td>
+                            <td>London</td>
                             <td>Furniture</td>
-                            <td>Kochi</td>
                             <td>28,000</td>
                         </tr>
                     </tbody>
@@ -1092,11 +1096,12 @@
                         <li>Right-click <code>Country</code> in the Data Pane.</li>
                         <li>Select <strong>Create hierarchy</strong>. (It will name it <code>Country Hierarchy</code>).
                         </li>
+                        <li>Right-click <code>State</code> → Select <strong>Add to hierarchy</strong> → <strong>Country
+                                Hierarchy</strong>.</li>
                         <li>Right-click <code>City</code> → Select <strong>Add to hierarchy</strong> → <strong>Country
                                 Hierarchy</strong>.</li>
                         <li>Drag the new <code>Country Hierarchy</code> onto a Map or Bar Chart.</li>
-                        <li>Now you can drill down from <strong>India</strong> into <strong>Bangalore, Mumbai, Kochi,
-                                and Delhi</strong>.</li>
+                        <li>Now you can drill down from <strong>USA</strong> into <strong>California</strong>, then into <strong>Los Angeles</strong>, or from <strong>India</strong> into <strong>Maharashtra</strong>, then into <strong>Mumbai</strong>.</li>
                     </ol>
                 </div>
             </div>
@@ -1376,67 +1381,67 @@
         }
 
         function downloadDateHierarchyData() {
-            const content = `OrderDate,Country,City,Category,SalesAmount
-2019-01-05,India,Bangalore,Electronics,45000
-2019-02-14,India,Bangalore,Electronics,52000
-2019-03-22,India,Mumbai,Furniture,18000
-2019-04-10,India,Mumbai,Electronics,61000
-2019-05-18,India,Kochi,Electronics,39000
-2019-06-27,India,Kochi,Furniture,22000
-2019-07-09,India,Delhi,Electronics,58000
-2019-08-16,India,Delhi,Electronics,63000
-2019-09-03,India,Bangalore,Furniture,17000
-2019-10-21,India,Mumbai,Electronics,70000
-2019-11-11,India,Kochi,Electronics,48000
-2019-12-29,India,Delhi,Furniture,26000
-2020-01-06,India,Bangalore,Electronics,50000
-2020-02-19,India,Mumbai,Electronics,56000
-2020-03-25,India,Kochi,Furniture,24000
-2020-04-13,India,Delhi,Electronics,62000
-2020-05-30,India,Bangalore,Electronics,54000
-2020-06-17,India,Mumbai,Furniture,20000
-2020-07-08,India,Kochi,Electronics,46000
-2020-08-24,India,Delhi,Electronics,68000
-2020-09-14,India,Bangalore,Furniture,19000
-2020-10-02,India,Mumbai,Electronics,72000
-2020-11-20,India,Kochi,Electronics,51000
-2020-12-28,India,Delhi,Furniture,27000
-2021-01-09,India,Bangalore,Electronics,56000
-2021-02-18,India,Mumbai,Electronics,59000
-2021-03-27,India,Kochi,Furniture,25000
-2021-04-15,India,Delhi,Electronics,64000
-2021-05-23,India,Bangalore,Electronics,58000
-2021-06-11,India,Mumbai,Furniture,21000
-2021-07-19,India,Kochi,Electronics,48000
-2021-08-26,India,Delhi,Electronics,71000
-2021-09-07,India,Bangalore,Furniture,20000
-2021-10-16,India,Mumbai,Electronics,76000
-2021-11-28,India,Kochi,Electronics,53000
-2021-12-31,India,Delhi,Furniture,29000
-2022-01-08,India,Bangalore,Electronics,60000
-2022-02-17,India,Mumbai,Electronics,63000
-2022-03-26,India,Kochi,Furniture,26000
-2022-04-14,India,Delhi,Electronics,68000
-2022-05-22,India,Bangalore,Electronics,61000
-2022-06-10,India,Mumbai,Furniture,22000
-2022-07-18,India,Kochi,Electronics,52000
-2022-08-25,India,Delhi,Electronics,75000
-2022-09-06,India,Bangalore,Furniture,21000
-2022-10-15,India,Mumbai,Electronics,80000
-2022-11-27,India,Kochi,Electronics,56000
-2022-12-30,India,Delhi,Furniture,31000
-2023-01-07,India,Bangalore,Electronics,64000
-2023-02-16,India,Mumbai,Electronics,67000
-2023-03-25,India,Kochi,Furniture,28000
-2023-04-13,India,Delhi,Electronics,72000
-2023-05-21,India,Bangalore,Electronics,66000
-2023-06-09,India,Mumbai,Furniture,24000
-2023-07-17,India,Kochi,Electronics,58000
-2023-08-24,India,Delhi,Electronics,82000
-2023-09-05,India,Bangalore,Furniture,23000
-2023-10-14,India,Mumbai,Electronics,86000
-2023-11-26,India,Kochi,Electronics,60000
-2023-12-29,India,Delhi,Furniture,34000
+            const content = `OrderDate,Country,State,City,Category,SalesAmount
+2019-01-05,USA,California,Los Angeles,Electronics,45000
+2019-02-14,USA,New York,New York City,Electronics,52000
+2019-03-22,USA,Texas,Houston,Furniture,18000
+2019-04-10,India,Maharashtra,Mumbai,Electronics,61000
+2019-05-18,India,Kerala,Kochi,Electronics,39000
+2019-06-27,India,Karnataka,Bangalore,Furniture,22000
+2019-07-09,UK,England,London,Electronics,58000
+2019-08-16,UK,England,Manchester,Electronics,63000
+2019-09-03,UK,Scotland,Edinburgh,Furniture,17000
+2019-10-21,Australia,New South Wales,Sydney,Electronics,70000
+2019-11-11,Australia,Victoria,Melbourne,Electronics,48000
+2019-12-29,Canada,Ontario,Toronto,Furniture,26000
+2020-01-06,Canada,British Columbia,Vancouver,Electronics,50000
+2020-02-19,USA,California,San Francisco,Electronics,56000
+2020-03-25,USA,Florida,Miami,Furniture,24000
+2020-04-13,USA,Illinois,Chicago,Electronics,62000
+2020-05-30,India,Delhi,New Delhi,Electronics,54000
+2020-06-17,India,Maharashtra,Pune,Furniture,20000
+2020-07-08,India,Kerala,Trivandrum,Electronics,46000
+2020-08-24,UK,Wales,Cardiff,Electronics,68000
+2020-09-14,UK,Northern Ireland,Belfast,Furniture,19000
+2020-10-02,Australia,Queensland,Brisbane,Electronics,72000
+2020-11-20,Australia,Western Australia,Perth,Electronics,51000
+2020-12-28,Canada,Quebec,Montreal,Furniture,27000
+2021-01-09,USA,Texas,Austin,Electronics,56000
+2021-02-18,USA,Washington,Seattle,Electronics,59000
+2021-03-27,USA,Colorado,Denver,Furniture,25000
+2021-04-15,India,Karnataka,Mysore,Electronics,64000
+2021-05-23,India,Tamil Nadu,Chennai,Electronics,58000
+2021-06-11,India,West Bengal,Kolkata,Furniture,21000
+2021-07-19,UK,England,Birmingham,Electronics,48000
+2021-08-26,UK,Scotland,Glasgow,Electronics,71000
+2021-09-07,Australia,South Australia,Adelaide,Furniture,20000
+2021-10-16,Canada,Alberta,Calgary,Electronics,76000
+2021-11-28,USA,Massachusetts,Boston,Electronics,53000
+2021-12-31,USA,Georgia,Atlanta,Furniture,29000
+2022-01-08,India,Gujarat,Ahmedabad,Electronics,60000
+2022-02-17,India,Telangana,Hyderabad,Electronics,63000
+2022-03-26,UK,England,Liverpool,Furniture,26000
+2022-04-14,Australia,Tasmania,Hobart,Electronics,68000
+2022-05-22,Canada,Nova Scotia,Halifax,Electronics,61000
+2022-06-10,USA,Nevada,Las Vegas,Furniture,22000
+2022-07-18,USA,Arizona,Phoenix,Electronics,52000
+2022-08-25,India,Uttar Pradesh,Lucknow,Electronics,75000
+2022-09-06,India,Rajasthan,Jaipur,Furniture,21000
+2022-10-15,UK,Wales,Swansea,Electronics,80000
+2022-11-27,Australia,ACT,Canberra,Electronics,56000
+2022-12-30,Canada,Manitoba,Winnipeg,Furniture,31000
+2023-01-07,USA,Michigan,Detroit,Electronics,64000
+2023-02-16,USA,Ohio,Columbus,Electronics,67000
+2023-03-25,India,Bihar,Patna,Furniture,28000
+2023-04-13,India,Madhya Pradesh,Indore,Electronics,72000
+2023-05-21,UK,England,Leeds,Electronics,66000
+2023-06-09,Australia,Northern Territory,Darwin,Furniture,24000
+2023-07-17,Canada,Saskatchewan,Saskatoon,Electronics,58000
+2023-08-24,USA,Oregon,Portland,Electronics,82000
+2023-09-05,USA,Utah,Salt Lake City,Furniture,23000
+2023-10-14,India,Kerala,Kozhikode,Electronics,86000
+2023-11-26,India,Maharashtra,Nagpur,Electronics,60000
+2023-12-29,UK,Scotland,Aberdeen,Furniture,34000
 `;
             downloadFile(content, "date_HIERARCHY_Practice.csv", "text/csv");
         }
