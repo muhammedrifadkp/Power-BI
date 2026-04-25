@@ -905,7 +905,7 @@
                 <div class="feature-card">
                     <h4>3. Calculated Tables</h4>
                     <p>Generate entire new tables from DAX expressions</p>
-                    <p style="margin-top: 10px; font-size: 0.9em;">Example: Date table, What-if parameters</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Example: TopCustomers = FILTER(Customers, Customers[Total] > 10000)</p>
                 </div>
 
                 <div class="feature-card">
@@ -1007,7 +1007,7 @@
                     <tr>
                         <td><strong>Syntax Start</strong></td>
                         <td>Column Name =</td>
-                        <td>Measure Name :=</td>
+                        <td>Measure Name =</td>
                     </tr>
                     <tr>
                         <td><strong>Result</strong></td>
@@ -1121,7 +1121,7 @@ SWITCH(
             <div class="example-box">
                 <h4>Example 1: Total Revenue (Dynamic)</h4>
                 <div class="code-block">
-                    <code>Total Net Revenue := SUM(Orders[Revenue])</code>
+                    <code>Total Net Revenue = SUM(Orders[Revenue])</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Sums the final earned amount. Responds to slicers
                     (e.g., viewing revenue only for "Dell" brand).</p>
@@ -1130,7 +1130,7 @@ SWITCH(
             <div class="example-box">
                 <h4>Example 2: Total Transactions</h4>
                 <div class="code-block">
-                    <code>Order Count := COUNT(Orders[OrderID])</code>
+                    <code>Order Count = COUNT(Orders[OrderID])</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Shows how many orders were placed in total.</p>
             </div>
@@ -1138,7 +1138,7 @@ SWITCH(
             <div class="example-box">
                 <h4>Example 3: Average Order Value</h4>
                 <div class="code-block">
-                    <code>Avg Order Value := AVERAGE(Orders[Revenue])</code>
+                    <code>Avg Order Value = AVERAGE(Orders[Revenue])</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Calculates the mean revenue per order visible in
                     the report.</p>
@@ -1147,7 +1147,7 @@ SWITCH(
             <div class="example-box">
                 <h4>Example 4: Discount Ratio (Calculated Measure)</h4>
                 <div class="code-block">
-                    <code>Overall Discount % := DIVIDE(SUM(Orders[Discount]), SUM(Orders[Gross Sales]), 0)</code>
+                    <code>Overall Discount % = DIVIDE(SUM(Orders[Discount]), SUM(Orders[Gross Sales]), 0)</code>
                 </div>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Shows what percentage of our potential sales were
                     given away as discounts.</p>
@@ -1199,7 +1199,7 @@ SWITCH(
 
                 <h4 style="margin-top: 20px;">Explicit Measures (You create)</h4>
                 <p><strong>What:</strong> Measures you deliberately create with specific formulas</p>
-                <p><strong>Example:</strong> Create measure <code>Total Revenue := SUM(Orders[Revenue])</code></p>
+                <p><strong>Example:</strong> Create measure <code>Total Revenue = SUM(Orders[Revenue])</code></p>
                 <p><strong>Benefits:</strong> Full control, can reference in other calculations, reusable, documented
                 </p>
 
@@ -1250,7 +1250,7 @@ SWITCH(
                         <li style="margin-top: 15px;">
                             <strong>Step 3: Create an Aggregated Measure for 'Total Revenue'</strong>
                             <p>Go to Report View → New Measure:</p>
-                            <div class="code-block"><code>Total Revenue := SUM(Orders[Net Sale])</code></div>
+                            <div class="code-block"><code>Total Revenue = SUM(Orders[Net Sale])</code></div>
                             <p><small><em>Why Measure? This will update when you filter by Product, City, or
                                         Category.</em></small></p>
                         </li>
@@ -1259,7 +1259,7 @@ SWITCH(
                             <strong>Step 4: Create a Measure for 'Total Savings'</strong>
                             <p>Let's see how much customer saved in total:</p>
                             <div class="code-block">
-                                <code>Total Discount := SUM(Orders[Gross Amount]) - [Total Revenue]</code>
+                                <code>Total Discount = SUM(Orders[Gross Amount]) - [Total Revenue]</code>
                             </div>
                         </li>
                     </ol>
@@ -1293,8 +1293,8 @@ SWITCH(
                 <h4 style="margin-top: 20px;">2. Creating Formulas</h4>
                 <ul>
                     <li><strong>Calculated Column:</strong> <code>New Column Name = formula</code></li>
-                    <li><strong>Measure:</strong> <code>Measure Name := formula</code></li>
-                    <li>Note: := is preferred for measures, but = also works</li>
+                    <li><strong>Measure:</strong> <code>Measure Name = formula</code></li>
+                    <li>Note: = is preferred for measures, but = also works</li>
                 </ul>
 
                 <h4 style="margin-top: 20px;">3. Case Sensitivity</h4>
@@ -1412,13 +1412,13 @@ SWITCH(
                 <h4>✅ Correct Syntax Examples</h4>
                 <div class="code-examples">
                     <div class="code-block">
-                        <code>Total Sales := SUM(Orders[Revenue])</code>
+                        <code>Total Sales = SUM(Orders[Revenue])</code>
                         <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Measure with clear name and table
                             reference (Orders)</p>
                     </div>
 
                     <div class="code-block">
-                        <code>Total Discount := SUM(Orders[Discount])</code>
+                        <code>Total Discount = SUM(Orders[Discount])</code>
                         <p style="font-size: 0.85em; color: #666; margin-top: 5px;">✓ Aggregating the calculated column
                             'Discount'</p>
                     </div>
@@ -1456,7 +1456,7 @@ SWITCH(
                     </div>
 
                     <div class="code-block error">
-                        <code>Avg := Orders[Revenue] / COUNT()</code>
+                        <code>Avg = Orders[Revenue] / COUNT()</code>
                         <p style="font-size: 0.85em; color: #dc3545; margin-top: 5px;">✗ COUNT needs a column - use
                             <code>AVERAGE(Orders[Revenue])</code> instead
                         </p>
@@ -1489,7 +1489,7 @@ SWITCH(
                     <h4>SUM</h4>
                     <p><strong>Purpose:</strong> Add up all values</p>
                     <div class="code-block">
-                        <code>Total Gross := SUM(Orders[Gross Sales])</code>
+                        <code>Total Gross = SUM(Orders[Gross Sales])</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Totaling numbers like
                         Gross Sales or Revenue.</p>
@@ -1499,7 +1499,7 @@ SWITCH(
                     <h4>AVERAGE</h4>
                     <p><strong>Purpose:</strong> Calculate mean value</p>
                     <div class="code-block">
-                        <code>Avg Unit Price := AVERAGE(Orders[UnitPrice])</code>
+                        <code>Avg Unit Price = AVERAGE(Orders[UnitPrice])</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding typical price or
                         average revenue.</p>
@@ -1509,7 +1509,7 @@ SWITCH(
                     <h4>COUNT</h4>
                     <p><strong>Purpose:</strong> Count numeric values</p>
                     <div class="code-block">
-                        <code>Order Count := COUNT(Orders[OrderID])</code>
+                        <code>Order Count = COUNT(Orders[OrderID])</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting specific order
                         IDs.</p>
@@ -1519,7 +1519,7 @@ SWITCH(
                     <h4>COUNTA</h4>
                     <p><strong>Purpose:</strong> Count non-blank values</p>
                     <div class="code-block">
-                        <code>Customer Name Count := COUNTA(Orders[CustomerName])</code>
+                        <code>Customer Name Count = COUNTA(Orders[CustomerName])</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting text entries like
                         Customer Names.</p>
@@ -1529,7 +1529,7 @@ SWITCH(
                     <h4>DISTINCTCOUNT</h4>
                     <p><strong>Purpose:</strong> Count unique values</p>
                     <div class="code-block">
-                        <code>Unique Customers := DISTINCTCOUNT(Orders[CustomerID])</code>
+                        <code>Unique Customers = DISTINCTCOUNT(Orders[CustomerID])</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Counting individual
                         customers or unique products.</p>
@@ -1538,8 +1538,8 @@ SWITCH(
                     <h4>MIN / MAX</h4>
                     <p><strong>Purpose:</strong> Find smallest/largest value</p>
                     <div class="code-block">
-                        <code>Max Revenue := MAX(Orders[Revenue])</code><br>
-                        <code>Min Revenue := MIN(Orders[Revenue])</code>
+                        <code>Max Revenue = MAX(Orders[Revenue])</code><br>
+                        <code>Min Revenue = MIN(Orders[Revenue])</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Use when:</strong> Finding highest or lowest
                         sales amount.</p>
@@ -1553,7 +1553,7 @@ SWITCH(
                     <h4>DIVIDE</h4>
                     <p><strong>Purpose:</strong> Safe division (handles divide by zero)</p>
                     <div class="code-block">
-                        <code>Profit Margin := DIVIDE([Total Profit], [Total Revenue], 0)</code>
+                        <code>Profit Margin = DIVIDE([Total Profit], [Total Revenue], 0)</code>
                     </div>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Syntax:</strong> DIVIDE(numerator,
                         denominator, alternate_result)</p>
@@ -1620,7 +1620,7 @@ SWITCH(
                     <h3 style="margin: 0;">How Power BI Calculates a Measure</h3>
                 </div>
                 <div class="steps">
-                    <p><strong>Example Measure:</strong> <code>Total Sales := SUM(Sales[Revenue])</code></p>
+                    <p><strong>Example Measure:</strong> <code>Total Sales = SUM(Sales[Revenue])</code></p>
 
                     <h4 style="margin-top: 15px;">What Happens When You Use This Measure:</h4>
                     <ol>
@@ -1763,7 +1763,7 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure 1: Total Revenue</strong>
                             <div class="code-block">
-                                <code>Total Revenue := SUM(Orders[Revenue])</code>
+                                <code>Total Revenue = SUM(Orders[Revenue])</code>
                             </div>
                             <ul>
                                 <li>Press Enter</li>
@@ -1773,7 +1773,7 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure 2: Total Quantity</strong>
                             <div class="code-block">
-                                <code>Total Quantity := SUM(Orders[Quantity])</code>
+                                <code>Total Quantity = SUM(Orders[Quantity])</code>
                             </div>
                             <ul>
                                 <li>Format as Whole Number</li>
@@ -1782,7 +1782,7 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure 3: Average Order Value</strong>
                             <div class="code-block">
-                                <code>Avg Order Value := AVERAGE(Orders[Revenue])</code>
+                                <code>Avg Order Value = AVERAGE(Orders[Revenue])</code>
                             </div>
                             <ul>
                                 <li>Format as Currency</li>
@@ -1791,7 +1791,7 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure 4: Number of Transactions</strong>
                             <div class="code-block">
-                                <code>Order Count := COUNT(Orders[OrderID])</code>
+                                <code>Order Count = COUNT(Orders[OrderID])</code>
                             </div>
                             <ul>
                                 <li>Format as Whole Number</li>
@@ -1800,7 +1800,7 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure 5: Unique Customers</strong>
                             <div class="code-block">
-                                <code>Customer Reach := DISTINCTCOUNT(Orders[CustomerID])</code>
+                                <code>Customer Reach = DISTINCTCOUNT(Orders[CustomerID])</code>
                             </div>
                             <ul>
                                 <li>Format as Whole Number</li>
@@ -1856,7 +1856,7 @@ SWITCH(
                     <ol>
                         <li><strong>Measure: Revenue per Customer</strong>
                             <div class="code-block">
-                                <code>Rev per Customer := DIVIDE([Total Revenue], [Customer Reach], 0)</code>
+                                <code>Rev per Customer = DIVIDE([Total Revenue], [Customer Reach], 0)</code>
                             </div>
                             <ul>
                                 <li>Format as Currency</li>
@@ -1866,7 +1866,7 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure: Average Items per Order</strong>
                             <div class="code-block">
-                                <code>Avg Items per Order := DIVIDE([Total Quantity], [Order Count], 0)</code>
+                                <code>Avg Items per Order = DIVIDE([Total Quantity], [Order Count], 0)</code>
                             </div>
                             <ul>
                                 <li>Format as Decimal (2 places)</li>
@@ -1875,8 +1875,8 @@ SWITCH(
 
                         <li style="margin-top: 15px;"><strong>Measure: Overall Discount %</strong>
                             <div class="code-block">
-                                <code>Total Discount Value := SUM(Orders[Discount])</code><br>
-                                <code>Discount % := DIVIDE([Total Discount Value], SUM(Orders[Gross Sales]), 0)</code>
+                                <code>Total Discount Value = SUM(Orders[Discount])</code><br>
+                                <code>Discount % = DIVIDE([Total Discount Value], SUM(Orders[Gross Sales]), 0)</code>
                             </div>
                             <ul>
                                 <li>Format as Percentage</li>
@@ -1959,7 +1959,7 @@ SWITCH(
                     <li>What's the difference between COUNT and DISTINCTCOUNT?</li>
                     <li>Can you use a measure inside a calculated column formula? Why or why not?</li>
                     <li>What's the syntax for referencing a column in DAX?</li>
-                    <li>What does := mean in DAX?</li>
+                    <li>What does = mean in DAX?</li>
                     <li>What are the two types of evaluation context in DAX?</li>
                     <li>Which uses more memory: calculated columns or measures?</li>
                 </ol>
