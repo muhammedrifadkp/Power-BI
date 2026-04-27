@@ -818,11 +818,93 @@
             justify-content: center;
         }
 
-        /* Improved spacing */
-        .visual-card p strong {
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: #764ba2;
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
             color: #667eea;
-            display: block;
-            margin-top: 10px;
+        }
+
+        .step-tag {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .visual-card {
+            cursor: pointer;
+        }
+
+        .visual-card:after {
+            content: "Click for How-to →";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.75em;
+            color: #667eea;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .visual-card:hover:after {
+            opacity: 1;
         }
     </style>
 </head>
@@ -884,6 +966,18 @@
                 </ul>
             </div>
 
+            <h3>🚀 The Professional Design Workflow</h3>
+            <div class="steps">
+                <ol>
+                    <li><strong>Define the Story:</strong> What is the #1 question this dashboard must answer?</li>
+                    <li><strong>Sketch the Layout:</strong> Use a Z-pattern (top-left to bottom-right) for important info.</li>
+                    <li><strong>Import & Clean:</strong> Use the provided <a href="day8_practice_dataset.csv">Day 8 Practice Dataset</a>.</li>
+                    <li><strong>Build KPIs:</strong> Start with the big numbers at the top.</li>
+                    <li><strong>Add Context:</strong> Use trends (Line charts) and breakdowns (Treemaps/Maps).</li>
+                    <li><strong>Polish:</strong> Apply themes, align visuals, and set up interactions.</li>
+                </ol>
+            </div>
+
             <h3>📅 Session Structure</h3>
             <div class="feature-grid">
                 <div class="feature-card">
@@ -939,15 +1033,15 @@
 
             <h3>The Visual Selection Framework</h3>
             <div class="theory-box">
-                <h4>Ask yourself these questions:</h4>
-                <ol>
-                    <li><strong>What am I trying to show?</strong> (Comparison, Trend, Part-to-Whole, Distribution,
-                        Relationship)</li>
-                    <li><strong>How many variables?</strong> (One, Two, Multiple)</li>
-                    <li><strong>What's the data structure?</strong> (Time series, Categories, Geographic, Hierarchical)
-                    </li>
-                    <li><strong>Who's the audience?</strong> (Executive, Analyst, Operational)</li>
-                </ol>
+                <h4>Decision Tree: What should I use?</h4>
+                <ul>
+                    <li><strong>Showing Trends?</strong> ➔ Use a <strong>Line Chart</strong>.</li>
+                    <li><strong>Comparing Categories?</strong> ➔ Use a <strong>Clustered Bar Chart</strong>.</li>
+                    <li><strong>Part-to-Whole (few items)?</strong> ➔ Use a <strong>Donut Chart</strong>.</li>
+                    <li><strong>Part-to-Whole (many items)?</strong> ➔ Use a <strong>Treemap</strong>.</li>
+                    <li><strong>Seeing Relationships (2+ metrics)?</strong> ➔ Use a <strong>Scatter Chart</strong>.</li>
+                    <li><strong>Tracking a Goal?</strong> ➔ Use a <strong>Gauge</strong> or <strong>KPI Visual</strong>.</li>
+                </ul>
             </div>
 
             <h3>Visual Types by Purpose</h3>
@@ -955,7 +1049,7 @@
             <div class="visual-category">
                 <h4>📈 Comparison Visuals</h4>
                 <div class="visual-grid">
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('bar')">
                         <h5>Bar Chart (Clustered/Stacked)</h5>
                         <div class="visual-icon">📊</div>
                         <p><strong>Best for:</strong> Comparing values across categories</p>
@@ -968,7 +1062,7 @@
                         <p style="margin-top: 10px;"><strong>Max categories:</strong> 10-15 for readability</p>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('column')">
                         <h5>Column Chart</h5>
                         <div class="visual-icon">📊</div>
                         <p><strong>Best for:</strong> Comparing values over time periods</p>
@@ -980,7 +1074,7 @@
                         </ul>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('table')">
                         <h5>Table & Matrix</h5>
                         <div class="visual-icon">📋</div>
                         <p><strong>Best for:</strong> Detailed data lookup</p>
@@ -997,7 +1091,7 @@
             <div class="visual-category">
                 <h4>📉 Trend Visuals</h4>
                 <div class="visual-grid">
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('line')">
                         <h5>Line Chart</h5>
                         <div class="visual-icon">📈</div>
                         <p><strong>Best for:</strong> Showing trends over time</p>
@@ -1010,7 +1104,7 @@
                         <p style="margin-top: 10px;"><strong>Add:</strong> Trend lines, forecasting</p>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('area')">
                         <h5>Area Chart</h5>
                         <div class="visual-icon">📊</div>
                         <p><strong>Best for:</strong> Showing cumulative totals over time</p>
@@ -1022,7 +1116,7 @@
                         </ul>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('combo')">
                         <h5>Combo Chart</h5>
                         <div class="visual-icon">📊</div>
                         <p><strong>Best for:</strong> Comparing different scales</p>
@@ -1039,7 +1133,7 @@
             <div class="visual-category">
                 <h4>🥧 Part-to-Whole Visuals</h4>
                 <div class="visual-grid">
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('pie')">
                         <h5>Pie Chart</h5>
                         <div class="visual-icon">🥧</div>
                         <p><strong>Best for:</strong> Simple proportions (2-5 slices)</p>
@@ -1052,7 +1146,7 @@
                         <p style="margin-top: 10px;"><strong>⚠️ Limit:</strong> Max 5 slices</p>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('donut')">
                         <h5>Donut Chart</h5>
                         <div class="visual-icon">🍩</div>
                         <p><strong>Best for:</strong> Same as Pie, with center space</p>
@@ -1064,7 +1158,7 @@
                         </ul>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('treemap')">
                         <h5>Treemap</h5>
                         <div class="visual-icon">🗺️</div>
                         <p><strong>Best for:</strong> Hierarchical part-to-whole</p>
@@ -1076,7 +1170,7 @@
                         </ul>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('stacked')">
                         <h5>100% Stacked Bar/Column</h5>
                         <div class="visual-icon">📊</div>
                         <p><strong>Best for:</strong> Comparing proportions across groups</p>
@@ -1093,7 +1187,7 @@
             <div class="visual-category">
                 <h4>🗺️ Geographic Visuals</h4>
                 <div class="visual-grid">
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('map')">
                         <h5>Map (Azure Maps)</h5>
                         <div class="visual-icon">🌍</div>
                         <p><strong>Best for:</strong> Geographic distribution</p>
@@ -1107,7 +1201,7 @@
                         </p>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('filled-map')">
                         <h5>Filled Map</h5>
                         <div class="visual-icon">🗺️</div>
                         <p><strong>Best for:</strong> Choropleth maps</p>
@@ -1124,7 +1218,7 @@
             <div class="visual-category">
                 <h4>📊 KPI & Metrics Visuals</h4>
                 <div class="visual-grid">
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('card')">
                         <h5>Card</h5>
                         <div class="visual-icon">🏷️</div>
                         <p><strong>Best for:</strong> Single important number</p>
@@ -1136,7 +1230,7 @@
                         </ul>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('multi-card')">
                         <h5>Multi-row Card</h5>
                         <div class="visual-icon">🏷️🏷️</div>
                         <p><strong>Best for:</strong> Multiple related metrics</p>
@@ -1148,7 +1242,7 @@
                         </ul>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('kpi')">
                         <h5>KPI Visual</h5>
                         <div class="visual-icon">🎯</div>
                         <p><strong>Best for:</strong> Goal tracking</p>
@@ -1161,7 +1255,7 @@
                         <p style="margin-top: 10px;"><strong>Shows:</strong> Value, Target, Trend</p>
                     </div>
 
-                    <div class="visual-card">
+                    <div class="visual-card" onclick="showVisualDetails('gauge')">
                         <h5>Gauge</h5>
                         <div class="visual-icon">⏲️</div>
                         <p><strong>Best for:</strong> Progress toward goal</p>
@@ -1397,9 +1491,19 @@ Green: Values > 20%</code>
                         <li>Don't use clashing colors</li>
                         <li>Don't forget accessibility (color blind)</li>
                         <li>Don't ignore alignment</li>
-                        <li>Don't use tiny fonts</li>
                     </ul>
                 </div>
+            </div>
+
+            <h3>🚨 Common Design Mistakes to Avoid</h3>
+            <div class="warning">
+                <ul>
+                    <li><strong>The "Skittles" Effect:</strong> Using too many colors that don't have meaning. Stick to your theme.</li>
+                    <li><strong>Lack of Hierarchy:</strong> Making all visuals the same size. Your most important KPI should be 2x larger than other charts.</li>
+                    <li><strong>Clutter:</strong> Not using enough white space (margins). Let your data breathe!</li>
+                    <li><strong>Unsorted Data:</strong> Bar charts should almost always be sorted (Highest to Lowest).</li>
+                    <li><strong>Default Titles:</strong> "Sales by Category and Region" is boring. Use "Which Category drives the most Profit?"</li>
+                </ul>
             </div>
 
             <h3>Page Formatting</h3>
@@ -1725,9 +1829,136 @@ Green: Values > 20%</code>
         <div class="content-section" id="practical">
             <h2>🔨 Practical Lab: Building a Professional Dashboard</h2>
 
+            <div class="download-section">
+                <h3>📥 Get Your Practice Dataset</h3>
+                <p>Download the high-volume (5,000+ rows) sales dataset specifically designed for today's advanced visualization tasks.</p>
+                <a href="day8_practice_dataset.csv" download>
+                    <button class="download-btn">Download Day 8 Practice CSV</button>
+                </a>
+                <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.8;">Columns: OrderID, OrderDate, CustomerName, Segment, Region, Category, Sales, Profit, etc.</p>
+            </div>
+
             <div class="important">
                 <strong>⏱️ Lab Duration:</strong> 90 minutes<br>
-                <strong>🎯 Objective:</strong> Create a multi-page professional sales dashboard with advanced features
+                <strong>🎯 Objective:</strong> Create a multi-page professional sales dashboard using the 5,000-row practice dataset.
+            </div>
+
+            <!-- New DAX Section -->
+            <div class="visual-category">
+                <h4>🧮 Phase 0: Data Preparation (Measures & Columns)</h4>
+                <p>Before building the visuals, we need to create the underlying logic. Follow these steps to set up your Data Model.</p>
+                
+                <div class="practical-task">
+                    <div class="task-header">
+                        <div class="task-number">C</div>
+                        <h3 style="margin: 0;">Step 1: Calculated Columns</h3>
+                    </div>
+                    <div class="steps">
+                        <p>Calculated columns are pre-computed and stored in your data. We'll create one to categorize profit levels.</p>
+                        <ol>
+                            <li>Go to the <strong>Data View</strong> (left sidebar).</li>
+                            <li>Select the <code>day8_practice_dataset</code> table.</li>
+                            <li>Click <strong>New Column</strong> in the top ribbon.</li>
+                            <li>Enter the following DAX:</li>
+                        </ol>
+                        <div class="code-block">
+                            <pre>Profitability Status = 
+IF(
+    [Profit] > 100, 
+    "High Profit", 
+    IF([Profit] > 0, "Profitable", "Loss")
+)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="practical-task">
+                    <div class="task-header">
+                        <div class="task-number">M</div>
+                        <h3 style="margin: 0;">Step 2: Core Measures</h3>
+                    </div>
+                    <div class="steps">
+                        <p>Measures are dynamic and calculated on the fly based on your filters.</p>
+                        <ol>
+                            <li>Go to the <strong>Report View</strong>.</li>
+                            <li>Right-click the table name ➔ <strong>New Measure</strong>.</li>
+                            <li>Create the following essential measures:</li>
+                        </ol>
+
+                        <h5>1. Total Revenue</h5>
+                        <div class="code-block">
+                            <pre>Total Revenue = SUM(day8_practice_dataset[Sales])</pre>
+                        </div>
+
+                        <h5>2. Total Profit</h5>
+                        <div class="code-block">
+                            <pre>Total Profit = SUM(day8_practice_dataset[Profit])</pre>
+                        </div>
+
+                        <h5>3. Profit Margin %</h5>
+                        <div class="code-block">
+                            <pre>Profit Margin % = DIVIDE([Total Profit], [Total Revenue], 0)</pre>
+                        </div>
+                        <p><em>*Note: Select this measure and click the % icon in the ribbon to format it.</em></p>
+                    </div>
+                </div>
+
+                <div class="practical-task">
+                    <div class="task-header">
+                        <div class="task-number">T</div>
+                        <h3 style="margin: 0;">Step 3: Time Intelligence Measures</h3>
+                    </div>
+                    <div class="steps">
+                        <p>To compare performance over time (Day 8 focus), create these advanced measures:</p>
+                        
+                        <h5>1. YTD Revenue (Year-to-Date)</h5>
+                        <div class="code-block">
+                            <pre>YTD Revenue = TOTALYTD([Total Revenue], 'day8_practice_dataset'[OrderDate])</pre>
+                        </div>
+
+                        <h5>2. Prior Year Sales (Last Year)</h5>
+                        <div class="code-block">
+                            <pre>Sales LY = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('day8_practice_dataset'[OrderDate]))</pre>
+                        </div>
+
+                        <h5>3. YoY Sales Growth % (Year-over-Year)</h5>
+                        <div class="code-block">
+                            <pre>YoY Sales Growth % = 
+DIVIDE(
+    [Total Revenue] - [Sales LY], 
+    [Sales LY], 
+    0
+)</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="practical-task">
+                    <div class="task-header">
+                        <div class="task-number">H</div>
+                        <h3 style="margin: 0;">Step 4: Creating Hierarchies</h3>
+                    </div>
+                    <div class="steps">
+                        <p>Hierarchies allow users to "Drill Down" (explore deeper levels) within a single visual.</p>
+                        <ol>
+                            <li>Go to the <strong>Data Pane</strong> (right side).</li>
+                            <li><strong>Geography Hierarchy:</strong>
+                                <ul>
+                                    <li>Right-click <strong>Region</strong> ➔ <strong>Create hierarchy</strong>.</li>
+                                    <li>Right-click <strong>Country</strong> ➔ <strong>Add to hierarchy</strong> ➔ <em>Region Hierarchy</em>.</li>
+                                    <li>Repeat for <strong>State</strong> and then <strong>City</strong>.</li>
+                                    <li>Rename it to <code>Geography Hierarchy</code>.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Product Hierarchy:</strong>
+                                <ul>
+                                    <li>Right-click <strong>Category</strong> ➔ <strong>Create hierarchy</strong>.</li>
+                                    <li>Add <strong>SubCategory</strong> and then <strong>ProductName</strong>.</li>
+                                    <li>Rename it to <code>Product Catalog</code>.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
             </div>
 
             <h3>Exercise 1: Executive Summary Page (30 minutes)</h3>
@@ -1736,30 +1967,41 @@ Green: Values > 20%</code>
                     <div class="task-number">1</div>
                     <h3 style="margin: 0;">Create KPI Dashboard</h3>
                 </div>
+                <!-- <div style="text-align: center; margin: 20px 0;">
+                    <img src="day8_dashboard_mockup.png" alt="Dashboard Mockup" style="max-width: 100%; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3);">
+                    <p style="font-size: 0.9em; color: #666; margin-top: 5px;"><em>Goal: Create a layout similar to this professional executive view.</em></p>
+                </div> -->
                 <div class="steps">
                     <ol>
-                        <li>Create new page: "Executive Summary"</li>
-                        <li>Apply theme: View → Themes → Choose one</li>
-                        <li>Add KPI Cards (top row):
+                        <li><strong>Setup:</strong> Create a new page named "Executive Summary". Go to <em>View > Themes</em> and select "Executive" or "Innovation".</li>
+                        <li><strong>KPI Header:</strong> At the very top, add four <strong>Card</strong> visuals:
                             <ul>
-                                <li>YTD Sales</li>
-                                <li>YoY Growth %</li>
-                                <li>Total Customers</li>
-                                <li>Avg Order Value</li>
+                                <li><strong>Total Revenue:</strong> Use the <code>[Total Revenue]</code> measure.</li>
+                                <li><strong>YTD Sales:</strong> Use the <code>[YTD Revenue]</code> measure.</li>
+                                <li><strong>YoY Growth:</strong> Use the <code>[YoY Sales Growth %]</code> measure.</li>
+                                <li><strong>Profit Margin:</strong> Use the <code>[Profit Margin %]</code> measure.</li>
                             </ul>
                         </li>
-                        <li>Format cards:
+                        <li><strong>Trends:</strong> Add a <strong>Line Chart</strong>. 
                             <ul>
-                                <li>Large font (32pt+)</li>
-                                <li>Background color</li>
-                                <li>Border and shadow</li>
+                                <li>Axis: <code>OrderDate</code> (Year and Month)</li>
+                                <li>Values: <code>[Total Revenue]</code></li>
+                                <li><em>Tip:</em> Enable "Data Labels" in the Format pane for immediate clarity.</li>
                             </ul>
                         </li>
-                        <li>Add Line Chart (sales trend over time)</li>
-                        <li>Add Treemap (sales by category)</li>
-                        <li>Add Map (sales by region)</li>
-                        <li>Add slicers (Year, Quarter)</li>
-                        <li>Align all visuals to grid</li>
+                        <li><strong>Regional Performance:</strong> Add an <strong>Azure Map</strong> or <strong>Filled Map</strong>.
+                            <ul>
+                                <li>Location: <code>Geography Hierarchy</code> (to enable Region-to-City drill-down)</li>
+                                <li>Bubble Size/Color: <code>[Total Revenue]</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Product Breakdown:</strong> Add a <strong>Treemap</strong>.
+                            <ul>
+                                <li>Group: <code>Product Catalog</code> (to enable Category-to-Product drill-down)</li>
+                                <li>Values: <code>[Total Revenue]</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Alignment:</strong> Use <em>Format > Align</em> to ensure all visuals are perfectly spaced. Turn on "Snap to Grid" in <em>View</em> tab.</li>
                     </ol>
                 </div>
             </div>
@@ -1772,22 +2014,28 @@ Green: Values > 20%</code>
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>Create new page: "Product Analysis"</li>
-                        <li>Add Matrix visual:
+                        <li><strong>The Matrix:</strong> Create a page "Product Analysis". Add a <strong>Matrix</strong> visual.
                             <ul>
-                                <li>Rows: Products[Category], Products[ProductName]</li>
-                                <li>Values: [Total Sales], [% of Total], [YoY Growth %]</li>
-                                <li>Enable drill-down on Category</li>
+                                <li>Rows: <code>Category</code>, then <code>SubCategory</code> (to enable drill-down).</li>
+                                <li>Columns: <code>Segment</code></li>
+                                <li>Values: <code>[Total Revenue]</code> and <code>[Profit Margin %]</code>.</li>
+                                <li><em>Drill-down:</em> Click the "Down Arrow" icon in the visual header to explore SubCategories.</li>
                             </ul>
                         </li>
-                        <li>Apply conditional formatting:
+                        <li><strong>Conditional Formatting:</strong> 
                             <ul>
-                                <li>Data bars on Total Sales</li>
-                                <li>Color scale on YoY Growth % (red-yellow-green)</li>
+                                <li>Go to <em>Format pane > Cell elements</em>.</li>
+                                <li>Turn on <strong>Background color</strong> for <code>Profit Margin %</code>. </li>
+                                <li>Click <em>fx</em>: Set "Lowest value" to Red and "Highest value" to Green.</li>
                             </ul>
                         </li>
-                        <li>Add Bar Chart (Top 10 products by revenue)</li>
-                        <li>Add Column Chart (Product sales over time)</li>
+                        <li><strong>Top Performers:</strong> Add a <strong>Clustered Bar Chart</strong>.
+                            <ul>
+                                <li>Y-Axis: <code>ProductName</code></li>
+                                <li>X-Axis: <code>[Total Revenue]</code></li>
+                                <li>Filters: In the Filter pane, set Product to "Top N", N=10, by <code>[Total Revenue]</code>.</li>
+                            </ul>
+                        </li>
                     </ol>
                 </div>
             </div>
@@ -1812,7 +2060,7 @@ Green: Values > 20%</code>
                 </div>
             </div>
 
-            <h3>Exercise 4: Create Drill-Through (15 minutes)</h3>
+            <h3>Exercise 4: Create Drill-Through</h3>
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">4</div>
@@ -1820,17 +2068,11 @@ Green: Values > 20%</code>
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>Create new page: "Product Detail"</li>
-                        <li>Filters pane → Drill through → Add Products[ProductName]</li>
-                        <li>Add visuals:
-                            <ul>
-                                <li>Card showing product name</li>
-                                <li>Cards for metrics (Total Sales, Units Sold, Avg Price)</li>
-                                <li>Line chart (sales trend for this product)</li>
-                                <li>Table (customer list who bought this product)</li>
-                            </ul>
-                        </li>
-                        <li>Test: Go to Product Analysis → Right-click product → Drill through → Product Detail</li>
+                        <li><strong>Detail Page:</strong> Create a new page named "Product Detail".</li>
+                        <li><strong>Target Field:</strong> In the <em>Filters pane</em>, look for the <strong>Drill-through</strong> section. Drag <code>ProductName</code> into the "Add drill-through fields here" well.</li>
+                        <li><strong>Content:</strong> Add a large <strong>Card</strong> for <code>ProductName</code>. Add a <strong>Line Chart</strong> for the <code>[Total Profit]</code> measure over <code>OrderDate</code>.</li>
+                        <li><strong>Navigation:</strong> Power BI will automatically create a "Back" button. Format it to be visible (e.g., increase size, change color).</li>
+                        <li><strong>Test:</strong> Go back to "Product Analysis", right-click a product in the Matrix, select <em>Drill through > Product Detail</em>.</li>
                     </ol>
                 </div>
             </div>
@@ -1843,17 +2085,18 @@ Green: Values > 20%</code>
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>View → Bookmarks pane</li>
-                        <li>On Executive Summary, create bookmark "Default View"</li>
-                        <li>Select Year = 2024, create bookmark "2024 View"</li>
-                        <li>Select Year = 2023, create bookmark "2023 View"</li>
-                        <li>Insert buttons:
+                        <li><strong>Open Panes:</strong> Go to <em>View</em> tab and enable <strong>Bookmarks</strong> and <strong>Selection</strong> panes.</li>
+                        <li><strong>State 1 (Sales View):</strong> Set your slicers to show only "Technology". Click <strong>Add</strong> in the Bookmarks pane and rename it to "Tech Focus".</li>
+                        <li><strong>State 2 (Full View):</strong> Clear all filters. Click <strong>Add</strong> and rename to "Global View".</li>
+                        <li><strong>Button Logic:</strong> 
                             <ul>
-                                <li>Add three buttons labeled "All Years", "2024", "2023"</li>
-                                <li>Link each to corresponding bookmark</li>
+                                <li>Insert a <strong>Button > Blank</strong>. In the <em>Format > Action</em> section:</li>
+                                <li>Type: <strong>Bookmark</strong></li>
+                                <li>Bookmark: <strong>Tech Focus</strong></li>
+                                <li>Repeat for the "Global View" button.</li>
                             </ul>
                         </li>
-                        <li>Test in Reading View</li>
+                        <li><strong>Navigation Bar:</strong> Place these buttons in a row at the top of your report to act as a navigation menu.</li>
                     </ol>
                 </div>
             </div>
@@ -1992,6 +2235,14 @@ Green: Values > 20%</code>
                         <li>Enterprise DNA - Dashboard Design</li>
                     </ul>
                 </div>
+
+                <div class="feature-card" style="border-left-color: #28a745;">
+                    <h4>📥 Day 8 Practice Dataset</h4>
+                    <p>High-volume sales data (5,000+ rows) for visualization practice.</p>
+                    <a href="day8_practice_dataset.csv" download style="text-decoration: none;">
+                        <button class="download-btn" style="width: 100%; margin: 10px 0; font-size: 14px;background-color: #333;">Download Practice CSV</button>
+                    </a>
+                </div>
             </div>
 
             <h3>🎯 Day 9 Preview</h3>
@@ -2062,7 +2313,208 @@ Green: Values > 20%</code>
         </footer>
     </div>
 
+    <!-- Modal for Visual Instructions -->
+    <div id="visualModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+    </div>
+
     <script>
+        const visualData = {
+            'bar': {
+                title: 'Bar Chart (Clustered/Stacked)',
+                steps: [
+                    'Drag <strong>Category</strong> to the Y-axis.',
+                    'Drag <strong>[Total Revenue]</strong> to the X-axis.',
+                    'Add <strong>Segment</strong> to the Legend (if using Stacked Bar).',
+                    '<strong>Formatting:</strong> Go to Format pane > Data labels > On.'
+                ],
+                measures: ['Total Revenue = SUM(day8_practice_dataset[Sales])']
+            },
+            'column': {
+                title: 'Column Chart',
+                steps: [
+                    'Drag <strong>OrderDate</strong> (Month) to the X-axis.',
+                    'Drag <strong>[Total Revenue]</strong> to the Y-axis.',
+                    'Sort by Month (Ascending) in the visual header.',
+                    '<strong>Formatting:</strong> Change color theme in Format pane > Columns.'
+                ],
+                measures: ['Total Revenue = SUM(day8_practice_dataset[Sales])']
+            },
+            'table': {
+                title: 'Table & Matrix',
+                steps: [
+                    '<strong>Table:</strong> Drag Category, SubCategory, ProductName, and [Total Revenue] to the Columns well.',
+                    '<strong>Matrix:</strong> Drag Category to Rows, Segment to Columns, and [Profit Margin %] to Values.',
+                    'Enable <strong>Stepped layout</strong> in Format pane > Row headers for a cleaner look.'
+                ],
+                measures: ['Profit Margin % = DIVIDE(SUM([Profit]), SUM([Sales]), 0)']
+            },
+            'line': {
+                title: 'Line Chart',
+                steps: [
+                    'Drag <strong>OrderDate</strong> (Year/Month) to the X-axis.',
+                    'Drag <strong>[Total Revenue]</strong> to the Y-axis.',
+                    'Go to Analytics pane (magnifying glass) and add a <strong>Trend line</strong>.',
+                    '<strong>Forecasting:</strong> Add a Forecast line for the next 3 months.'
+                ],
+                measures: ['Total Revenue = SUM(day8_practice_dataset[Sales])']
+            },
+            'area': {
+                title: 'Area Chart',
+                steps: [
+                    'Similar to Line Chart, but drag <strong>[Total Revenue]</strong> to Y-axis.',
+                    'Use this to show volume growth over time.',
+                    '<strong>Formatting:</strong> Adjust transparency of the fill in Format pane.'
+                ],
+                measures: ['Total Revenue = SUM(day8_practice_dataset[Sales])']
+            },
+            'combo': {
+                title: 'Combo Chart',
+                steps: [
+                    'Drag <strong>OrderDate</strong> to X-axis.',
+                    'Drag <strong>[Total Revenue]</strong> to Column Y-axis.',
+                    'Drag <strong>[Profit Margin %]</strong> to Line Y-axis.',
+                    'Useful for seeing how margin changes as revenue scales.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)', 'Profit Margin % = DIVIDE(Profit, Sales)']
+            },
+            'pie': {
+                title: 'Pie Chart',
+                steps: [
+                    'Drag <strong>Segment</strong> to Legend.',
+                    'Drag <strong>[Total Revenue]</strong> to Values.',
+                    '<strong>Tip:</strong> Limit slices to 5 or fewer for clarity.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            },
+            'donut': {
+                title: 'Donut Chart',
+                steps: [
+                    'Same setup as Pie Chart.',
+                    '<strong>Formatting:</strong> Add the total revenue value in the center using a separate Card or custom shape.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            },
+            'treemap': {
+                title: 'Treemap',
+                steps: [
+                    'Drag the <strong>Product Catalog</strong> hierarchy to the Category/Group well.',
+                    'Drag <strong>[Total Revenue]</strong> to Values.',
+                    'Users can now right-click a category box to <strong>Drill Down</strong> into SubCategories.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            },
+            'stacked': {
+                title: '100% Stacked Chart',
+                steps: [
+                    'X-axis: <strong>Region</strong>',
+                    'Legend: <strong>Category</strong>',
+                    'Values: <strong>[Total Revenue]</strong>',
+                    'Shows the relative percentage contribution of each category per region.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            },
+            'map': {
+                title: 'Azure Maps',
+                steps: [
+                    'Drag the <strong>Geography Hierarchy</strong> to the Location well.',
+                    'Drag <strong>[Total Revenue]</strong> to Bubble Size.',
+                    '<strong>Hierarchy Control:</strong> Use the "Down Arrow" icons in the visual header to drill from Region down to City.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            },
+            'filled-map': {
+                title: 'Filled Map',
+                steps: [
+                    'Drag <strong>Geography Hierarchy</strong> (down to State) to Location.',
+                    'Drag <strong>[Profit Margin %]</strong> to Tooltips or Color saturation.',
+                    'Provides a heat-map view of regional profitability.'
+                ],
+                measures: ['Profit Margin % = DIVIDE(Profit, Sales)']
+            },
+            'card': {
+                title: 'Card Visual',
+                steps: [
+                    'Drag <strong>[Total Revenue]</strong> to the field well.',
+                    '<strong>Formatting:</strong> Turn off Category Label and add a custom Title for more control.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            },
+            'multi-card': {
+                title: 'Multi-row Card',
+                steps: [
+                    'Drag <strong>CustomerName</strong>, <strong>[Total Revenue]</strong>, and <strong>[Profit]</strong>.',
+                    'Useful for showing detailed stats for a single selected entity (like a customer).'
+                ],
+                measures: ['Total Revenue = SUM(Sales)', 'Profit = SUM(Profit)']
+            },
+            'kpi': {
+                title: 'KPI Visual',
+                steps: [
+                    'Indicator: <strong>[Total Revenue]</strong>',
+                    'Trend axis: <strong>OrderDate</strong> (Month)',
+                    'Target goals: <strong>[Sales LY]</strong>',
+                    'Shows status vs. goal with a trend background.'
+                ],
+                measures: ['Sales LY = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(Date))']
+            },
+            'gauge': {
+                title: 'Gauge Visual',
+                steps: [
+                    'Value: <strong>[Total Revenue]</strong>',
+                    'Target value: Set a fixed goal or use another measure.',
+                    'Shows progress toward a specific target.'
+                ],
+                measures: ['Total Revenue = SUM(Sales)']
+            }
+        };
+
+        function showVisualDetails(type) {
+            const data = visualData[type];
+            if (!data) return;
+
+            let html = `
+                <div class="modal-header">
+                    <h3>${data.title} - Step-by-Step</h3>
+                </div>
+                <h4>🛠️ Visual Configuration</h4>
+                <div class="steps">
+                    <ol>
+                        ${data.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+                <h4 style="margin-top:20px;">🧮 Required DAX</h4>
+                <div class="code-block">
+                    <pre>${data.measures.join('\n')}</pre>
+                </div>
+                <div class="tip" style="margin-top:20px;">
+                    <strong>💡 Practice Tip:</strong> Use the <code>day8_practice_dataset.csv</code> to test these configurations in Power BI.
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('visualModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        function closeModal() {
+            document.getElementById('visualModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('visualModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
         // Navigation Logic
         const navBtns = document.querySelectorAll('.nav-btn');
         const sections = document.querySelectorAll('.content-section');
@@ -2124,5 +2576,4 @@ Green: Values > 20%</code>
         }
     </script>
 </body>
-
 </html>
