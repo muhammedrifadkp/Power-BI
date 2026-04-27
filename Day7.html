@@ -883,6 +883,7 @@
                     <div class="code-block">
                         <code>Days Since Order = DATEDIFF(Table1[Order Date], TODAY(), DAY)</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Note:</strong> Updates on refresh</p>
                 </div>
 
@@ -892,6 +893,7 @@
                     <div class="code-block">
                         <code>Lead Time = DATEDIFF(Table1[Order Date], Table1[Ship Date], DAY)</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Intervals:</strong> YEAR, QUARTER, MONTH,
                         DAY, HOUR, MINUTE, SECOND</p>
                 </div>
@@ -904,6 +906,7 @@
                         <code>Order Month = MONTH(Table1[Order Date])</code>
                         <code>Order Day = DAY(Table1[Order Date])</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -912,6 +915,7 @@
                     <div class="code-block">
                         <code>Day of Week = WEEKDAY('Date Table'[Date], 2)</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                     <p style="font-size: 0.9em; margin-top: 10px;">Return type: 2 = Monday as 1, Sunday as 7</p>
                 </div>
 
@@ -921,6 +925,7 @@
                     <div class="code-block">
                         <code>Month End = EOMONTH(Date[Date], 0)</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                     <p style="font-size: 0.9em; margin-top: 10px;">Second parameter: 0 = this month, 1 = next month, -1
                         = previous month</p>
                 </div>
@@ -931,6 +936,7 @@
                     <div class="code-block">
                         <code>Custom Date = DATE(2024, 12, 31)</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                     <p style="font-size: 0.9em; margin-top: 10px;">Parameters: Year, Month, Day</p>
                 </div>
             </div>
@@ -941,6 +947,7 @@
                 <div class="code-block">
                     <code>Pending Days = DATEDIFF(Table1[Order Date], TODAY(), DAY)</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 <p style="margin-top: 10px;"><strong>Use case:</strong> Track how long ago an order was placed</p>
             </div>
 
@@ -949,6 +956,7 @@
                 <div class="code-block">
                     <code>Is Weekend = IF(WEEKDAY('Date Table'[Date], 2) >= 6, "Weekend", "Weekday")</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 <p style="margin-top: 10px;"><strong>Use case:</strong> Analyze weekend vs weekday sales</p>
             </div>
 
@@ -957,6 +965,7 @@
                 <div class="code-block">
                     <code>Quarter = "Q" & QUARTER('Date Table'[Date])</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Q1, Q2, Q3, Q4</p>
             </div>
 
@@ -965,6 +974,7 @@
                 <div class="code-block">
                     <code>Days to Ship = DATEDIFF(Table1[Order Date], Table1[Ship Date], DAY)</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 <p style="margin-top: 10px;"><strong>Use case:</strong> Track shipping efficiency</p>
             </div>
 
@@ -977,6 +987,7 @@
                         <code>Product Full Info = Table1[Category] & " - " & Table1[Product]</code>
                         <code>Category Code = CONCATENATE(LEFT(Table1[Category], 3), " - " & Table1[Product])</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -984,8 +995,9 @@
                     <p><strong>Purpose:</strong> Change text case</p>
                     <div class="code-block">
                         <code>Upper Product = UPPER(Table1[Product])</code>
-                        <code>Proper Category = PROPER(Table1[Category])</code>
+                        <!-- <code>Proper Category = PROPER(Table1[Category])</code> -->
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -995,6 +1007,7 @@
                         <code>Region Code = LEFT(Table1[Region], 1)</code>
                         <code>Order Num = MID(Table1[Order ID], 5, 5)</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1003,6 +1016,7 @@
                     <div class="code-block">
                         <code>Product Length = LEN(Table1[Product])</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1011,6 +1025,7 @@
                     <div class="code-block">
                         <code>Clean ID = SUBSTITUTE(Table1[Order ID], "ORD-", "")</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1020,6 +1035,7 @@
                         <code>Month Year = FORMAT('Date Table'[Date], "MMM YYYY")</code>
                         <code>Currency Sales = FORMAT(SUM(Table1[Sales]), "$#,##0.00")</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
             </div>
         </div>
@@ -1050,6 +1066,7 @@ IF(
     )
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
             </div>
 
             <div class="warning">
@@ -1076,6 +1093,7 @@ IF(
     "Unknown"
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
             </div>
 
             <div class="example-box">
@@ -1089,6 +1107,7 @@ IF(
     "Loss"
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Note:</strong> SWITCH(TRUE(), ...) allows using comparison
                     operators</p>
             </div>
@@ -1110,6 +1129,7 @@ IF(
     "Normal"
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1127,6 +1147,7 @@ IF(
     "No"
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1140,6 +1161,7 @@ IF(
     "Complete"
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
             </div>
 
@@ -1154,6 +1176,7 @@ IF(
     0
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                     <p style="font-size: 0.9em; margin-top: 10px;"><strong>Better:</strong> Use DIVIDE function instead!
                     </p>
                 </div>
@@ -1168,6 +1191,7 @@ IF(
     "Yes"
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
             </div>
         </div>
@@ -1204,6 +1228,7 @@ IF(
     Table1[Category] = "Electronics"
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Always shows laptop sales, regardless of slicer
                     selections</p>
             </div>
@@ -1216,6 +1241,7 @@ IF(
     Table1[Region] = "North"
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Total sales for North region only</p>
             </div>
 
@@ -1228,6 +1254,7 @@ IF(
     Table1[Sales] > 500
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Sales of electronics priced over $500</p>
             </div>
 
@@ -1249,6 +1276,7 @@ IF(
     )
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Sum of only sales over $1000</p>
             </div>
 
@@ -1266,6 +1294,7 @@ IF(
     ALL(Table1)
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Grand total, no matter what filters are applied
                 </p>
             </div>
@@ -1279,6 +1308,7 @@ IF(
     0
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Each category's percentage of grand total</p>
             </div>
 
@@ -1296,6 +1326,7 @@ IF(
     ALLEXCEPT(Table1, Table1[Product])
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Removes all filters except product filter</p>
             </div>
 
@@ -1354,6 +1385,7 @@ IF(
     Table1[Sales]
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                     <p style="font-size: 0.9em; margin-top: 10px;">Calculates Quantity × Price for each row, then sums
                         all</p>
                 </div>
@@ -1367,6 +1399,7 @@ IF(
     Table1[Sales]
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
 
                 <div class="function-card">
@@ -1378,6 +1411,7 @@ IF(
     Table1[Order ID]
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
 
                 <div class="function-card">
@@ -1389,6 +1423,7 @@ IF(
     Table1[Sales]
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
             </div>
 
@@ -1400,6 +1435,7 @@ IF(
                         <code>-- In simple DAX, this works on physical columns
 Total Profit := SUM(Table1[Profit])</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
 
                 <div class="example-box">
@@ -1411,6 +1447,7 @@ Total Profit := SUMX(
     Table1[Profit]
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
             </div>
 
@@ -1423,6 +1460,7 @@ Total Profit := SUMX(
     SUM(Table1[Sales])
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Use case:</strong> Average price weighted by quantity sold</p>
             </div>
 
@@ -1437,6 +1475,7 @@ Total Profit := SUMX(
     )
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
             </div>
 
             <div class="example-box">
@@ -1450,6 +1489,7 @@ Total Profit := SUMX(
     Table1[Order ID]
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
             </div>
 
             <div class="tip">
@@ -1493,6 +1533,7 @@ Total Profit := SUMX(
     DAY
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1505,6 +1546,7 @@ Total Profit := SUMX(
     "Weekday"
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
 
                 <div class="function-card">
@@ -1513,6 +1555,7 @@ Total Profit := SUMX(
                     <div class="code-block">
                         <code>Order Hour = HOUR(Table1[Order Time])</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Calculated Column</p>
                 </div>
             </div>
 
@@ -1537,6 +1580,7 @@ Total Profit := SUMX(
     'Date Table'[Date]
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Result:</strong> Running total from Jan 1 to current date in filter
                 </p>
             </div>
@@ -1549,6 +1593,7 @@ Total Profit := SUMX(
     DATESYTD('Date Table'[Date])
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
             </div>
 
             <h3>4. Period Comparisons (Growth Analysis)</h3>
@@ -1561,6 +1606,7 @@ Total Profit := SUMX(
     SAMEPERIODLASTYEAR('Date Table'[Date])
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                     <p style="font-size: 0.9em; margin-top: 10px;">Sales for the same dates in the previous year</p>
                 </div>
                 <div class="function-card">
@@ -1572,6 +1618,7 @@ Total Profit := SUMX(
     0
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
                 <div class="function-card">
                     <h4>Previous Month (PM)</h4>
@@ -1581,6 +1628,7 @@ Total Profit := SUMX(
     DATEADD('Date Table'[Date], -1, MONTH)
 )</code>
                     </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 </div>
             </div>
 
@@ -1598,6 +1646,7 @@ Total Profit := SUMX(
     )
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                 <p style="margin-top: 10px;"><strong>Real-world use:</strong> Analyzing trends without seasonality
                     noise</p>
             </div>
@@ -1625,6 +1674,7 @@ Rolling 3M Avg = CALCULATE(
     DATESINPERIOD('Date Table'[Date], LASTDATE('Date Table'[Date]), -3, MONTH)
 )</code>
                 </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
             </div>
             <div class="tip">
                 <strong>💡 Pro Tip:</strong> Create a "Time Intelligence" display folder in the Model View to keep these
@@ -1649,8 +1699,8 @@ Rolling 3M Avg = CALCULATE(
                 </div>
                 <div class="steps">
                     <ol>
-                        <li>Open your Power BI file from Day 6</li>
-                        <li>Verify your <strong>'Date Table'</strong> is marked as Date Table</li>
+                        <li>Import the downloaded <strong>Global Superstore Data.csv</strong> and rename the table to <strong>Table1</strong></li>
+                        <li>Create a continuous <strong>'Date Table'</strong>, mark it as Date Table, and link to <strong>Table1[Order Date]</strong></li>
                         <li>Create these measures in <strong>Table1</strong>:
                             <ul>
                                 <li><strong>YTD Sales:</strong> <code>TOTALYTD([Total Sales], 'Date Table'[Date])</code>
@@ -1735,6 +1785,7 @@ Table1,
 DIVIDE(Table1[Profit], Table1[Sales], 0)
 )</code>
                             </div>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic;">📌 <strong>Type:</strong> Measure</p>
                         </li>
                     </ol>
                 </div>
@@ -1886,6 +1937,14 @@ DIVIDE(Table1[Profit], Table1[Sales], 0)
         <!-- Resources Section -->
         <div class="content-section" id="resources">
             <h2>📦 Resources & Downloads</h2>
+
+            <div class="download-section" style="margin-bottom: 30px;">
+                <h3>📊 Class Data Files</h3>
+                <p>Download the dataset required for today's practical exercises.</p>
+                <button class="download-btn" onclick="generateBigData()">
+                    ⬇️ Download Global Superstore Data (CSV)
+                </button>
+            </div>
 
             <h3>📚 Advanced DAX Resources</h3>
             <div class="feature-grid">
