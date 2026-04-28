@@ -1077,76 +1077,57 @@
                 </ul>
             </div>
 
-            <h3>Setting Up Key Influencers</h3>
+            <h3>Step-by-Step Example: Customer Churn Analysis</h3>
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">2</div>
-                    <h3 style="margin: 0;">How to Configure</h3>
+                    <h3 style="margin: 0;">Analyzing What Drives Customer Churn</h3>
                 </div>
                 <div class="steps">
+                    <p><strong>Scenario:</strong> We have a dataset of customer feedback, subscription types, and support tickets. We want to find out what factors influence a customer to <strong>Churn</strong> (leave the service).</p>
+                    
+                    <div style="margin: 15px 0;">
+                        <a href="key_influencers_data.csv" download style="text-decoration: none;">
+                            <button class="download-btn" style="padding: 10px 20px; font-size: 14px;">📥 Download Key Influencers Dataset (CSV)</button>
+                        </a>
+                    </div>
+                    
                     <ol>
-                        <li>Insert → AI Visuals → <strong>Key Influencers</strong></li>
-                        <li>Configure fields:
+                        <li><strong>Get Data:</strong> Download the CSV file above and load it into Power BI (Home &gt; Get Data &gt; Text/CSV).</li>
+                        <li><strong>Insert Visual:</strong> Click on the <strong>Key Influencers</strong> icon in the Visualizations pane (it looks like a magnifying glass over a chart).</li>
+                        <li><strong>Configure Fields:</strong>
                             <ul>
-                                <li><strong>Analyze:</strong> Metric to analyze (e.g., Sales, CustomerRating)</li>
-                                <li><strong>Explain by:</strong> Potential influencing factors (Category, Region,
-                                    Product, etc.)</li>
-                                <li><strong>Expand by:</strong> (Optional) Additional drill-down fields</li>
+                                <li><strong>Analyze:</strong> Drag the <code>Churn</code> field here. This is the metric we want to understand.</li>
+                                <li><strong>Explain by:</strong> Drag potential factors here: <code>Rating</code>, <code>Support_Tickets</code>, <code>Subscription_Type</code>, <code>Tenure_Months</code>, and <code>Region</code>.</li>
                             </ul>
                         </li>
-                        <li>Choose what to analyze: "Increase" or "Decrease"</li>
-                        <li>Power BI analyzes and shows results</li>
+                        <li><strong>Set the Target:</strong> In the visual itself, there is a dropdown "What influences Churn to be". Select <strong>Yes</strong>.</li>
+                        <li><strong>Review Results:</strong> Power BI's AI will automatically analyze the dataset and present the top factors driving Churn!</li>
                     </ol>
                 </div>
             </div>
 
-            <h3>Example: What Influences High Sales?</h3>
+            <h3>Reading the Results</h3>
             <div class="example-box">
-                <h4>Scenario: Analyze what drives sales above $1000</h4>
-
-                <div class="setup-box">
-                    <p><strong>Setup:</strong></p>
-                    <ul>
-                        <li><strong>Analyze:</strong> Sales[Revenue]</li>
-                        <li><strong>Explain by:</strong> Products[Category], Customers[Region], Date[Year]</li>
-                        <li><strong>Filter:</strong> Revenue > 1000</li>
-                    </ul>
-                </div>
-
+                <h4>1. Key Influencers Tab (Individual Factors)</h4>
                 <div class="results-box">
-                    <p><strong>Possible Results:</strong></p>
+                    <p>The visual shows statements based on correlation and probability. For our dataset, you might see:</p>
                     <ul>
-                        <li>"Sales is 2.5x more likely to be high when Category is Electronics"</li>
-                        <li>"Sales is 1.8x more likely to be high when Region is North"</li>
-                        <li>"Sales increases by avg $450 when Product is Laptop Pro"</li>
+                        <li><strong>"When Support_Tickets is more than 4, the likelihood of Churn being Yes increases by 3.5x."</strong></li>
+                        <li><strong>"When Subscription_Type is Basic, the likelihood of Churn being Yes increases by 2.8x."</strong></li>
+                        <li><strong>"When Rating is less than 3, the likelihood of Churn being Yes increases by 2.5x."</strong></li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #555;">*Clicking on each bubble shows a detailed chart comparing the influenced segment with the average.</p>
+                </div>
+
+                <h4 style="margin-top: 20px;">2. Top Segments Tab (Combined Factors)</h4>
+                <div class="results-box">
+                    <p>This tab finds combinations of factors (segments) that have the highest percentage of Churn.</p>
+                    <ul>
+                        <li><strong>Segment 1:</strong> Support_Tickets &gt; 4 AND Subscription_Type is Basic. (Result: 100% Churn rate in this segment)</li>
+                        <li><strong>Segment 2:</strong> Rating &lt; 3 AND Tenure_Months &lt; 6.</li>
                     </ul>
                 </div>
-            </div>
-
-            <h3>Reading Key Influencers Results</h3>
-            <div class="theory-box">
-                <h4>Understanding the Output:</h4>
-
-                <p><strong>For Categorical Metrics (e.g., High/Low Rating):</strong></p>
-                <ul>
-                    <li>"X is Y times more likely when..."</li>
-                    <li>Shows probability multiplier</li>
-                    <li>Bubble size = number of records</li>
-                </ul>
-
-                <p style="margin-top: 15px;"><strong>For Continuous Metrics (e.g., Sales Amount):</strong></p>
-                <ul>
-                    <li>"On average, X increases/decreases by..."</li>
-                    <li>Shows average impact</li>
-                    <li>Bar length = strength of influence</li>
-                </ul>
-
-                <p style="margin-top: 15px;"><strong>Top Segments Tab:</strong></p>
-                <ul>
-                    <li>Shows groups with highest concentration</li>
-                    <li>Example: "Electronics + North Region = 85% high sales"</li>
-                    <li>Helps identify target segments</li>
-                </ul>
             </div>
 
             <h3>Best Practices</h3>
@@ -1205,24 +1186,31 @@
                 </ul>
             </div>
 
-            <h3>Setting Up Decomposition Tree</h3>
+            <h3>Step-by-Step Example: Sales Breakdown Analysis</h3>
             <div class="practical-task">
                 <div class="task-header">
                     <div class="task-number">3</div>
-                    <h3 style="margin: 0;">Configuration Steps</h3>
+                    <h3 style="margin: 0;">Analyzing Sales Across Dimensions</h3>
                 </div>
                 <div class="steps">
+                    <p><strong>Scenario:</strong> We want to break down our Total Sales to see which Categories, Sub-Categories, Regions, and Sales Reps are driving the most revenue.</p>
+                    
+                    <div style="margin: 15px 0;">
+                        <a href="decomposition_tree_data.csv" download style="text-decoration: none;">
+                            <button class="download-btn" style="padding: 10px 20px; font-size: 14px;">📥 Download Decomposition Tree Dataset (CSV)</button>
+                        </a>
+                    </div>
+
                     <ol>
-                        <li>Insert → AI Visuals → <strong>Decomposition Tree</strong></li>
-                        <li>Configure fields:
+                        <li><strong>Get Data:</strong> Download the CSV file above and load it into Power BI (Home &gt; Get Data &gt; Text/CSV).</li>
+                        <li><strong>Insert Visual:</strong> Click on the <strong>Decomposition Tree</strong> icon in the Visualizations pane.</li>
+                        <li><strong>Configure Fields:</strong>
                             <ul>
-                                <li><strong>Analyze:</strong> The metric (e.g., Sum of Sales)</li>
-                                <li><strong>Explain by:</strong> All dimensions you might drill by (Product, Region,
-                                    Date, Customer, etc.)</li>
+                                <li><strong>Analyze:</strong> Drag <code>Sales_Amount</code> here (ensure it is set to Sum).</li>
+                                <li><strong>Explain by:</strong> Drag <code>Category</code>, <code>Sub_Category</code>, <code>Region</code>, and <code>Sales_Rep</code> into this well.</li>
                             </ul>
                         </li>
-                        <li>Visual starts with total metric value</li>
-                        <li>Click "+" to drill down</li>
+                        <li><strong>Start Exploring:</strong> The visual will start with a single bar showing Total Sales_Amount. Click the small <strong>"+"</strong> icon next to the bar to drill down!</li>
                     </ol>
                 </div>
             </div>
@@ -1232,45 +1220,37 @@
                 <h4>Interactive Exploration:</h4>
 
                 <div class="tree-demo">
-                    <p><strong>Level 0:</strong> Total Sales: $1,250,000</p>
-                    <p style="margin-left: 20px;">↓ Click "+" → Choose dimension</p>
+                    <p><strong>Level 0:</strong> Total Sales Amount: $22,500 (approx)</p>
+                    <p style="margin-left: 20px;">↓ Click "+" → Choose <strong>High value</strong></p>
 
-                    <p style="margin-left: 20px;"><strong>Level 1:</strong> Split by Category</p>
+                    <p style="margin-left: 20px;"><strong>Level 1:</strong> AI splits by Category and shows Electronics is highest</p>
                     <ul style="margin-left: 40px;">
-                        <li>Electronics: $650,000 (52%)</li>
-                        <li>Furniture: $400,000 (32%)</li>
-                        <li>Stationery: $200,000 (16%)</li>
+                        <li><strong>Electronics: $11,500</strong></li>
+                        <li>Furniture: $6,000</li>
+                        <li>Clothing: $5,000</li>
                     </ul>
 
-                    <p style="margin-left: 40px;">↓ Click "+" on Electronics</p>
+                    <p style="margin-left: 40px;">↓ Click "+" on Electronics → Choose <strong>High value</strong></p>
 
-                    <p style="margin-left: 40px;"><strong>Level 2:</strong> Split by Region</p>
+                    <p style="margin-left: 40px;"><strong>Level 2:</strong> AI splits by Sub_Category</p>
                     <ul style="margin-left: 60px;">
-                        <li>North: $280,000</li>
-                        <li>South: $220,000</li>
-                        <li>East: $150,000</li>
+                        <li><strong>Laptops: $7,600</strong></li>
+                        <li>Phones: $3,900</li>
                     </ul>
                 </div>
             </div>
 
             <h3>AI-Powered Features</h3>
             <div class="theory-box">
-                <h4>High Value & Low Value:</h4>
+                <h4>High Value & Low Value Splits:</h4>
                 <p>When you click "+", you get three options:</p>
                 <ul>
-                    <li><strong>Manual split:</strong> Choose dimension yourself</li>
-                    <li><strong>High value:</strong> AI finds path to highest values</li>
-                    <li><strong>Low value:</strong> AI finds path to lowest values</li>
+                    <li><strong>Manual split:</strong> Choose the exact dimension you want to drill into (e.g., Region).</li>
+                    <li><strong>High value:</strong> A lightbulb icon. The AI automatically finds the dimension path that leads to the highest value of your metric.</li>
+                    <li><strong>Low value:</strong> A lightbulb icon. The AI finds the path that leads to the lowest value.</li>
                 </ul>
 
-                <p style="margin-top: 15px;"><strong>Example:</strong></p>
-                <p>Click "High value" on Total Sales:</p>
-                <ul>
-                    <li>AI might split by "Category = Electronics"</li>
-                    <li>Then "Region = North"</li>
-                    <li>Then "Product = Laptop Pro"</li>
-                    <li>Shows path to highest sales</li>
-                </ul>
+                <p style="margin-top: 15px;"><strong>Why it's powerful:</strong> If you have 20 different dimensions in the "Explain by" well, clicking "High value" saves you from guessing which dimension has the biggest impact!</p>
             </div>
 
             <h3>Decomposition Tree vs Matrix</h3>
