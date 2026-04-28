@@ -857,6 +857,7 @@
             <button class="nav-btn" data-section="qna">💬 Q&A Visual</button>
             <button class="nav-btn" data-section="keyinfluencers">🎯 Key Influencers</button>
             <button class="nav-btn" data-section="decomposition">🌳 Decomposition Tree</button>
+            <button class="nav-btn" data-section="python">🐍 Python Visual</button>
             <button class="nav-btn" data-section="publishing">🌐 Publishing</button>
             <button class="nav-btn" data-section="practical">🔨 Final Project</button>
             <button class="nav-btn" data-section="tasks">✅ Tasks</button>
@@ -875,6 +876,7 @@
                     <li>Implement Key Influencers visual for root cause analysis</li>
                     <li>Create Decomposition Tree for hierarchical exploration</li>
                     <li>Use Smart Narrative for automated insights</li>
+                    <li>Integrate Python scripts for custom data visualizations</li>
                     <li>Detect anomalies in time series data</li>
                     <li>Publish reports to Power BI Service</li>
                     <li>Share and collaborate on reports</li>
@@ -892,6 +894,7 @@
                         <li>Key Influencers analysis</li>
                         <li>Decomposition Tree exploration</li>
                         <li>Smart Narrative insights</li>
+                        <li>Python visual integration</li>
                     </ul>
                 </div>
                 <div class="feature-card">
@@ -1328,6 +1331,111 @@
             </div>
         </div>
 
+        <!-- Python Visual Section -->
+        <div class="content-section" id="python">
+            <h2>🐍 Python Visual - Custom Visualizations</h2>
+
+            <h3>What is a Python Visual?</h3>
+            <div class="theory-box">
+                <p><strong>Python Visual:</strong> Allows you to use Python scripts and libraries (like Matplotlib, Seaborn) to create custom visuals directly inside Power BI.</p>
+
+                <p style="margin-top: 15px;"><strong>Why use Python Visuals?</strong></p>
+                <ul>
+                    <li>Create highly customized charts not available in native Power BI</li>
+                    <li>Use advanced statistical plotting</li>
+                    <li>Leverage popular Python libraries (e.g., pandas, matplotlib, seaborn)</li>
+                    <li>Perform data transformations before plotting</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Prerequisites:</strong></p>
+                <ul>
+                    <li>Python installed on your machine (e.g., Anaconda or standard Python)</li>
+                    <li>Python integration configured in Power BI (File &gt; Options and settings &gt; Options &gt; Python scripting)</li>
+                    <li>Required libraries installed (<code>pip install pandas matplotlib seaborn</code>)</li>
+                </ul>
+            </div>
+
+            <h3>Step-by-Step Example: Sales vs. Marketing Scatter Plot</h3>
+            <div class="practical-task">
+                <div class="task-header">
+                    <div class="task-number">🐍</div>
+                    <h3 style="margin: 0;">Creating a Scatter Plot with Trendline</h3>
+                </div>
+                <div class="steps">
+                    <p><strong>Scenario:</strong> We will use a simple dataset to see how <strong>Marketing Spend</strong> affects <strong>Sales</strong> by plotting a scatter chart with a regression line using Seaborn.</p>
+                    
+                    <div style="margin: 15px 0;">
+                        <a href="python_sales_data.csv" download style="text-decoration: none;">
+                            <button class="download-btn" style="padding: 10px 20px; font-size: 14px;">📥 Download Python Dataset (CSV)</button>
+                        </a>
+                    </div>
+                    
+                    <ol>
+                        <li><strong>Get Data:</strong> Download the CSV file above and load it into Power BI (Home &gt; Get Data &gt; Text/CSV).</li>
+                        <li><strong>Add the Visual:</strong> Click on the <strong>Py</strong> (Python visual) icon in the Visualizations pane.</li>
+                        <li><strong>Enable Scripting:</strong> If prompted, click "Enable" to allow script execution.</li>
+                        <li><strong>Add Data Fields:</strong> Drag <code>Marketing_Spend</code> and <code>Sales</code> into the "Values" well of the visual.</li>
+                        <li><strong>Write the Script:</strong> In the Python script editor that appears at the bottom, write the following code:</li>
+                    </ol>
+                    
+                    <div class="code-block">
+<code>import matplotlib.pyplot as plt
+import seaborn as sns
+
+# dataset is automatically provided by Power BI containing the fields you added
+# Drop any missing values to ensure accurate plotting
+df = dataset.dropna()
+
+# Set up the matplotlib figure size
+plt.figure(figsize=(10, 6))
+
+# Draw the scatter plot with a regression trendline
+sns.regplot(data=df, x='Marketing_Spend', y='Sales', color='purple', scatter_kws={'s': 100})
+
+# Add titles and labels
+plt.title('Impact of Marketing Spend on Sales', fontsize=16, color='#1e3c72')
+plt.xlabel('Marketing Spend ($)', fontsize=12)
+plt.ylabel('Sales ($)', fontsize=12)
+
+# Display the plot
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()</code>
+                    </div>
+                    
+                    <ol start="6">
+                        <li><strong>Run Script:</strong> Click the "Run script" icon (the play button) in the title bar of the script editor.</li>
+                        <li><strong>View Result:</strong> A beautiful scatter plot showing the correlation between Marketing Spend and Sales with a trendline will render in your report!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <h3>Best Practices</h3>
+            <div class="feature-grid">
+                <div class="feature-card" style="background: #d4edda; border-left: 4px solid #28a745;">
+                    <h4>✅ DO's</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Ensure the Python script path is correctly set in Options</li>
+                        <li>Always handle missing data (<code>dropna()</code> or <code>fillna()</code>) in your script</li>
+                        <li>Use standard libraries like <code>matplotlib</code> and <code>seaborn</code></li>
+                        <li>Keep the dataset size reasonable to maintain visual performance</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card" style="background: #f8d7da; border-left: 4px solid #dc3545;">
+                    <h4>❌ DON'Ts</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Don't use interactive Python libraries (like Plotly or Bokeh) as they are not fully supported</li>
+                        <li>Don't perform heavy machine learning operations inside the visual script (do that in Power Query)</li>
+                        <li>Don't forget to install required packages in your local Python environment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Note:</strong> The <code>dataset</code> variable is automatically created by Power BI as a pandas DataFrame containing the fields you drag into the visual.
+            </div>
+        </div>
+
         <!-- Publishing Section -->
         <div class="content-section" id="publishing">
             <h2>🌐 Publishing to Power BI Service</h2>
@@ -1540,6 +1648,7 @@
                 <ul>
                     <li>✅ Q&A visual</li>
                     <li>✅ Either Key Influencers OR Decomposition Tree</li>
+                    <li>✅ Python Visual Integration</li>
                 </ul>
             </div>
 
@@ -1801,6 +1910,10 @@
                     <div class="checklist-item" onclick="toggleCheck(this)">
                         <div class="checkbox"></div>
                         <span>Key Influencers/Decomposition Tree configured</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span>Python visual integration configured and tested</span>
                     </div>
                     <div class="checklist-item" onclick="toggleCheck(this)">
                         <div class="checkbox"></div>
